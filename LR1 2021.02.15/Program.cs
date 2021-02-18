@@ -15,7 +15,7 @@ namespace LR1_2021._02._15
             var filePath = "labirint.txt";
             var test = new Labirint(ref filePath);
 
-            test.PassByComputer();
+            test.Play();
             Console.Read();
         }
     }
@@ -110,7 +110,7 @@ namespace LR1_2021._02._15
 
         private void ShowPassage(ref List<Position> path)
         {
-            ConsoleColor copyOfStandardColor = Console.ForegroundColor;
+            var copyOfStandardColor = Console.ForegroundColor;
             this.PrintField();
             Console.CursorVisible = false;
             Console.ForegroundColor = ConsoleColor.Green;
@@ -137,6 +137,18 @@ namespace LR1_2021._02._15
             Console.WriteLine($"\n{MarginLeft}PASSED SUCCESSFULLY !");
         }
 
+        private void MovePlayer(ref Position previous, ref Position current)
+        {
+            var copyOfStandardColor = Console.ForegroundColor;
+            Console.SetCursorPosition(previous.Col * 2 + MarginLeftSize, previous.Row + MarginTopSize);
+            Console.Write("  ");
+            Console.SetCursorPosition(current.Col * 2 + MarginLeftSize, current.Row + MarginTopSize);
+            
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write(Texture);
+            Console.ForegroundColor = copyOfStandardColor;
+        }
+        
         public Labirint(ref string fileName)
         {
             string[] lines = File.ReadAllLines(fileName);
@@ -181,6 +193,57 @@ namespace LR1_2021._02._15
                 this.PrintField();
                 Console.WriteLine("Path was not found");
             }
+        }
+
+        public void Play()
+        {
+            Console.CursorVisible = false;
+            this.PrintField();
+            var player = this._startCoordinate;
+            ConsoleKeyInfo keyPressed;
+            Console.SetCursorPosition(this._startCoordinate.Col * 2 + MarginLeftSize, this._startCoordinate.Row + MarginTopSize);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write(Texture);
+            do
+            {
+                keyPressed = Console.ReadKey(true);
+                var previousPosition = player;
+                switch (keyPressed.Key)
+                {
+                    case ConsoleKey.UpArrow:
+                    {
+                        //Console.Write("Up");
+                        if (player.Row - 1 >= 0 && this._field[player.Row - 1][player.Col] == true)
+                            player.Row -= 1;
+                        break;
+                    }
+                    case ConsoleKey.DownArrow:
+                    {
+                        //Console.Write("Down");
+                        if (player.Row + 1 < this._height && this._field[player.Row + 1][player.Col] == true)
+                            player.Row += 1;
+                        break;
+                    }
+                    case ConsoleKey.LeftArrow:
+                    {
+                        //Console.Write("Left");
+                        if (player.Col - 1 >= 0 && this._field[player.Row][player.Col - 1] == true)
+                            player.Col -= 1;
+                        break;
+                    }
+                    case ConsoleKey.RightArrow:
+                    {
+                        //Console.Write("Right");
+                        if (player.Col + 1 < this._height && this._field[player.Row][player.Col + 1] == true)
+                            player.Col += 1;
+                        break;
+                    }
+                }
+
+                if (!(previousPosition.Col == player.Col && previousPosition.Row != player.Col))
+                    this.MovePlayer(ref previousPosition, ref player);
+                
+            } while (keyPressed.Key != ConsoleKey.Escape);
         }
     }
 }
