@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace LR1_2021._02._15
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             var filePath = "labirint.txt";
             var test = new Labirint(ref filePath);
@@ -26,13 +27,20 @@ namespace LR1_2021._02._15
             public sbyte Row, Col;
         }
 
-        private static readonly sbyte[,] Directions = new sbyte[4, 2] {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
-        private const char TextureStyle = '▓';
+        private static readonly sbyte[,] Directions = new sbyte[,] {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+        private const byte MarginLeftSize = 4, MarginTopSize = 5;
+
+        private static readonly string MarginLeft = new string(' ', MarginLeftSize),
+            MarginTop = new string('\n', MarginTopSize);
+
+        private static readonly char TextureStyle = '█';
         private static readonly string Texture = "" + TextureStyle + TextureStyle;
+
         private readonly sbyte _width, _height;
         private readonly List<List<bool>> _field = new List<List<bool>>();
-        private readonly Position _startCoordinate = new Position {Row = -1, Col = -1};
-        private readonly Position _finishCoordinate = new Position {Row = -1, Col = -1};
+
+        private readonly Position _startCoordinate = new Position {Row = -1, Col = -1},
+            _finishCoordinate = new Position {Row = -1, Col = -1};
 
         private void SearchInLabirint(ref bool foundPath, ref Queue<Position> bfs, ref int[,] visitedPositions)
         {
@@ -66,8 +74,7 @@ namespace LR1_2021._02._15
         {
             var path = new List<Position> {this._finishCoordinate};
 
-            while (!(path[^1].Row == this._startCoordinate.Row &&
-                     path[^1].Col == this._startCoordinate.Col))
+            while (!(path[^1].Row == this._startCoordinate.Row && path[^1].Col == this._startCoordinate.Col))
             {
                 for (sbyte counter = 0; counter < 4; ++counter)
                 {
@@ -75,8 +82,7 @@ namespace LR1_2021._02._15
                     var y = (SByte) (path[^1].Row + Directions[counter, 1]);
 
                     if (x >= 0 && x < this._width && y >= 0 && y < this._height && visitedPositions[y, x] != -1 &&
-                        visitedPositions[y, x] ==
-                        visitedPositions[path[^1].Row, path[^1].Col] - 1)
+                        visitedPositions[y, x] == visitedPositions[path[^1].Row, path[^1].Col] - 1)
                     {
                         path.Add(new Position {Row = y, Col = x});
                         break;
@@ -87,23 +93,48 @@ namespace LR1_2021._02._15
             return path;
         }
 
+        private void PrintField()
+        {
+            Console.OutputEncoding = Encoding.UTF8;
+
+            Console.Write(MarginTop);
+            foreach (var row in this._field)
+            {
+                Console.Write(MarginLeft);
+                foreach (var state in row) Console.Write(state ? "  " : Texture);
+                Console.Write('\n');
+            }
+
+            Console.Write('\n');
+        }
+
         private void ShowPassage(ref List<Position> path)
         {
-            ConsoleColor temp = Console.ForegroundColor;
+            ConsoleColor copyOfStandardColor = Console.ForegroundColor;
             this.PrintField();
-
+            Console.CursorVisible = false;
             Console.ForegroundColor = ConsoleColor.Green;
-            foreach (var coordinate in path)
+            var previousCoordinate = this._startCoordinate;
+            foreach (var currentCoordinate in path)
             {
-                Console.SetCursorPosition(coordinate.Col * 2, coordinate.Row);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.SetCursorPosition(previousCoordinate.Col * 2 + MarginLeftSize,
+                    previousCoordinate.Row + MarginTopSize);
                 Console.Write(Texture);
-                Console.SetCursorPosition(Console.WindowWidth - 1, 0);
-                Thread.Sleep(30);
+
+                previousCoordinate = currentCoordinate;
+                Console.ForegroundColor = ConsoleColor.Red;
+
+                Console.SetCursorPosition(currentCoordinate.Col * 2 + MarginLeftSize,
+                    currentCoordinate.Row + MarginTopSize);
+                Console.Write(Texture);
+
+                Thread.Sleep(60);
             }
-            
-            Console.ForegroundColor = temp;
-            Console.SetCursorPosition(0, this._height);
-            Console.WriteLine("Passed successfully !");
+
+            Console.ForegroundColor = copyOfStandardColor;
+            Console.SetCursorPosition(MarginLeftSize, this._height + MarginTopSize);
+            Console.WriteLine($"\n{MarginLeft}PASSED SUCCESSFULLY !");
         }
 
         public Labirint(ref string fileName)
@@ -123,20 +154,6 @@ namespace LR1_2021._02._15
             this._startCoordinate.Col += sbyte.Parse(lines[^2].Split(' ')[1]);
             this._finishCoordinate.Row += sbyte.Parse(lines[^1].Split(' ')[0]);
             this._finishCoordinate.Col += sbyte.Parse(lines[^1].Split(' ')[1]);
-        }
-
-        public void PrintField()
-        {
-            Console.OutputEncoding = Encoding.UTF8;
-
-            foreach (var row in this._field)
-            {
-                foreach (var state in row)
-                    Console.Write(state ? "  " : Texture);
-                Console.Write('\n');
-            }
-
-            Console.Write('\n');
         }
 
         public void PassByComputer()
