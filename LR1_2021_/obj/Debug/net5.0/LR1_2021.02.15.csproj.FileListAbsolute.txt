@@ -1,0 +1,16 @@
+C:\Users\User\Desktop\Other\HomeWork\ИСП\LR1_2021_\bin\Debug\net5.0\LR1_2021.02.15.exe
+C:\Users\User\Desktop\Other\HomeWork\ИСП\LR1_2021_\bin\Debug\net5.0\LR1_2021.02.15.deps.json
+C:\Users\User\Desktop\Other\HomeWork\ИСП\LR1_2021_\bin\Debug\net5.0\LR1_2021.02.15.runtimeconfig.json
+C:\Users\User\Desktop\Other\HomeWork\ИСП\LR1_2021_\bin\Debug\net5.0\LR1_2021.02.15.runtimeconfig.dev.json
+C:\Users\User\Desktop\Other\HomeWork\ИСП\LR1_2021_\bin\Debug\net5.0\LR1_2021.02.15.dll
+C:\Users\User\Desktop\Other\HomeWork\ИСП\LR1_2021_\bin\Debug\net5.0\ref\LR1_2021.02.15.dll
+C:\Users\User\Desktop\Other\HomeWork\ИСП\LR1_2021_\bin\Debug\net5.0\LR1_2021.02.15.pdb
+C:\Users\User\Desktop\Other\HomeWork\ИСП\LR1_2021_\obj\Debug\net5.0\LR1_2021.02.15.csprojAssemblyReference.cache
+C:\Users\User\Desktop\Other\HomeWork\ИСП\LR1_2021_\obj\Debug\net5.0\LR1_2021.02.15.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\Desktop\Other\HomeWork\ИСП\LR1_2021_\obj\Debug\net5.0\LR1_2021.02.15.AssemblyInfoInputs.cache
+C:\Users\User\Desktop\Other\HomeWork\ИСП\LR1_2021_\obj\Debug\net5.0\LR1_2021.02.15.AssemblyInfo.cs
+C:\Users\User\Desktop\Other\HomeWork\ИСП\LR1_2021_\obj\Debug\net5.0\LR1_2021.02.15.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\Other\HomeWork\ИСП\LR1_2021_\obj\Debug\net5.0\LR1_2021.02.15.dll
+C:\Users\User\Desktop\Other\HomeWork\ИСП\LR1_2021_\obj\Debug\net5.0\ref\LR1_2021.02.15.dll
+C:\Users\User\Desktop\Other\HomeWork\ИСП\LR1_2021_\obj\Debug\net5.0\LR1_2021.02.15.pdb
+C:\Users\User\Desktop\Other\HomeWork\ИСП\LR1_2021_\obj\Debug\net5.0\LR1_2021.02.15.genruntimeconfig.cache
