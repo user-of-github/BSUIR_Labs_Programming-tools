@@ -14,7 +14,8 @@ namespace LR1_2021._02._15
             var filePath = "labirint.txt";
             var test = new Labirint(ref filePath);
 
-            test.PassByComputer();
+            test.Play(); 
+            // or test.PassByComputer();
             Console.Read();
         }
     }
@@ -27,10 +28,9 @@ namespace LR1_2021._02._15
         }
 
         private static readonly sbyte[,] Directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
-        private const byte MarginLeftSize = 4, MarginTopSize = 5;
+        private static sbyte _marginLeftSize, _marginTopSize;
 
-        private static readonly string MarginLeft = new string(' ', MarginLeftSize),
-            MarginTop = new string('\n', MarginTopSize);
+        private static string _marginLeft, _marginTop;
 
         private const string Texture = "██", FreeSpace = "  ";
         private static readonly ConsoleColor DefaultConsoleFontColor = Console.ForegroundColor;
@@ -39,7 +39,10 @@ namespace LR1_2021._02._15
             ColorAutoPassHead = ConsoleColor.DarkRed,
             ColorAutoPassBody = ConsoleColor.Green;
 
-        private const string MessageSuccess = "PASSED SUCCESSFULLY", MessageFail = "FAILED TO PASS";
+        private const string MessageSuccess = "PASSED SUCCESSFULLY",
+            MessageFail = "FAILED TO PASS",
+            MessageFinal = "PRESS ANY KEY";
+
         private const ushort TimingDelay = 60;
 
         private readonly byte _width, _height;
@@ -103,10 +106,11 @@ namespace LR1_2021._02._15
         {
             Console.OutputEncoding = Encoding.UTF8;
 
-            Console.Write(MarginTop);
+            Console.Write(_marginTop);
+            Console.ForegroundColor = DefaultConsoleFontColor;
             foreach (var row in this._field)
             {
-                Console.Write(MarginLeft);
+                Console.Write(_marginLeft);
                 foreach (var state in row) Console.Write(state ? "  " : Texture);
                 Console.Write('\n');
             }
@@ -119,7 +123,7 @@ namespace LR1_2021._02._15
             Console.SetCursorPosition(x, y);
             Console.Write(info);
         }
-        
+
         private void ShowPassage(ref List<Position> path)
         {
             this.PrintField();
@@ -127,29 +131,27 @@ namespace LR1_2021._02._15
             foreach (var currentCoordinate in path)
             {
                 Console.ForegroundColor = ColorAutoPassBody;
-                Console.SetCursorPosition(previousCoordinate.Col * 2 + MarginLeftSize,
-                    previousCoordinate.Row + MarginTopSize);
-                Console.Write(Texture);
+                PrintByCoordinate((sbyte) (previousCoordinate.Row + _marginTopSize),
+                    (sbyte) (previousCoordinate.Col * 2 + _marginLeftSize), Texture);
 
                 previousCoordinate = currentCoordinate;
                 Console.ForegroundColor = ColorAutoPassHead;
 
-                Console.SetCursorPosition(currentCoordinate.Col * 2 + MarginLeftSize,
-                    currentCoordinate.Row + MarginTopSize);
-                Console.Write(Texture);
+                PrintByCoordinate((sbyte) (currentCoordinate.Row + _marginTopSize),
+                    (sbyte) (currentCoordinate.Col * 2 + _marginLeftSize), Texture);
 
                 Thread.Sleep(TimingDelay);
             }
 
             Console.ForegroundColor = DefaultConsoleFontColor;
-            Console.SetCursorPosition(MarginLeftSize, this._height + MarginTopSize);
-            Console.WriteLine($"\n{MarginLeft}{MessageSuccess}");
         }
 
         private void MovePlayer(ref Position previous, ref Position current)
         {
-            PrintByCoordinate((sbyte)(previous.Row + MarginTopSize), (sbyte)(previous.Col * 2 + MarginLeftSize), FreeSpace);
-            PrintByCoordinate((sbyte)(current.Row + MarginTopSize), (sbyte)(current.Col * 2 + MarginLeftSize), Texture);
+            PrintByCoordinate((sbyte) (previous.Row + _marginTopSize), (sbyte) (previous.Col * 2 + _marginLeftSize),
+                FreeSpace);
+            PrintByCoordinate((sbyte) (current.Row + _marginTopSize), (sbyte) (current.Col * 2 + _marginLeftSize),
+                Texture);
         }
 
         public Labirint(ref string fileName)
@@ -170,6 +172,11 @@ namespace LR1_2021._02._15
             this._startCoordinate.Col += sbyte.Parse(lines[^2].Split(' ')[1]);
             this._finishCoordinate.Row += sbyte.Parse(lines[^1].Split(' ')[0]);
             this._finishCoordinate.Col += sbyte.Parse(lines[^1].Split(' ')[1]);
+
+            _marginLeftSize = (sbyte) (Console.WindowWidth / 2 - this._width - 1);
+            _marginTopSize = (sbyte) (Console.WindowHeight / 2 - this._height / 2 - 1);
+            _marginLeft = new string(' ', _marginLeftSize);
+            _marginTop = new string('\n', _marginTopSize);
         }
 
         public void PassByComputer()
@@ -195,8 +202,11 @@ namespace LR1_2021._02._15
             else
             {
                 this.PrintField();
-                Console.WriteLine(MessageFail);
             }
+
+            PrintByCoordinate((sbyte) (this._height + _marginTopSize + 1), _marginLeftSize,
+                (foundPath ? MessageSuccess : MessageFail));
+            Console.Write($"\n\n{_marginLeft}" + MessageFinal);
         }
 
         private void ComputeKeyPressed(ref ConsoleKeyInfo keyPressed, ref Position player)
@@ -229,29 +239,40 @@ namespace LR1_2021._02._15
                 }
             }
         }
-        
+
         public void Play()
         {
-            this.PrintField();
-            var player = this._startCoordinate;
+            var isWinner = false;
+            var playerPosition = this._startCoordinate;
             ConsoleKeyInfo keyPressed;
-            Console.SetCursorPosition(this._startCoordinate.Col * 2 + MarginLeftSize,
-                this._startCoordinate.Row + MarginTopSize);
+
+            this.PrintField();
+
             Console.ForegroundColor = ColorPlayer;
-            Console.Write(Texture);
+            PrintByCoordinate((sbyte) (playerPosition.Row + _marginTopSize),
+                (sbyte) (playerPosition.Col * 2 + _marginLeftSize), Texture);
             do
             {
                 keyPressed = Console.ReadKey(true);
-                var previousPosition = player;
-                
-                this.ComputeKeyPressed(ref keyPressed, ref player);
-                
-                if (previousPosition.Col != player.Col || previousPosition.Row != player.Col)
-                    MovePlayer(ref previousPosition, ref player);
-                
-            } while (keyPressed.Key != ConsoleKey.Escape || keyPressed.Key != ConsoleKey.Backspace);
+                var previousPosition = playerPosition;
+
+                this.ComputeKeyPressed(ref keyPressed, ref playerPosition);
+
+                if (previousPosition.Col != playerPosition.Col || previousPosition.Row != playerPosition.Col)
+                    MovePlayer(ref previousPosition, ref playerPosition);
+
+                if (playerPosition.Row == this._finishCoordinate.Row &&
+                    playerPosition.Col == this._finishCoordinate.Col)
+                {
+                    isWinner = true;
+                    break;
+                }
+            } while (keyPressed.Key != ConsoleKey.Escape);
 
             Console.ForegroundColor = DefaultConsoleFontColor;
+            PrintByCoordinate((sbyte) (this._height + _marginTopSize + 1), _marginLeftSize,
+                (isWinner == true ? MessageSuccess : MessageFail));
+            Console.Write($"\n\n{_marginLeft}" + MessageFinal);
         }
     }
 }
