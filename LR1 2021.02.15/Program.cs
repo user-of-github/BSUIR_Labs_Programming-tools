@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -15,7 +14,7 @@ namespace LR1_2021._02._15
             var filePath = "labirint.txt";
             var test = new Labirint(ref filePath);
 
-            test.Play();
+            test.PassByComputer();
             Console.Read();
         }
     }
@@ -27,16 +26,23 @@ namespace LR1_2021._02._15
             public sbyte Row, Col;
         }
 
-        private static readonly sbyte[,] Directions = new sbyte[,] {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+        private static readonly sbyte[,] Directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
         private const byte MarginLeftSize = 4, MarginTopSize = 5;
 
         private static readonly string MarginLeft = new string(' ', MarginLeftSize),
             MarginTop = new string('\n', MarginTopSize);
 
-        private static readonly char TextureStyle = '█';
-        private static readonly string Texture = "" + TextureStyle + TextureStyle;
+        private const string Texture = "██", FreeSpace = "  ";
+        private static readonly ConsoleColor DefaultConsoleFontColor = Console.ForegroundColor;
 
-        private readonly sbyte _width, _height;
+        private static readonly ConsoleColor ColorPlayer = ConsoleColor.DarkGreen,
+            ColorAutoPassHead = ConsoleColor.DarkRed,
+            ColorAutoPassBody = ConsoleColor.Green;
+
+        private const string MessageSuccess = "PASSED SUCCESSFULLY", MessageFail = "FAILED TO PASS";
+        private const ushort TimingDelay = 60;
+
+        private readonly byte _width, _height;
         private readonly List<List<bool>> _field = new List<List<bool>>();
 
         private readonly Position _startCoordinate = new Position {Row = -1, Col = -1},
@@ -108,52 +114,50 @@ namespace LR1_2021._02._15
             Console.Write('\n');
         }
 
+        private static void PrintByCoordinate(sbyte y, sbyte x, string info)
+        {
+            Console.SetCursorPosition(x, y);
+            Console.Write(info);
+        }
+        
         private void ShowPassage(ref List<Position> path)
         {
-            var copyOfStandardColor = Console.ForegroundColor;
             this.PrintField();
-            Console.CursorVisible = false;
-            Console.ForegroundColor = ConsoleColor.Green;
             var previousCoordinate = this._startCoordinate;
             foreach (var currentCoordinate in path)
             {
-                Console.ForegroundColor = ConsoleColor.Green;
+                Console.ForegroundColor = ColorAutoPassBody;
                 Console.SetCursorPosition(previousCoordinate.Col * 2 + MarginLeftSize,
                     previousCoordinate.Row + MarginTopSize);
                 Console.Write(Texture);
 
                 previousCoordinate = currentCoordinate;
-                Console.ForegroundColor = ConsoleColor.Red;
+                Console.ForegroundColor = ColorAutoPassHead;
 
                 Console.SetCursorPosition(currentCoordinate.Col * 2 + MarginLeftSize,
                     currentCoordinate.Row + MarginTopSize);
                 Console.Write(Texture);
 
-                Thread.Sleep(60);
+                Thread.Sleep(TimingDelay);
             }
 
-            Console.ForegroundColor = copyOfStandardColor;
+            Console.ForegroundColor = DefaultConsoleFontColor;
             Console.SetCursorPosition(MarginLeftSize, this._height + MarginTopSize);
-            Console.WriteLine($"\n{MarginLeft}PASSED SUCCESSFULLY !");
+            Console.WriteLine($"\n{MarginLeft}{MessageSuccess}");
         }
 
         private void MovePlayer(ref Position previous, ref Position current)
         {
-            var copyOfStandardColor = Console.ForegroundColor;
-            Console.SetCursorPosition(previous.Col * 2 + MarginLeftSize, previous.Row + MarginTopSize);
-            Console.Write("  ");
-            Console.SetCursorPosition(current.Col * 2 + MarginLeftSize, current.Row + MarginTopSize);
-            
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write(Texture);
-            Console.ForegroundColor = copyOfStandardColor;
+            PrintByCoordinate((sbyte)(previous.Row + MarginTopSize), (sbyte)(previous.Col * 2 + MarginLeftSize), FreeSpace);
+            PrintByCoordinate((sbyte)(current.Row + MarginTopSize), (sbyte)(current.Col * 2 + MarginLeftSize), Texture);
         }
-        
+
         public Labirint(ref string fileName)
         {
-            string[] lines = File.ReadAllLines(fileName);
-            this._height = Convert.ToSByte(lines[0].Split(' ')[0]);
-            this._width = Convert.ToSByte(lines[0].Split(' ')[1]);
+            Console.CursorVisible = false;
+            var lines = File.ReadAllLines(fileName);
+            this._height = Convert.ToByte(lines[0].Split(' ')[0]);
+            this._width = Convert.ToByte(lines[0].Split(' ')[1]);
             for (sbyte counter = 1; counter < this._height + 1; ++counter)
             {
                 var tempRowList = new List<bool>();
@@ -191,59 +195,63 @@ namespace LR1_2021._02._15
             else
             {
                 this.PrintField();
-                Console.WriteLine("Path was not found");
+                Console.WriteLine(MessageFail);
             }
         }
 
+        private void ComputeKeyPressed(ref ConsoleKeyInfo keyPressed, ref Position player)
+        {
+            switch (keyPressed.Key)
+            {
+                case ConsoleKey.UpArrow:
+                {
+                    if (player.Row - 1 >= 0 && this._field[player.Row - 1][player.Col])
+                        --player.Row;
+                    break;
+                }
+                case ConsoleKey.DownArrow:
+                {
+                    if (player.Row + 1 < this._height && this._field[player.Row + 1][player.Col])
+                        ++player.Row;
+                    break;
+                }
+                case ConsoleKey.LeftArrow:
+                {
+                    if (player.Col - 1 >= 0 && this._field[player.Row][player.Col - 1])
+                        --player.Col;
+                    break;
+                }
+                case ConsoleKey.RightArrow:
+                {
+                    if (player.Col + 1 < this._height && this._field[player.Row][player.Col + 1])
+                        ++player.Col;
+                    break;
+                }
+            }
+        }
+        
         public void Play()
         {
-            Console.CursorVisible = false;
             this.PrintField();
             var player = this._startCoordinate;
             ConsoleKeyInfo keyPressed;
-            Console.SetCursorPosition(this._startCoordinate.Col * 2 + MarginLeftSize, this._startCoordinate.Row + MarginTopSize);
-            Console.ForegroundColor = ConsoleColor.Red;
+            Console.SetCursorPosition(this._startCoordinate.Col * 2 + MarginLeftSize,
+                this._startCoordinate.Row + MarginTopSize);
+            Console.ForegroundColor = ColorPlayer;
             Console.Write(Texture);
             do
             {
                 keyPressed = Console.ReadKey(true);
                 var previousPosition = player;
-                switch (keyPressed.Key)
-                {
-                    case ConsoleKey.UpArrow:
-                    {
-                        //Console.Write("Up");
-                        if (player.Row - 1 >= 0 && this._field[player.Row - 1][player.Col] == true)
-                            player.Row -= 1;
-                        break;
-                    }
-                    case ConsoleKey.DownArrow:
-                    {
-                        //Console.Write("Down");
-                        if (player.Row + 1 < this._height && this._field[player.Row + 1][player.Col] == true)
-                            player.Row += 1;
-                        break;
-                    }
-                    case ConsoleKey.LeftArrow:
-                    {
-                        //Console.Write("Left");
-                        if (player.Col - 1 >= 0 && this._field[player.Row][player.Col - 1] == true)
-                            player.Col -= 1;
-                        break;
-                    }
-                    case ConsoleKey.RightArrow:
-                    {
-                        //Console.Write("Right");
-                        if (player.Col + 1 < this._height && this._field[player.Row][player.Col + 1] == true)
-                            player.Col += 1;
-                        break;
-                    }
-                }
-
-                if (!(previousPosition.Col == player.Col && previousPosition.Row != player.Col))
-                    this.MovePlayer(ref previousPosition, ref player);
                 
-            } while (keyPressed.Key != ConsoleKey.Escape);
+                this.ComputeKeyPressed(ref keyPressed, ref player);
+                
+                if (previousPosition.Col != player.Col || previousPosition.Row != player.Col)
+                    MovePlayer(ref previousPosition, ref player);
+                
+            } while (keyPressed.Key != ConsoleKey.Escape || keyPressed.Key != ConsoleKey.Backspace);
+
+            Console.ForegroundColor = DefaultConsoleFontColor;
         }
     }
 }
