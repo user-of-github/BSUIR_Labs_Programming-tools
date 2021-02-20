@@ -7,6 +7,7 @@
       <e p="bin" t="ExcludeRecursive" />
       <e p="LR1 2021.02.15.csproj" t="IncludeRecursive" />
       <e p="LR1 2021.02.15.sln" t="IncludeFlat" />
+      <e p="LR1 2021.02.15.sln.DotSettings" t="Include" />
       <e p="obj" t="ExcludeRecursive">
         <e p="Debug" t="Include">
           <e p="net5.0" t="Include">
