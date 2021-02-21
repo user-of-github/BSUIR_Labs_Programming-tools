@@ -11,17 +11,12 @@ namespace LR1_2021._02._15
     {
         static void Main()
         {
-            Console.ReadKey(true);
-            var filePath = "labirint.txt";
-            var game = new Labirint(ref filePath);
-            //game.Play();
-            //game.PassByComputerBFS();
-            game.PassByComputerDFS();
+            LabyrinthMenu.Run();
             Console.ReadKey(true);
         }
     }
 
-    class Labirint
+    class Labyrinth
     {
         private struct Position
         {
@@ -34,7 +29,7 @@ namespace LR1_2021._02._15
         private static string _marginLeft, _marginTop;
 
         private const string Texture = "██", FreeSpace = "  ";
-        private static readonly ConsoleColor DefaultConsoleFontColor = Console.ForegroundColor;
+        private static readonly ConsoleColor DefaultConsoleFontColor = ConsoleColor.White;
 
         private static readonly ConsoleColor ColorPlayer = ConsoleColor.DarkGreen,
             ColorAutoPassHead = ConsoleColor.DarkRed,
@@ -52,7 +47,7 @@ namespace LR1_2021._02._15
         private readonly Position _startCoordinate = new Position {Row = -1, Col = -1},
             _finishCoordinate = new Position {Row = -1, Col = -1};
 
-        public Labirint(ref string fileName)
+        public Labyrinth(ref string fileName)
         {
             Console.CursorVisible = false;
             var lines = File.ReadAllLines(fileName);
@@ -232,15 +227,16 @@ namespace LR1_2021._02._15
         public void PassByComputerDFS()
         {
             this.PrintField();
-            
+
             var foundPath = false;
             var visitedPositions = new bool [this._height, this._width];
             for (sbyte row = 0; row < this._height; ++row)
             for (sbyte col = 0; col < this._width; ++col)
                 visitedPositions[row, col] = !this._field[row][col];
-            
+
             Console.ForegroundColor = ColorAutoPassBody;
-            PrintByCoordinate((sbyte)(_startCoordinate.Row + _marginTopSize), (sbyte)(_startCoordinate.Col * 2 + _marginLeftSize), Texture);
+            PrintByCoordinate((sbyte) (_startCoordinate.Row + _marginTopSize),
+                (sbyte) (_startCoordinate.Col * 2 + _marginLeftSize), Texture);
             this.DFS(_startCoordinate, ref visitedPositions, ref foundPath);
 
             Console.ForegroundColor = DefaultConsoleFontColor;
@@ -321,6 +317,156 @@ namespace LR1_2021._02._15
             PrintByCoordinate((sbyte) (this._height + _marginTopSize + 1), _marginLeftSize,
                 (isWinner == true ? MessageSuccess : MessageFail));
             Console.Write($"\n\n{_marginLeft}" + MessageFinal);
+        }
+    }
+
+    static class LabyrinthMenu
+    {
+        private const char TextureType = '█';
+        private static readonly string Pointer = "" + TextureType + TextureType;
+
+        private const ConsoleColor MenuColor = ConsoleColor.Yellow,
+            PointerColor = ConsoleColor.Cyan;
+
+        private static readonly ConsoleColor DefaultConsoleFontColor = Console.ForegroundColor;
+
+        private static readonly string[] MenuItems = {"Play", "Show Solution", "Visualization with DFS"};
+        private static readonly sbyte MaxMenuItemWidth = (sbyte) MenuItems.Max(item => item.Length);
+
+        private const byte LeftPaddingSize = 6, RightPaddingSize = 6, PointerLeftPaddingSize = 2;
+
+        private static readonly string LeftPadding = new string(' ', LeftPaddingSize),
+            RightPadding = new string(' ', RightPaddingSize);
+
+        private static readonly sbyte FullHeight = (sbyte) (4 * MenuItems.Length),
+            FullWidth = (sbyte) (1 + LeftPaddingSize + MaxMenuItemWidth + RightPaddingSize + 1);
+
+        private static readonly string BorderInMenuList = new string(TextureType, FullWidth);
+
+        private static readonly sbyte MarginLeftSize = (sbyte) (Console.WindowWidth / 2 - FullWidth / 2 - 1),
+            MarginTopSize = (sbyte) (Console.WindowHeight / 2 - FullHeight / 2 - 1);
+
+        private static readonly string MarginLeft = new string(' ', MarginLeftSize),
+            MarginTop = new string('\n', MarginTopSize);
+
+        private static void PrintMenu()
+        {
+            Console.Clear();
+
+
+            Console.Write(MarginTop);
+            Console.ForegroundColor = MenuColor;
+            Console.Write(MarginLeft + BorderInMenuList + '\n');
+            Console.ForegroundColor = DefaultConsoleFontColor;
+            foreach (var menuItem in MenuItems)
+            {
+                var currentRightPadding = new string(' ',
+                    FullWidth - 2 - menuItem.Length - LeftPaddingSize - RightPaddingSize);
+                var paddingRow = new string(' ', FullWidth - 2);
+                Console.ForegroundColor = MenuColor;
+                Console.Write(MarginLeft + TextureType + paddingRow + TextureType + "\n");
+                Console.Write(MarginLeft + TextureType + LeftPadding);
+
+                Console.ForegroundColor = DefaultConsoleFontColor;
+                Console.Write(menuItem.ToUpper() + currentRightPadding + RightPadding);
+
+                Console.ForegroundColor = MenuColor;
+                Console.Write(TextureType + "\n");
+                Console.Write(MarginLeft + TextureType + paddingRow + TextureType + "\n");
+                Console.WriteLine(MarginLeft + BorderInMenuList);
+            }
+        }
+
+        private static void PrintByCoordinate(sbyte y, sbyte x, string content)
+        {
+            Console.SetCursorPosition(x, y);
+            Console.Write(content);
+        }
+
+        private static void ComputeKeyPressed(ref ConsoleKeyInfo keyPressed, ref sbyte selectedItem)
+        {
+            switch (keyPressed.Key)
+            {
+                case ConsoleKey.UpArrow:
+                {
+                    if (selectedItem - 1 >= 0)
+                        --selectedItem;
+                    break;
+                }
+                case ConsoleKey.DownArrow:
+                {
+                    if (selectedItem + 1 < MenuItems.Length)
+                        ++selectedItem;
+                    break;
+                }
+            }
+        }
+
+        private static void MoveMenuPointer(ref sbyte previous, ref sbyte current)
+        {
+            PrintByCoordinate((sbyte) (MarginTopSize + 2 + previous * 4),
+                (sbyte) (MarginLeftSize + 1 + PointerLeftPaddingSize),
+                "  ");
+
+            PrintByCoordinate((sbyte) (MarginTopSize + 2 + current * 4),
+                (sbyte) (MarginLeftSize + 1 + PointerLeftPaddingSize),
+                Pointer);
+        }
+
+        private static sbyte MoveThroughMenu()
+        {
+            ConsoleKeyInfo keyPressed;
+            Console.ForegroundColor = PointerColor;
+            PrintByCoordinate((sbyte) (MarginTopSize + 2), (sbyte) (MarginLeftSize + 1 + PointerLeftPaddingSize),
+                Pointer);
+            var selectedItem = (sbyte) 0;
+            do
+            {
+                var previousItem = selectedItem;
+                keyPressed = Console.ReadKey(true);
+                if (keyPressed.Key == ConsoleKey.Enter)
+                    break;
+                ComputeKeyPressed(ref keyPressed, ref selectedItem);
+                if (selectedItem != previousItem)
+                {
+                    MoveMenuPointer(ref previousItem, ref selectedItem);
+                }
+            } while (keyPressed.Key != ConsoleKey.Enter);
+
+            return selectedItem;
+        }
+
+        public static void Run()
+        {
+            Console.CursorVisible = false;
+            Console.WriteLine("PRESS ANY KEY TO LAUNCH");
+            Console.CursorVisible = false;
+            Console.ReadKey(true);
+            PrintMenu();
+            Console.CursorVisible = false;
+            var response = MoveThroughMenu();
+            Console.Clear();
+            var path = "labirint.txt";
+            Console.CursorVisible = false;
+            var game = new Labyrinth(ref path);
+            switch (response)
+            {
+                case 0:
+                {
+                    game.Play();
+                    break;
+                }
+                case 1:
+                {
+                    game.PassByComputerBFS();
+                    break;
+                }
+                case 2:
+                {
+                    game.PassByComputerDFS();
+                    break;
+                }
+            }
         }
     }
 }
