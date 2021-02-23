@@ -12,7 +12,7 @@ namespace LR1_2021._02._15
         private static void Main() => GameMenu.Run();
     }
 
-    internal class Labyrinth
+    internal static class Labyrinth
     {
         private struct Position
         {
@@ -34,63 +34,59 @@ namespace LR1_2021._02._15
         private const string MessageSuccess = "PASSED SUCCESSFULLY",
             MessageFail = "FAILED TO PASS";
 
-        private const byte TimingDelayBFS = 60, TimingDelayDFSIn = 40, TimingDelayDFSOut = 7;
+        private const byte TimingDelayBFS = 60,
+            TimingDelayDFSIn = 35,
+            TimingDelayDFSOut = 7,
+            TimingDelayPrintingField = 3;
 
-        private readonly byte _width, _height;
-        private static byte _Width, _Height;
-        private readonly List<List<bool>> _field = new List<List<bool>>();
-        private static List<List<bool>> _Field = new List<List<bool>>();
+        private static byte _width, _height;
+        private static readonly List<List<bool>> Field = new List<List<bool>>();
 
-        private readonly Position _startCoordinate = new Position {Row = -1, Col = -1},
-            _finishCoordinate = new Position {Row = -1, Col = -1};
+        private static Position _startCoordinate, _finishCoordinate;
 
-        private static void LoadMap(ref string filePath)
+        public static void LoadLabyrinth(ref string filePath)
         {
+            Field.Clear();
             Console.CursorVisible = false;
             var lines = File.ReadAllLines(filePath);
-            _Height = Convert.ToByte(lines[0].Split(' ')[0]);
-            _Width = Convert.ToByte(lines[0].Split(' ')[1]);
-            for (sbyte counter = 1; counter < _Height + 1; ++counter)
+            _height = Convert.ToByte(lines[0].Split(' ')[0]);
+            _width = Convert.ToByte(lines[0].Split(' ')[1]);
+            for (sbyte counter = 1; counter < _height + 1; ++counter)
             {
                 var tempRowList = lines[counter].Select(state => state != '█').ToList();
-                _Field.Add(tempRowList);
+                Field.Add(tempRowList);
             }
-        }
-        
-        public Labyrinth(ref string fileName)
-        {
-            Console.CursorVisible = false;
-            var lines = File.ReadAllLines(fileName);
-            this._height = Convert.ToByte(lines[0].Split(' ')[0]);
-            this._width = Convert.ToByte(lines[0].Split(' ')[1]);
-            for (sbyte counter = 1; counter < this._height + 1; ++counter)
+
+            _startCoordinate = new Position
             {
-                var tempRowList = lines[counter].Select(state => state != '█').ToList();
-                this._field.Add(tempRowList);
-            }
+                Row = (sbyte) (sbyte.Parse(lines[^2].Split(' ')[0]) - 1),
+                Col = (sbyte) (sbyte.Parse(lines[^2].Split(' ')[1]) - 1)
+            };
 
-            this._startCoordinate.Row += sbyte.Parse(lines[^2].Split(' ')[0]);
-            this._startCoordinate.Col += sbyte.Parse(lines[^2].Split(' ')[1]);
-            this._finishCoordinate.Row += sbyte.Parse(lines[^1].Split(' ')[0]);
-            this._finishCoordinate.Col += sbyte.Parse(lines[^1].Split(' ')[1]);
+            _finishCoordinate = new Position
+            {
+                Row = (sbyte) (sbyte.Parse(lines[^1].Split(' ')[0]) - 1),
+                Col = (sbyte) (sbyte.Parse(lines[^1].Split(' ')[1]) - 1)
+            };
 
-            _marginLeftSize = (sbyte) (Console.WindowWidth / 2 - this._width - 1);
-            _marginTopSize = (sbyte) (Console.WindowHeight / 2 - this._height / 2 - 1);
+            _marginLeftSize = (sbyte) (Console.WindowWidth / 2 - _width - 1);
+            _marginTopSize = (sbyte) (Console.WindowHeight / 2 - _height / 2 - 1);
             _marginLeft = new string(' ', _marginLeftSize);
             _marginTop = new string('\n', _marginTopSize);
         }
 
-        private void PrintField()
+        private static void PrintField()
         {
             Console.OutputEncoding = Encoding.UTF8;
 
             Console.Write(_marginTop);
             Console.ForegroundColor = DefaultConsoleFontColor;
-            foreach (var row in this._field)
+            foreach (var row in Field)
             {
                 Console.Write(_marginLeft);
                 foreach (var state in row) Console.Write(state ? "  " : Texture);
                 Console.Write('\n');
+                Thread.Sleep(TimingDelayPrintingField);
             }
 
             Console.Write('\n');
@@ -102,11 +98,11 @@ namespace LR1_2021._02._15
             Console.Write(info);
         }
 
-        private void SearchInLabirint(ref bool foundPath, ref int[,] visitedPositions)
+        private static void SearchInLabirint(ref bool foundPath, ref int[,] visitedPositions)
         {
             var visitedCells = new Queue<Position>();
 
-            visitedCells.Enqueue(this._startCoordinate);
+            visitedCells.Enqueue(_startCoordinate);
 
             while (visitedCells.Count > 0 && !foundPath)
             {
@@ -116,14 +112,14 @@ namespace LR1_2021._02._15
                     var x = (SByte) (currentPosition.Col + Directions[counter, 0]);
                     var y = (SByte) (currentPosition.Row + Directions[counter, 1]);
 
-                    if (x >= 0 && x < this._width && y >= 0 && y < this._height && visitedPositions[y, x] == 0 &&
-                        !(x == this._startCoordinate.Col && y == this._startCoordinate.Row))
+                    if (x >= 0 && x < _width && y >= 0 && y < _height && visitedPositions[y, x] == 0 &&
+                        !(x == _startCoordinate.Col && y == _startCoordinate.Row))
                     {
                         visitedPositions[y, x] = visitedPositions[currentPosition.Row, currentPosition.Col] + 1;
                         visitedCells.Enqueue(new Position {Row = y, Col = x});
                     }
 
-                    if (y == this._finishCoordinate.Row && x == this._finishCoordinate.Col)
+                    if (y == _finishCoordinate.Row && x == _finishCoordinate.Col)
                     {
                         foundPath = true;
                         break;
@@ -132,21 +128,21 @@ namespace LR1_2021._02._15
             }
         }
 
-        private Position[] GetPath(ref int[,] visitedPositions)
+        private static Position[] GetPath(ref int[,] visitedPositions)
         {
             var path = new Position[visitedPositions[_finishCoordinate.Row, _finishCoordinate.Col] + 1];
             int pathIndex = 0;
             path[pathIndex] = _finishCoordinate;
 
-            while (!(path[pathIndex].Row == this._startCoordinate.Row &&
-                     path[pathIndex].Col == this._startCoordinate.Col))
+            while (!(path[pathIndex].Row == _startCoordinate.Row &&
+                     path[pathIndex].Col == _startCoordinate.Col))
             {
                 for (sbyte counter = 0; counter < 4; ++counter)
                 {
                     var x = (SByte) (path[pathIndex].Col + Directions[counter, 0]);
                     var y = (SByte) (path[pathIndex].Row + Directions[counter, 1]);
 
-                    if (x >= 0 && x < this._width && y >= 0 && y < this._height && visitedPositions[y, x] != -1 &&
+                    if (x >= 0 && x < _width && y >= 0 && y < _height && visitedPositions[y, x] != -1 &&
                         visitedPositions[y, x] == visitedPositions[path[pathIndex].Row, path[pathIndex].Col] - 1)
                     {
                         path[++pathIndex] = (new Position {Row = y, Col = x});
@@ -158,10 +154,10 @@ namespace LR1_2021._02._15
             return path;
         }
 
-        private void ShowPassage(ref Position[] path)
+        private static void ShowPassage(ref Position[] path)
         {
-            this.PrintField();
-            var previousCoordinate = this._startCoordinate;
+            PrintField();
+            var previousCoordinate = _startCoordinate;
             foreach (var currentCoordinate in path)
             {
                 Console.ForegroundColor = ColorAutoPassBody;
@@ -180,38 +176,38 @@ namespace LR1_2021._02._15
             Console.ForegroundColor = DefaultConsoleFontColor;
         }
 
-        public void PassByComputerBFS()
+        public static void PassByComputerBFS()
         {
-            var visitedPositions = new int[this._height, this._width];
-            for (sbyte row = 0; row < this._height; ++row)
-            for (sbyte col = 0; col < this._width; ++col)
-                visitedPositions[row, col] = (_field[row][col] ? 0 : -1);
+            var visitedPositions = new int[_height, _width];
+            for (sbyte row = 0; row < _height; ++row)
+            for (sbyte col = 0; col < _width; ++col)
+                visitedPositions[row, col] = (Field[row][col] ? 0 : -1);
 
-            visitedPositions[this._startCoordinate.Row, this._startCoordinate.Col] = 0;
+            visitedPositions[_startCoordinate.Row, _startCoordinate.Col] = 0;
 
             var foundPath = false;
 
-            this.SearchInLabirint(ref foundPath, ref visitedPositions);
+            SearchInLabirint(ref foundPath, ref visitedPositions);
 
             if (foundPath)
             {
-                var path = this.GetPath(ref visitedPositions).Reverse().ToArray();
-                this.ShowPassage(ref path);
+                var path = GetPath(ref visitedPositions).Reverse().ToArray();
+                ShowPassage(ref path);
             }
             else
             {
-                this.PrintField();
+                PrintField();
             }
 
-            PrintByCoordinate((sbyte) (this._height + _marginTopSize + 1), _marginLeftSize,
+            PrintByCoordinate((sbyte) (_height + _marginTopSize + 1), _marginLeftSize,
                 (foundPath ? MessageSuccess : MessageFail));
             Console.Write($"\n\n{_marginLeft}");
         }
 
-        private void DFS(Position currentPosition, ref bool[,] visitedPositions, ref bool foundPath)
+        private static void DFS(Position currentPosition, ref bool[,] visitedPositions, ref bool foundPath)
         {
             visitedPositions[currentPosition.Row, currentPosition.Col] = true;
-            if (currentPosition.Row == this._finishCoordinate.Row && currentPosition.Col == this._finishCoordinate.Col)
+            if (currentPosition.Row == _finishCoordinate.Row && currentPosition.Col == _finishCoordinate.Col)
             {
                 foundPath = true;
                 return;
@@ -222,35 +218,35 @@ namespace LR1_2021._02._15
                 var x = (sbyte) (currentPosition.Col + Directions[counter, 0]);
                 var y = (sbyte) (currentPosition.Row + Directions[counter, 1]);
 
-                if (x >= 0 && x < this._width && y >= 0 && y < this._height && this._field[y][x] &&
+                if (x >= 0 && x < _width && y >= 0 && y < _height && Field[y][x] &&
                     !visitedPositions[y, x])
                 {
                     PrintByCoordinate((sbyte) (y + _marginTopSize), (sbyte) (x * 2 + _marginLeftSize), Texture);
                     Thread.Sleep(TimingDelayDFSIn);
-                    this.DFS(new Position {Row = y, Col = x}, ref visitedPositions, ref foundPath);
+                    DFS(new Position {Row = y, Col = x}, ref visitedPositions, ref foundPath);
                     Thread.Sleep(TimingDelayDFSOut);
                     PrintByCoordinate((sbyte) (y + _marginTopSize), (sbyte) (x * 2 + _marginLeftSize), FreeSpace);
                 }
             }
         }
 
-        public void PassByComputerDFS()
+        public static void PassByComputerDFS()
         {
-            this.PrintField();
+            PrintField();
 
             var foundPath = false;
-            var visitedPositions = new bool [this._height, this._width];
-            for (sbyte row = 0; row < this._height; ++row)
-            for (sbyte col = 0; col < this._width; ++col)
-                visitedPositions[row, col] = !this._field[row][col];
+            var visitedPositions = new bool [_height, _width];
+            for (sbyte row = 0; row < _height; ++row)
+            for (sbyte col = 0; col < _width; ++col)
+                visitedPositions[row, col] = !Field[row][col];
 
             Console.ForegroundColor = ColorAutoPassBody;
             PrintByCoordinate((sbyte) (_startCoordinate.Row + _marginTopSize),
                 (sbyte) (_startCoordinate.Col * 2 + _marginLeftSize), Texture);
-            this.DFS(_startCoordinate, ref visitedPositions, ref foundPath);
+            DFS(_startCoordinate, ref visitedPositions, ref foundPath);
 
             Console.ForegroundColor = DefaultConsoleFontColor;
-            PrintByCoordinate((sbyte) (this._height + _marginTopSize + 1), _marginLeftSize,
+            PrintByCoordinate((sbyte) (_height + _marginTopSize + 1), _marginLeftSize,
                 (foundPath ? MessageSuccess : MessageFail));
             Console.Write($"\n\n{_marginLeft}");
         }
@@ -263,44 +259,61 @@ namespace LR1_2021._02._15
                 Texture);
         }
 
-        private void ComputeKeyPressed(ref ConsoleKeyInfo keyPressed, ref Position player)
+        private static bool ComputeKeyPressed(ref ConsoleKeyInfo keyPressed, ref Position player)
         {
             switch (keyPressed.Key)
             {
                 case ConsoleKey.UpArrow:
                 {
-                    if (player.Row - 1 >= 0 && this._field[player.Row - 1][player.Col])
+                    if (player.Row >= 1 && Field[player.Row - 1][player.Col])
+                    {
                         --player.Row;
+                        return true;
+                    }
+
                     break;
                 }
                 case ConsoleKey.DownArrow:
                 {
-                    if (player.Row + 1 < this._height && this._field[player.Row + 1][player.Col])
+                    if (player.Row + 1 < _height && Field[player.Row + 1][player.Col])
+                    {
                         ++player.Row;
+                        return true;
+                    }
                     break;
                 }
                 case ConsoleKey.LeftArrow:
                 {
-                    if (player.Col - 1 >= 0 && this._field[player.Row][player.Col - 1])
+                    if (player.Col >= 1 && Field[player.Row][player.Col - 1])
+                    {
                         --player.Col;
+                        return true;
+                    }
+
                     break;
                 }
                 case ConsoleKey.RightArrow:
                 {
-                    if (player.Col + 1 < this._height && this._field[player.Row][player.Col + 1])
+                    if (player.Col + 1 < _width && Field[player.Row][player.Col + 1])
+                    {
                         ++player.Col;
+                        return true;
+                    }
+
                     break;
                 }
             }
+
+            return false;
         }
 
-        public void Play()
+        public static void Play()
         {
             var isWinner = false;
-            var playerPosition = this._startCoordinate;
+            var playerPosition = _startCoordinate;
             ConsoleKeyInfo keyPressed;
 
-            this.PrintField();
+            PrintField();
 
             Console.ForegroundColor = ColorPlayer;
             PrintByCoordinate((sbyte) (playerPosition.Row + _marginTopSize),
@@ -310,13 +323,11 @@ namespace LR1_2021._02._15
                 keyPressed = Console.ReadKey(true);
                 var previousPosition = playerPosition;
 
-                this.ComputeKeyPressed(ref keyPressed, ref playerPosition);
-
-                if (previousPosition.Col != playerPosition.Col || previousPosition.Row != playerPosition.Col)
+                if (ComputeKeyPressed(ref keyPressed, ref playerPosition))
                     MovePlayer(ref previousPosition, ref playerPosition);
 
-                if (playerPosition.Row == this._finishCoordinate.Row &&
-                    playerPosition.Col == this._finishCoordinate.Col)
+                if (playerPosition.Row == _finishCoordinate.Row &&
+                    playerPosition.Col == _finishCoordinate.Col)
                 {
                     isWinner = true;
                     break;
@@ -324,7 +335,7 @@ namespace LR1_2021._02._15
             } while (keyPressed.Key != ConsoleKey.Escape);
 
             Console.ForegroundColor = DefaultConsoleFontColor;
-            PrintByCoordinate((sbyte) (this._height + _marginTopSize + 1), _marginLeftSize,
+            PrintByCoordinate((sbyte) (_height + _marginTopSize + 1), _marginLeftSize,
                 (isWinner ? MessageSuccess : MessageFail));
             Console.Write($"\n\n{_marginLeft}");
         }
@@ -363,7 +374,6 @@ namespace LR1_2021._02._15
         {
             Console.Clear();
 
-
             Console.Write(MarginTop);
             Console.ForegroundColor = MenuColor;
             Console.Write(MarginLeft + BorderInMenuList + '\n');
@@ -393,26 +403,26 @@ namespace LR1_2021._02._15
             Console.Write(content);
         }
 
-        private static void ComputeKeyPressed(ref ConsoleKeyInfo keyPressed, ref sbyte selectedItem)
+        private static void ComputeKeyPressed(ref ConsoleKeyInfo keyPressed, ref byte selectedItem)
         {
             switch (keyPressed.Key)
             {
                 case ConsoleKey.UpArrow:
                 {
-                    if (selectedItem - 1 >= 0)
-                        --selectedItem;
+                    --selectedItem;
                     break;
                 }
                 case ConsoleKey.DownArrow:
                 {
-                    if (selectedItem + 1 < MenuItems.Length)
-                        ++selectedItem;
+                    ++selectedItem;
                     break;
                 }
             }
+
+            selectedItem = (byte) (selectedItem % MenuItems.Length);
         }
 
-        private static void MoveMenuPointer(ref sbyte previous, ref sbyte current)
+        private static void MoveMenuPointer(ref byte previous, ref byte current)
         {
             PrintByCoordinate((sbyte) (MarginTopSize + 2 + previous * 4),
                 (sbyte) (MarginLeftSize + 1 + PointerLeftPaddingSize),
@@ -423,13 +433,13 @@ namespace LR1_2021._02._15
                 Pointer);
         }
 
-        private static sbyte MoveThroughMenu()
+        private static byte MoveThroughMenu()
         {
             ConsoleKeyInfo keyPressed;
             Console.ForegroundColor = PointerColor;
             PrintByCoordinate((sbyte) (MarginTopSize + 2), (sbyte) (MarginLeftSize + 1 + PointerLeftPaddingSize),
                 Pointer);
-            var selectedItem = (sbyte) 0;
+            var selectedItem = (byte) 0;
             do
             {
                 var previousItem = selectedItem;
@@ -462,24 +472,22 @@ namespace LR1_2021._02._15
                 var path = "labirint.txt";
                 Console.CursorVisible = false;
 
+                Labyrinth.LoadLabyrinth(ref path);
                 switch (response)
                 {
                     case 0:
                     {
-                        var game = new Labyrinth(ref path);
-                        game.Play();
+                        Labyrinth.Play();
                         break;
                     }
                     case 1:
                     {
-                        var game = new Labyrinth(ref path);
-                        game.PassByComputerBFS();
+                        Labyrinth.PassByComputerBFS();
                         break;
                     }
                     case 2:
                     {
-                        var game = new Labyrinth(ref path);
-                        game.PassByComputerDFS();
+                        Labyrinth.PassByComputerDFS();
                         break;
                     }
                     case 3:
