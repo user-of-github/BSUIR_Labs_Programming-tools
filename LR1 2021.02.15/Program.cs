@@ -7,16 +7,12 @@ using System.Threading;
 
 namespace LR1_2021._02._15
 {
-    class Program
+    internal static class Program
     {
-        static void Main()
-        {
-            LabyrinthMenu.Run();
-            Console.ReadKey(true);
-        }
+        private static void Main() => GameMenu.Run();
     }
 
-    class Labyrinth
+    internal class Labyrinth
     {
         private struct Position
         {
@@ -29,24 +25,38 @@ namespace LR1_2021._02._15
         private static string _marginLeft, _marginTop;
 
         private const string Texture = "██", FreeSpace = "  ";
-        private static readonly ConsoleColor DefaultConsoleFontColor = ConsoleColor.White;
 
-        private static readonly ConsoleColor ColorPlayer = ConsoleColor.DarkGreen,
+        private const ConsoleColor DefaultConsoleFontColor = ConsoleColor.White,
+            ColorPlayer = ConsoleColor.DarkGreen,
             ColorAutoPassHead = ConsoleColor.DarkRed,
             ColorAutoPassBody = ConsoleColor.Green;
 
         private const string MessageSuccess = "PASSED SUCCESSFULLY",
-            MessageFail = "FAILED TO PASS",
-            MessageFinal = "PRESS ANY KEY";
+            MessageFail = "FAILED TO PASS";
 
         private const byte TimingDelayBFS = 60, TimingDelayDFSIn = 40, TimingDelayDFSOut = 7;
 
         private readonly byte _width, _height;
+        private static byte _Width, _Height;
         private readonly List<List<bool>> _field = new List<List<bool>>();
+        private static List<List<bool>> _Field = new List<List<bool>>();
 
         private readonly Position _startCoordinate = new Position {Row = -1, Col = -1},
             _finishCoordinate = new Position {Row = -1, Col = -1};
 
+        private static void LoadMap(ref string filePath)
+        {
+            Console.CursorVisible = false;
+            var lines = File.ReadAllLines(filePath);
+            _Height = Convert.ToByte(lines[0].Split(' ')[0]);
+            _Width = Convert.ToByte(lines[0].Split(' ')[1]);
+            for (sbyte counter = 1; counter < _Height + 1; ++counter)
+            {
+                var tempRowList = lines[counter].Select(state => state != '█').ToList();
+                _Field.Add(tempRowList);
+            }
+        }
+        
         public Labyrinth(ref string fileName)
         {
             Console.CursorVisible = false;
@@ -195,7 +205,7 @@ namespace LR1_2021._02._15
 
             PrintByCoordinate((sbyte) (this._height + _marginTopSize + 1), _marginLeftSize,
                 (foundPath ? MessageSuccess : MessageFail));
-            Console.Write($"\n\n{_marginLeft}" + MessageFinal);
+            Console.Write($"\n\n{_marginLeft}");
         }
 
         private void DFS(Position currentPosition, ref bool[,] visitedPositions, ref bool foundPath)
@@ -212,8 +222,8 @@ namespace LR1_2021._02._15
                 var x = (sbyte) (currentPosition.Col + Directions[counter, 0]);
                 var y = (sbyte) (currentPosition.Row + Directions[counter, 1]);
 
-                if (x >= 0 && x < this._width && y >= 0 && y < this._height && this._field[y][x] == true &&
-                    visitedPositions[y, x] == false)
+                if (x >= 0 && x < this._width && y >= 0 && y < this._height && this._field[y][x] &&
+                    !visitedPositions[y, x])
                 {
                     PrintByCoordinate((sbyte) (y + _marginTopSize), (sbyte) (x * 2 + _marginLeftSize), Texture);
                     Thread.Sleep(TimingDelayDFSIn);
@@ -242,10 +252,10 @@ namespace LR1_2021._02._15
             Console.ForegroundColor = DefaultConsoleFontColor;
             PrintByCoordinate((sbyte) (this._height + _marginTopSize + 1), _marginLeftSize,
                 (foundPath ? MessageSuccess : MessageFail));
-            Console.Write($"\n\n{_marginLeft}" + MessageFinal);
+            Console.Write($"\n\n{_marginLeft}");
         }
 
-        private void MovePlayer(ref Position previous, ref Position current)
+        private static void MovePlayer(ref Position previous, ref Position current)
         {
             PrintByCoordinate((sbyte) (previous.Row + _marginTopSize), (sbyte) (previous.Col * 2 + _marginLeftSize),
                 FreeSpace);
@@ -315,12 +325,12 @@ namespace LR1_2021._02._15
 
             Console.ForegroundColor = DefaultConsoleFontColor;
             PrintByCoordinate((sbyte) (this._height + _marginTopSize + 1), _marginLeftSize,
-                (isWinner == true ? MessageSuccess : MessageFail));
-            Console.Write($"\n\n{_marginLeft}" + MessageFinal);
+                (isWinner ? MessageSuccess : MessageFail));
+            Console.Write($"\n\n{_marginLeft}");
         }
     }
 
-    static class LabyrinthMenu
+    internal static class GameMenu
     {
         private const char TextureType = '█';
         private static readonly string Pointer = "" + TextureType + TextureType;
@@ -330,7 +340,7 @@ namespace LR1_2021._02._15
 
         private static readonly ConsoleColor DefaultConsoleFontColor = Console.ForegroundColor;
 
-        private static readonly string[] MenuItems = {"Play", "Show Solution", "Visualization with DFS"};
+        private static readonly string[] MenuItems = {"Play", "Show Solution", "Visualization with DFS", "Exit"};
         private static readonly sbyte MaxMenuItemWidth = (sbyte) MenuItems.Max(item => item.Length);
 
         private const byte LeftPaddingSize = 6, RightPaddingSize = 6, PointerLeftPaddingSize = 2;
@@ -438,34 +448,47 @@ namespace LR1_2021._02._15
 
         public static void Run()
         {
-            Console.CursorVisible = false;
-            Console.WriteLine("PRESS ANY KEY TO LAUNCH");
-            Console.CursorVisible = false;
-            Console.ReadKey(true);
-            PrintMenu();
-            Console.CursorVisible = false;
-            var response = MoveThroughMenu();
-            Console.Clear();
-            var path = "labirint.txt";
-            Console.CursorVisible = false;
-            var game = new Labyrinth(ref path);
-            switch (response)
+            while (true)
             {
-                case 0:
+                Console.CursorVisible = false;
+                Console.Clear();
+                Console.WriteLine("PRESS ANY KEY TO LAUNCH");
+                Console.CursorVisible = false;
+                Console.ReadKey(true);
+                PrintMenu();
+                Console.CursorVisible = false;
+                var response = MoveThroughMenu();
+                Console.Clear();
+                var path = "labirint.txt";
+                Console.CursorVisible = false;
+
+                switch (response)
                 {
-                    game.Play();
-                    break;
+                    case 0:
+                    {
+                        var game = new Labyrinth(ref path);
+                        game.Play();
+                        break;
+                    }
+                    case 1:
+                    {
+                        var game = new Labyrinth(ref path);
+                        game.PassByComputerBFS();
+                        break;
+                    }
+                    case 2:
+                    {
+                        var game = new Labyrinth(ref path);
+                        game.PassByComputerDFS();
+                        break;
+                    }
+                    case 3:
+                    {
+                        return;
+                    }
                 }
-                case 1:
-                {
-                    game.PassByComputerBFS();
-                    break;
-                }
-                case 2:
-                {
-                    game.PassByComputerDFS();
-                    break;
-                }
+
+                Console.ReadKey(true);
             }
         }
     }
