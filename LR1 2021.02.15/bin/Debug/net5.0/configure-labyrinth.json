@@ -1,0 +1,10 @@
+{
+    "Texture": "██",
+    "FreeSpace": "  ",
+    "TimingDelayBFS": "60",
+    "TimingDelayDFSIn": "35",
+    "TimingDelayDFSOut": "7",
+    "TimingDelayPrintingField": "3",
+    "MessageSuccess": "PASSED SUCCESSFULLY",
+    "MessageFail": "FAILED TO PASS"
+}
