@@ -12,7 +12,7 @@ namespace LR1_2021._02._15
         private static void Main() => GameMenu.Launch();
     }
 
-    internal static class Labyrinth
+    static class Labyrinth
     {
         private struct Position
         {
@@ -34,7 +34,7 @@ namespace LR1_2021._02._15
         private const string MessageSuccess = "PASSED SUCCESSFULLY",
             MessageFail = "FAILED TO PASS";
 
-        private const byte TimingDelayBFS = 60,
+        private const byte TimingDelayBFS = 30,
             TimingDelayDFSIn = 35,
             TimingDelayDFSOut = 7,
             TimingDelayPrintingField = 3;
@@ -366,7 +366,7 @@ namespace LR1_2021._02._15
         }
     }
 
-    internal static class GameMenu
+    static class GameMenu
     {
         private const byte TimingDelayPrintingMenu = 15;
         private const char TextureBorderType = '▓', TexturePointerType = '»';

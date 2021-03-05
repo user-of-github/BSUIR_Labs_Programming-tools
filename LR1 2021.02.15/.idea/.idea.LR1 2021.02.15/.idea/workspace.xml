@@ -30,10 +30,9 @@
       <change beforePath="$PROJECT_DIR$/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Program.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bin/Debug/net5.0/LR1 2021.02.15.dll" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Debug/net5.0/LR1 2021.02.15.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bin/Debug/net5.0/LR1 2021.02.15.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Debug/net5.0/LR1 2021.02.15.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Debug/net5.0/ref/LR1 2021.02.15.dll" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Debug/net5.0/ref/LR1 2021.02.15.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/Debug/net5.0/labirint.txt" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Debug/net5.0/labirint.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/obj/Debug/net5.0/LR1 2021.02.15.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net5.0/LR1 2021.02.15.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/obj/Debug/net5.0/LR1 2021.02.15.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net5.0/LR1 2021.02.15.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net5.0/ref/LR1 2021.02.15.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net5.0/ref/LR1 2021.02.15.dll" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -112,6 +111,7 @@
       <workItem from="1614146036231" duration="364000" />
       <workItem from="1614154223839" duration="2084000" />
       <workItem from="1614158221517" duration="466000" />
+      <workItem from="1614250546569" duration="2013000" />
     </task>
     <servers />
   </component>
@@ -140,22 +140,22 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="517" y="237" key="#Notifications/0.0.1536.824@0.0.1536.824" timestamp="1613660879045" />
-    <state width="1493" height="666" key="GridCell.Tab.0.bottom" timestamp="1614156325622">
+    <state width="1493" height="229" key="GridCell.Tab.0.bottom" timestamp="1614253065275">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="666" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1614156325622" />
-    <state width="1493" height="666" key="GridCell.Tab.0.center" timestamp="1614156325622">
+    <state width="1493" height="229" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1614253065275" />
+    <state width="1493" height="229" key="GridCell.Tab.0.center" timestamp="1614253065275">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="666" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1614156325622" />
-    <state width="1493" height="666" key="GridCell.Tab.0.left" timestamp="1614156325622">
+    <state width="1493" height="229" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1614253065275" />
+    <state width="1493" height="229" key="GridCell.Tab.0.left" timestamp="1614253065275">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="666" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1614156325622" />
-    <state width="1493" height="666" key="GridCell.Tab.0.right" timestamp="1614156325622">
+    <state width="1493" height="229" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1614253065275" />
+    <state width="1493" height="229" key="GridCell.Tab.0.right" timestamp="1614253065275">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="666" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1614156325622" />
+    <state width="1493" height="229" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1614253065275" />
     <state width="1493" height="258" key="GridCell.Tab.1.bottom" timestamp="1613767648177">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
