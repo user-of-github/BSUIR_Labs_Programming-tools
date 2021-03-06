@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace GetHexadecimalNumbers
@@ -9,13 +7,15 @@ namespace GetHexadecimalNumbers
     {
         private static void Main(string[] args)
         {
+            /* •	Дана строка, слова которой разделены пробелами. Распознать в ней слова,
+             являющиеся числами в шестнадцатеричной системе счисления, и вывести их десятичный эквивалент.*/
+
             var input = Console.ReadLine().Split(new char[] {' '}, StringSplitOptions.RemoveEmptyEntries);
 
             var hexadecimalsStrings = input.Where(Hexadecimal.DetectHexadecimal).ToList();
 
-            var response = hexadecimalsStrings.Select(item => Hexadecimal.ConvertToDecimalNumber(item)).ToList();
-
-            response.ForEach(num => Console.Write(num + " "));
+            var response = hexadecimalsStrings.Select(Hexadecimal.ConvertToDecimalNumber).ToList();
+            response.ForEach(number => Console.Write(number + " "));
         }
     }
 
@@ -37,6 +37,7 @@ namespace GetHexadecimalNumbers
         {
             ulong response = 0, pow = 1;
             var str = hexadecimalsString.ToUpper().ToCharArray().Reverse();
+            
             foreach (var symbol in str)
             {
                 response += (ulong) GetCoefficient(symbol) * pow;

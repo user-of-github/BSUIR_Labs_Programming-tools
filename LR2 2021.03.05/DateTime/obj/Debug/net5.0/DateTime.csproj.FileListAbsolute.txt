@@ -1,0 +1,16 @@
+C:\Users\User\Desktop\Other\HomeWork\Programming Tools\LR2 2021.03.05\DateTime\bin\Debug\net5.0\DateTime.exe
+C:\Users\User\Desktop\Other\HomeWork\Programming Tools\LR2 2021.03.05\DateTime\bin\Debug\net5.0\DateTime.deps.json
+C:\Users\User\Desktop\Other\HomeWork\Programming Tools\LR2 2021.03.05\DateTime\bin\Debug\net5.0\DateTime.runtimeconfig.json
+C:\Users\User\Desktop\Other\HomeWork\Programming Tools\LR2 2021.03.05\DateTime\bin\Debug\net5.0\DateTime.runtimeconfig.dev.json
+C:\Users\User\Desktop\Other\HomeWork\Programming Tools\LR2 2021.03.05\DateTime\bin\Debug\net5.0\DateTime.dll
+C:\Users\User\Desktop\Other\HomeWork\Programming Tools\LR2 2021.03.05\DateTime\bin\Debug\net5.0\ref\DateTime.dll
+C:\Users\User\Desktop\Other\HomeWork\Programming Tools\LR2 2021.03.05\DateTime\bin\Debug\net5.0\DateTime.pdb
+C:\Users\User\Desktop\Other\HomeWork\Programming Tools\LR2 2021.03.05\DateTime\obj\Debug\net5.0\DateTime.csprojAssemblyReference.cache
+C:\Users\User\Desktop\Other\HomeWork\Programming Tools\LR2 2021.03.05\DateTime\obj\Debug\net5.0\DateTime.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\Desktop\Other\HomeWork\Programming Tools\LR2 2021.03.05\DateTime\obj\Debug\net5.0\DateTime.AssemblyInfoInputs.cache
+C:\Users\User\Desktop\Other\HomeWork\Programming Tools\LR2 2021.03.05\DateTime\obj\Debug\net5.0\DateTime.AssemblyInfo.cs
+C:\Users\User\Desktop\Other\HomeWork\Programming Tools\LR2 2021.03.05\DateTime\obj\Debug\net5.0\DateTime.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\Other\HomeWork\Programming Tools\LR2 2021.03.05\DateTime\obj\Debug\net5.0\DateTime.dll
+C:\Users\User\Desktop\Other\HomeWork\Programming Tools\LR2 2021.03.05\DateTime\obj\Debug\net5.0\ref\DateTime.dll
+C:\Users\User\Desktop\Other\HomeWork\Programming Tools\LR2 2021.03.05\DateTime\obj\Debug\net5.0\DateTime.pdb
+C:\Users\User\Desktop\Other\HomeWork\Programming Tools\LR2 2021.03.05\DateTime\obj\Debug\net5.0\DateTime.genruntimeconfig.cache
