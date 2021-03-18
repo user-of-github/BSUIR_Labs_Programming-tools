@@ -4,9 +4,9 @@ using System.Linq;
 
 namespace ChangeWordOrder
 {
-    internal static class Program
+    class Program
     {
-        private static void Main(string[] args)
+        static void Main(string[] args)
         {
             /* •	В заданной строке поменять порядок слов на обратный (слова разделены пробела-ми). */
 
@@ -14,7 +14,6 @@ namespace ChangeWordOrder
 
             var response = string.Join(' ',
                 input.Split(new char[] {' '}, StringSplitOptions.RemoveEmptyEntries).ToArray().Reverse());
-
             Console.WriteLine(response);
         }
     }

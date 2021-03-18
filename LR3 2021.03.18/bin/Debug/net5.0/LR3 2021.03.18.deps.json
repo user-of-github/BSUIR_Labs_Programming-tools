@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v5.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v5.0": {
+      "LR3 2021.03.18/1.0.0": {
+        "runtime": {
+          "LR3 2021.03.18.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "LR3 2021.03.18/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

@@ -4,16 +4,15 @@ using System.Globalization;
 using System.Linq;
 
 namespace DateTime
-{
-    internal static class Program
+{ 
+    static class Program
     {
         private static void Main()
         {
+            Console.WriteLine("Enter your language. In case you enter english or some unknown language, program will launch in english");
             var requestedCulture = DetectCulture(Console.ReadLine());
-
             var response = GetMonthsInLanguage(ref requestedCulture);
-
-            response.ToList().ForEach(Console.WriteLine);
+            response.ForEach(Console.WriteLine);
         }
 
         private static CultureInfo DetectCulture(string language)
@@ -34,9 +33,11 @@ namespace DateTime
                 format = "it-IT";
             else
                 format = "en-US";
-            
+
             return new CultureInfo(format);
         }
-        private static IEnumerable<string> GetMonthsInLanguage(ref CultureInfo culture) => culture.DateTimeFormat.MonthNames;
+
+        private static List<string> GetMonthsInLanguage(ref CultureInfo culture) =>
+            culture.DateTimeFormat.MonthNames.ToList();
     }
 }
