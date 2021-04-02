@@ -1,0 +1,6 @@
+﻿  TestLibrary.cpp
+C:\Users\User\source\repos\TestLibrary\TestLibrary\TestLibrary.cpp(4,6): error C2373: 'CheckIfPolindrom': redefinition; different type modifiers
+C:\Users\User\source\repos\TestLibrary\TestLibrary\TestLibrary.h(13): message : see declaration of 'CheckIfPolindrom'
+C:\Users\User\source\repos\TestLibrary\TestLibrary\TestLibrary.cpp(12,32): warning C4018: '<': signed/unsigned mismatch
+C:\Users\User\source\repos\TestLibrary\TestLibrary\TestLibrary.cpp(19,5): error C2373: 'ReflectNumber': redefinition; different type modifiers
+C:\Users\User\source\repos\TestLibrary\TestLibrary\TestLibrary.h(14): message : see declaration of 'ReflectNumber'

@@ -1,0 +1,12 @@
+/TestDLL
+TestDLL
+
+/obj
+obj
+
+/bin
+bin
+
+*.sln
+*.csproj
+*.pdb
