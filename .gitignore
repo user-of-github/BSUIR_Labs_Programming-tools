@@ -13,3 +13,6 @@ obj
 /Library
 */Library
 Library
+
+*.sln
+*.csproj
