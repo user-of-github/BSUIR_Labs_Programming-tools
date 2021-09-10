@@ -9,6 +9,10 @@ namespace LR_053506_Slutski_Lab5.Interfaces
 
         Client GetClientBySurname(string surname);
 
-        void AddTarrif(Tariff tarrif);
+        void AddTariff(Tariff tarrif);
+
+        ushort CountAllUsersCost();
+
+        string GetTariffsInformation();
     }
 }

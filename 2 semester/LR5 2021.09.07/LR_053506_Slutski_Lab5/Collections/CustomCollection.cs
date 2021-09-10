@@ -1,4 +1,6 @@
-﻿using LR_053506_Slutski_Lab5.Interfaces;
+﻿using System.Collections;
+using System.Collections.Generic;
+using LR_053506_Slutski_Lab5.Interfaces;
 
 namespace LR_053506_Slutski_Lab5.Collections
 {
@@ -33,9 +35,9 @@ namespace LR_053506_Slutski_Lab5.Collections
 
         public void Reset() => _currentItem = _size > 0 ? _firstItem : null;
 
-        public void Next() => _currentItem = _currentItem.NextNode;
+        public void Next() => _currentItem = _currentItem?.NextNode;
 
-        public TValueType Current() => _currentItem.CurrentNode;
+        public TValueType Current() => _currentItem?.CurrentNode;
 
         public ushort Count => _size;
 
@@ -130,6 +132,19 @@ namespace LR_053506_Slutski_Lab5.Collections
             }
 
             return element;
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable) this).GetEnumerator();
+
+
+        IEnumerator<TValueType> IEnumerable<TValueType>.GetEnumerator()
+        {
+            var currentItem = _firstItem;
+            while (currentItem != null)
+            {
+                yield return currentItem.CurrentNode;
+                currentItem = currentItem.NextNode;
+            }
         }
     }
 }

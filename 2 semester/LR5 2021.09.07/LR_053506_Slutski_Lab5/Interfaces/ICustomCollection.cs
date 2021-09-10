@@ -1,6 +1,8 @@
-﻿namespace LR_053506_Slutski_Lab5.Interfaces
+﻿using System.Collections.Generic;
+
+namespace LR_053506_Slutski_Lab5.Interfaces
 {
-    public interface ICustomCollection<TValueType> where TValueType : class
+    public interface ICustomCollection<TValueType> : IEnumerable<TValueType> where TValueType : class
     {
         TValueType this[ushort index] { get; set; }
 

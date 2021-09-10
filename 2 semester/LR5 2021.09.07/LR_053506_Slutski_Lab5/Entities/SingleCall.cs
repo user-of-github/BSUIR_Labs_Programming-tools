@@ -21,5 +21,7 @@ namespace LR_053506_Slutski_Lab5.Entities
             $"{_totalCost} {CurrencyMeasurementUnits}";
 
         public void RecountTotalCosts() => _totalCost = (ushort)(_duration * _usedTarrif.Price);
+
+        public ushort TotalCost => _totalCost;
     }
 }

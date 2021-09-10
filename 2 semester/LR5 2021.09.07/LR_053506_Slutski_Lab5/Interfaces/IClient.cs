@@ -8,5 +8,7 @@ namespace LR_053506_Slutski_Lab5.Interfaces
         void RegisterCall(SingleCall call);
 
         void Rename(string surname);
+
+        ushort GetAllCallsCost();
     }
 }
