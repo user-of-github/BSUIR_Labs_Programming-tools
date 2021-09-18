@@ -1,3 +1,6 @@
 ## Laboratory works on the subject Programming Tools (Инструменты и средства программирования)
 
-###### © 2021  | All Rights Reserved
+* __2nd semester — C# Basics__
+* __3rd semester — C# Basics. Part 2__
+
+###### © 2021  | BSUIR | All Rights Reserved
