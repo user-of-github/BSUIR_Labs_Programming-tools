@@ -5,10 +5,11 @@
 &nbsp;  
 Продемонстрированы: 
 * Использование синтаксиса выражения запроса  
-    * _GetTariffsNames ( )_
-    * _GetSumsForEveryUsedTariff ( )_
-    * _GetNumberOfClientsWhoPaidMoreThan ( sum )_
 * Использование точечной нотации
-&nbsp;  
+&nbsp;    &nbsp;  
+  &nbsp; 
+    * Для некоторых методов оба варианта: _MethodName()_ и _MethodName2()_ 
+&nbsp;   
+ &nbsp;  
 ###### Copyright ©  September, 2021
 ###### © Слуцкий Никита
