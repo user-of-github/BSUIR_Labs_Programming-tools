@@ -13,7 +13,16 @@ namespace LR_053506_Slutski_Lab7.Types
 
         public ushort GetAllCallsCost() => (ushort) _calls.Sum(call => call.Cost);
 
-        public List<string> GetSumsForEveryUsedTariff() =>
+        public IEnumerable<string> GetSumsForEveryUsedTariff() =>
+            (from call in _calls
+                group call by call.UsedTariff
+                into newGroup
+                select
+                    $"{newGroup.Key.Type.ToString()}: " +
+                    $"{(from call2 in _calls where call2.UsedTariff == newGroup.Key select (int) call2.Cost).Sum()}")
+            .ToList();
+
+        public IEnumerable<string> GetSumsForEveryUsedTarrif2() =>
             _calls.GroupBy(call => call.UsedTariff)
                 .Select(groupedItem =>
                     $"{groupedItem.Key.Type.ToString()}: " +

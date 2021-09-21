@@ -6,7 +6,10 @@ namespace LR_053506_Slutski_Lab7
 {
     internal static class Program
     {
-        private static void Main()
+        private static void Main() => RunApplicationDemonstration();
+
+
+        private static void RunApplicationDemonstration()
         {
             var station = new AutomaticTelephoneStation();
 
@@ -18,7 +21,7 @@ namespace LR_053506_Slutski_Lab7
 
             /* GETTING A LIST OF NAMES OF ALL TARIFFS, SORTED BY COST */
             Console.WriteLine(string.Join(", ", station.GetTariffsNames()));
-            // output: LOCAL, INTERCITY, INTERNATIONAL, LUXE
+            // output: Local, Intercity, International, Luxe
 
 
             station.GetClientBySurname(clients[0].Surname)?.RegisterCall(new SingleCall(tariffs[2], 5));
