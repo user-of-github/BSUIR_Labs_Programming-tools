@@ -4,7 +4,6 @@ using System.Linq;
 using LR_053506_Slutski_Lab6.Collections;
 using LR_053506_Slutski_Lab6.Entities;
 
-
 namespace LR_053506_Slutski_Lab6
 {
     internal static class Program
@@ -14,43 +13,57 @@ namespace LR_053506_Slutski_Lab6
 
         private static void RunAppDemonstration()
         {
-            /* MAIN STATION INSTANCE */
             var station = new AutomaticTelephoneStation();
+            var journalLogger = new Journal();
+
+            // REGISTRING ANONIMOUS FUNCTIONS FOR EVENTS
+            station.AddClientNotification +=
+                (description, client) =>
+                    journalLogger.AddEvent(client.Surname, description);
+
+            station.AddTariffNotification +=
+                (description, tariff) =>
+                    journalLogger.AddEvent(tariff.Type.ToString(), description);
 
 
-            /* IEnumerable INTERFACE (IMPLEMENTED) & SETTING TARIFFS TO STATION */
+            // IEnumerable INTERFACE (IMPLEMENTED) & SETTING TARIFFS TO STATION 
             var testCollectionTariffs = new CustomCollection<Tariff>();
             GetDefaultTariffsPack().ToList().ForEach(testCollectionTariffs.Add);
             foreach (var tariff in testCollectionTariffs)
                 station.AddTariff(tariff);
 
+            // CHECK FOR CORRECTNESS 
+            journalLogger.PrintRegisteredEvents();
+            /* output:
+                Currently logged events:
+                    New tariff: LOCAL
+                    New tariff: INTERCITY
+                    New tariff: INTERNATIONAL*/
 
-            /* GETTING INFO ABOUT CURRENT SET OF TARIFFS IN THE STATION */
-            Console.WriteLine(station.GetTariffsInformation());
-            // output: LOCAL | 5BYN/min, INTERCITY | 10BYN/min, INTERNATIONAL | 15BYN/min
-
-
-            /* REGISTERING TRIAL CLIENTS TO THE STATION */
+            // REGISTERING TRIAL CLIENTS TO THE STATION 
             GetDefaultClientsPack().ToList().ForEach(station.RegisterClient);
-            Console.WriteLine(station.GetClientsInformation());
-            // output: Slutski, calls: 0, total spent: 0, Levankou, calls: 0, total spent: 0
 
+            // CHECK FOR CORRECTNESS
+            journalLogger.PrintRegisteredEvents();
+            /* output:
+                Currently logged events:
+                    New tariff: LOCAL
+                    New tariff: INTERCITY
+                    New tariff: INTERNATIONAL
+                    New client: Slutski
+                    New client: Levankov */
 
-            /* REGISTERING TRIAL CALL FOR FOUND CLIENT (BY SURNAME) */
-            station.GetClientBySurname("Levankov")?.RegisterCall(new SingleCall(testCollectionTariffs[0], 5));
-            Console.WriteLine(station.GetClientsInformation());
-            // output: Slutski, calls: 0, total spent: 0, Levankou, calls: 1, total spent: 25
+            station.RegisterCallNotification += ClientCalledToSomeone;
 
+            station.RegisterCallForClient(
+                station.GetClientBySurname("Slutski"),
+                new SingleCall(new Tariff(TariffType.LOCAL, 25), 2)
+            ); /* output: Slutski talked & spent 50 */
 
-            /* DEMONSTRATING OF INDEXER */
-            Console.WriteLine(testCollectionTariffs[(ushort) (testCollectionTariffs.Count - 1)].GetInformation());
-            // output: INTERNATIONAL | 15BYN/min
-
-
-            /* TOTAL CALLS COST */
-            station.GetClientBySurname("Slutski")?.RegisterCall(new SingleCall(testCollectionTariffs[1], 50));
-            Console.WriteLine(station.CountAllUsersCost());
-            // output: 525
+            // CHECKING FOR EXCEPTIONS:
+            testCollectionTariffs.Remove(GetDefaultTariffsPack().ToList()[0]);
+            /* output:
+             Unhandled exception. LR......Exception: Unable to remove the element. Not existing item */
         }
 
 
@@ -66,5 +79,8 @@ namespace LR_053506_Slutski_Lab6
             new Client("Slutski"),
             new Client("Levankov")
         };
+
+        private static void ClientCalledToSomeone(string a, string b) =>
+            Console.WriteLine($"{a} talked & spent {b}");
     }
 }

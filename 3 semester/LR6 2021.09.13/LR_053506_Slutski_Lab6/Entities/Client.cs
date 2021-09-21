@@ -1,7 +1,5 @@
-﻿using System;
-using LR_053506_Slutski_Lab6.Collections;
+﻿using LR_053506_Slutski_Lab6.Collections;
 using LR_053506_Slutski_Lab6.Interfaces;
-
 
 namespace LR_053506_Slutski_Lab6.Entities
 {
@@ -15,7 +13,7 @@ namespace LR_053506_Slutski_Lab6.Entities
             (Surname, _calls) = (surname, new CustomCollection<SingleCall>());
 
         public void RegisterCall(SingleCall call) => _calls.Add(call);
-        
+
 
         public ushort CallsCount => _calls.Count;
 

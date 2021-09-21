@@ -1,10 +1,21 @@
-﻿using LR_053506_Slutski_Lab6.Collections;
+﻿using System.Linq;
+using LR_053506_Slutski_Lab6.Collections;
 using LR_053506_Slutski_Lab6.Interfaces;
 
 namespace LR_053506_Slutski_Lab6.Entities
 {
     public class AutomaticTelephoneStation : IAutomaticTelephoneStation
     {
+        public delegate void ClientAddedHandler(string description, Client client);
+
+        public delegate void TariffAddedHandler(string description, Tariff tariff);
+
+        public delegate void CallRegisteredHandler(string name, string call);
+
+        public event TariffAddedHandler AddTariffNotification;
+        public event ClientAddedHandler AddClientNotification;
+        public event CallRegisteredHandler RegisterCallNotification;
+
         private readonly ICustomCollection<Tariff> _tariffs;
         private readonly ICustomCollection<Client> _clients;
 
@@ -12,9 +23,27 @@ namespace LR_053506_Slutski_Lab6.Entities
         public AutomaticTelephoneStation() =>
             (_tariffs, _clients) = (new CustomCollection<Tariff>(), new CustomCollection<Client>());
 
-        public void AddTariff(Tariff tariff) => _tariffs.Add(tariff);
+        public void AddTariff(Tariff tariff)
+        {
+            _tariffs.Add(tariff);
+            AddTariffNotification?.Invoke("New tariff", tariff);
+        }
 
-        public void RegisterClient(Client client) => _clients.Add(client);
+        public void RegisterCallForClient(Client client, SingleCall call)
+        {
+            var found = _clients.Aggregate(false, (current, clientItem) => current || (clientItem == client));
+            if (!found)
+                return;
+
+            GetClientBySurname(client.Surname).RegisterCall(call);
+            RegisterCallNotification?.Invoke(client.Surname, call.TotalCost.ToString());
+        }
+
+        public void RegisterClient(Client client)
+        {
+            _clients.Add(client);
+            AddClientNotification?.Invoke("New client", client);
+        }
 
         public Client GetClientBySurname(string surname)
         {
