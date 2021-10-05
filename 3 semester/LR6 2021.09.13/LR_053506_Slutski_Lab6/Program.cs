@@ -61,9 +61,16 @@ namespace LR_053506_Slutski_Lab6
             ); /* output: Slutski talked & spent 50 */
 
             // CHECKING FOR EXCEPTIONS:
-            testCollectionTariffs.Remove(GetDefaultTariffsPack().ToList()[0]);
-            /* output:
-             Unhandled exception. LR......Exception: Unable to remove the element. Not existing item */
+            try
+            {
+                testCollectionTariffs.Remove(GetDefaultTariffsPack().ToList()[0]);
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        /* output:
+         Unable to remove the element. Not existing item. */
         }
 
 
