@@ -17,3 +17,7 @@ Library
 *.sln
 *.csproj
 *.user
+
+.sln
+.csproj
+.user

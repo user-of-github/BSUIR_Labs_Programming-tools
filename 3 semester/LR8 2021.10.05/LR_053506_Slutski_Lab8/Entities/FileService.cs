@@ -34,7 +34,6 @@ namespace LR_053506_Slutski_Lab8.Entities
                     writer.Write(worker.Remote);
                 }
         }
-
         #endregion
     }
 }

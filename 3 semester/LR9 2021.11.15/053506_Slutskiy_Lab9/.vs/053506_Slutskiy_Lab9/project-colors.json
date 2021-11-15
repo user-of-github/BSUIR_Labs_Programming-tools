@@ -1,0 +1,21 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "37975e25-103c-4e41-bf26-a82520a6f787": {
+      "ProjectGuid": "37975e25-103c-4e41-bf26-a82520a6f787",
+      "DisplayName": "053506_Slutskiy_Lab9",
+      "ColorIndex": 0
+    },
+    "c26b0b1b-91e6-4683-ad7d-9cf05b2fb2d0": {
+      "ProjectGuid": "c26b0b1b-91e6-4683-ad7d-9cf05b2fb2d0",
+      "DisplayName": "053506_Slutskiy_Lab9.Domain",
+      "ColorIndex": 1
+    },
+    "4ccb2703-4be2-4b1f-b0ca-bbd0da25d677": {
+      "ProjectGuid": "4ccb2703-4be2-4b1f-b0ca-bbd0da25d677",
+      "DisplayName": "Serializer",
+      "ColorIndex": 2
+    }
+  },
+  "NextColorIndex": 3
+}
