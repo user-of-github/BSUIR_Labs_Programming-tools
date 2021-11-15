@@ -21,3 +21,7 @@ Library
 .sln
 .csproj
 .user
+.vs
+*.vs
+.vs/
+/.vs
