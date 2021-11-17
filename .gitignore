@@ -10,6 +10,11 @@ bin
 /obj
 obj
 
+/Debug/
+Debug/
+/Debug
+*/Debug
+
 /Library
 */Library
 Library
