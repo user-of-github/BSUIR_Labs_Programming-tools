@@ -12,4 +12,3 @@
 &nbsp;   
  &nbsp;  
 ###### Copyright ©  September, 2021
-###### © Слуцкий Никита
