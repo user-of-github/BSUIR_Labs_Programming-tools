@@ -3,17 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 
-
-namespace fileService
-{
-    public interface IFileService<ValueType> where ValueType : class
-    {
-        IEnumerable<ValueType> ReadFile(string fileName);
-
-        void SaveData(IEnumerable<ValueType> data, string fileName);
-    }
-
-    public class FileService<ValueType> : IFileService<ValueType> where ValueType : class
+namespace FileService
+{ 
+    public class FileService<ValueType> where ValueType : class
     {
         public IEnumerable<ValueType> ReadFile(string fileName)
         {
@@ -26,18 +18,18 @@ namespace fileService
             }
             catch (Exception ex)
             {
-               Console.Error.WriteLine(ex.Message);
+                Console.Error.WriteLine(ex.Message);
             }
-            
+
             return new List<ValueType>();
         }
 
-        public void SaveData(IEnumerable<ValueType> data, string fileName)
+        public void SaveData(List<ValueType> data, string fileName)
         {
             try
             {
                 using StreamWriter sw = new(fileName, false, System.Text.Encoding.Default);
-                sw.WriteLine(JsonSerializer.Serialize<IEnumerable<ValueType>>(data));
+                sw.WriteLine(JsonSerializer.Serialize(data));
             }
             catch (Exception ex)
             {
@@ -45,4 +37,5 @@ namespace fileService
             }
         }
     }
+
 }
