@@ -12,11 +12,11 @@ namespace SinusIntegral
 
         public static void CountSinus(OnFinish onfinish)
         {
-            var timer = new Stopwatch();
+            Stopwatch timer = new ();
             timer.Start();
 
-            var response = 0.0;
-            for (var x = LeftBorder; x <= RightBorder; x += Step)
+            double response = 0.0;
+            for (double x = LeftBorder; x <= RightBorder; x += Step)
                 response += Step * Math.Sin(x + Step / 2);
 
             timer.Stop();

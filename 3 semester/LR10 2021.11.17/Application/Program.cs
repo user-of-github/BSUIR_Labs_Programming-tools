@@ -16,8 +16,9 @@ namespace Application
 
             var asm = Assembly.LoadFrom("../../../fileService.dll");
 
-            var RawType = asm.GetTypes()[0]; // raw type
-            var FileServiceEmployee = RawType.MakeGenericType(typeof(Employee)); // made generic and assigned for Employee
+            var FileServiceEmployee = asm.GetType("FileService.FileService`1")
+                                        .MakeGenericType(typeof(Employee));//[0]; // raw type
+            //var FileServiceEmployee = RawType.MakeGenericType(typeof(Employee)); // made generic and assigned for Employee
             var fileServicer = Activator.CreateInstance(FileServiceEmployee);
 
 

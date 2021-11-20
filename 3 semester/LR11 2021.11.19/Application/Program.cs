@@ -1,35 +1,51 @@
 ﻿using System;
-using SinusIntegral;
 using System.Threading;
 using System.Text;
+using System.Threading.Tasks;
+using System.IO;
+
 
 namespace Application
 {
-    internal static class Program
+    public static class Program
     {
-        private static void Main() => Run();
+        // delegate for counting sinus
+        private static void Count() => 
+            SinusIntegral.SinusIntegral.CountSinus((double result, double milliseconds) => 
+            Console.WriteLine($"{Thread.CurrentThread.Name}\n\tRESPONSE:{result}\n\tTIME: {milliseconds}\n"));
 
-        private static void Run()
+        public static async Task Main()
         {
             Console.OutputEncoding = Encoding.UTF8;
 
-            var firstThread = new Thread(new ParameterizedThreadStart(Count));
-            var secondThread = new Thread(new ParameterizedThreadStart(Count));
+            const string FilePath = "data.json";
+            // separate threads for sinus
+            Thread firstThread = new(Count);
+            Thread secondThread = new(Count);
 
             firstThread.Priority = ThreadPriority.Lowest;
             secondThread.Priority = ThreadPriority.Highest;
 
             firstThread.Name = "First Thread (ThreadPriority.Lowest)";
             secondThread.Name = "Second Thread (ThreadPriority.Highest)";
-           
 
-            firstThread.Start(firstThread.Name);
-            secondThread.Start(secondThread.Name);
+            firstThread.Start();
+            secondThread.Start();
+
+            ///////////////////////////////////////////////////////////////////////
+            
+            MemoryStream memoryStream = new (); // realization of Stream Class
+            Task writing = StreamService.StreamService.WriteToStream(memoryStream);
+
+            
+            Task copy = StreamService.StreamService.CopyFromStream(memoryStream, FilePath);
+            await Task.WhenAll(writing, copy); // waiting 1st and 2nd methods to complete (because Main is async)
+
+
+            int filtCount = await StreamService.StreamService.GetStatisticsAsync(FilePath, Filter);
+            Console.WriteLine($"\nFiltered houses, where <= 1000 renters = {filtCount}\n");
         }
 
-        private static void Count(object threadName) => 
-            SinusIntegral.SinusIntegral.CountSinus((double result, double milliseconds) => 
-            Console.WriteLine($"{threadName}\n\tRESPONSE:{result}\n\tTIME: {milliseconds}\n"));
-        
+        public static bool Filter(StreamService.House house) => house.RentersNumber <= 1000;
     }
 }

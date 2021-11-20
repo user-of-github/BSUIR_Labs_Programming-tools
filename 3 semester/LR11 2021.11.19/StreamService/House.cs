@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace StreamService
 {
     public class House
     {
-        private static readonly HashSet<string> ids = new();
+        private static readonly HashSet<string> ids = new(); // collection to store all ids for checking if exists
         public string Id { get; private set; }
         public string Name { get; private set; }
         public ushort RentersNumber { get; private set; }
@@ -28,5 +29,7 @@ namespace StreamService
 
             return rand;
         }
+
+        public string Stringify() => JsonSerializer.Serialize(this);
     }
 }

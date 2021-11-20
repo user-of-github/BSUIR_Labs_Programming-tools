@@ -11,6 +11,7 @@ namespace FileService
         {
             try
             {
+                //File.ReadAllText
                 using StreamReader sr = new(fileName);
                 var json = sr.ReadToEnd();
                 var restored = JsonSerializer.Deserialize<List<ValueType>>(json);
@@ -28,8 +29,10 @@ namespace FileService
         {
             try
             {
-                using StreamWriter sw = new(fileName, false, System.Text.Encoding.Default);
-                sw.WriteLine(JsonSerializer.Serialize(data));
+                using FileStream sw = new(fileName, FileMode.OpenOrCreate);//, false, System.Text.Encoding.Default);
+                //sw.WriteLine(JsonSerializer.Serialize(data));
+
+                JsonSerializer.SerializeAsync(sw, data, typeof(List<ValueType>) ).Wait();
             }
             catch (Exception ex)
             {
