@@ -3,7 +3,7 @@ using System.Threading;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-
+using ss= StreamService;
 
 namespace Application
 {
@@ -35,7 +35,7 @@ namespace Application
             ///////////////////////////////////////////////////////////////////////
             
             MemoryStream memoryStream = new (); // realization of Stream Class
-            Task writing = StreamService.StreamService.WriteToStream(memoryStream);
+            Task writing = ss::StreamService.WriteToStream(memoryStream);
 
             
             Task copy = StreamService.StreamService.CopyFromStream(memoryStream, FilePath);
