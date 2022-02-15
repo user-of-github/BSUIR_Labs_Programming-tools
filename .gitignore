@@ -1,19 +1,11 @@
-*/.idea
-/.idea
-.idea
+.idea/
 
-*/bin
-/bin
-bin
+bin/
 
-*/obj
-/obj
-obj
+obj/
 
-/Debug/
 Debug/
-/Debug
-*/Debug
+
 
 /Library
 */Library
@@ -23,10 +15,56 @@ Library
 *.csproj
 *.user
 
-.sln
-.csproj
-.user
-.vs
-*.vs
+.sln/
+.csproj/
+.user/
 .vs/
-/.vs
+
+
+__pycache__/
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+env/
+venv/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+*.manifest
+*.spec
+
+pip-log.txt
+pip-delete-this-directory.txt
+
+htmlcov/
+.tox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+
+docs/_build/
+
+target/
+
+.ropeproject
