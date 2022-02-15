@@ -2,6 +2,6 @@
 
 * __2nd semester — C# Basics__
 * __3rd semester — C# Basics. Part 2__
-* __4th semester — Pyhton, Linux, Docker, Django__
+* __4th semester — Pyhton, Linux ...__
 
 ###### © 2021  | BSUIR | All Rights Reserved
