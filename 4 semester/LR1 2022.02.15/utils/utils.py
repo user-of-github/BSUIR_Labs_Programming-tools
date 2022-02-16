@@ -1,4 +1,4 @@
-from utils.defaults import DEFAULT_N, DEFAULT_K
+from data.data import DEFAULT_N, DEFAULT_K
 
 
 def read_text_from_file(file_name: str) -> str:
