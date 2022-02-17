@@ -1,4 +1,5 @@
 import os.path
+import sys
 
 
 def read_text_from_file(file_name: str) -> str:
@@ -11,7 +12,8 @@ def read_text_from_file(file_name: str) -> str:
 
 
 # аргументы подаются в порядке N, K (например, pyhton3 main.py 10 4)
-def get_command_line_args(argv: list, *default_values: tuple) -> (int, int):
+def get_command_line_args(*default_values: tuple) -> (int, int):
+    argv = sys.argv[1:]
     if len(argv) >= 2:
         return int(argv[0]), int(argv[1])
     elif len(argv) == 1:

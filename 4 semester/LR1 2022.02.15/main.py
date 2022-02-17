@@ -1,4 +1,3 @@
-import sys
 from utils.utils import read_text_from_file, get_command_line_args, write_to_file
 from data.data import DEFAULT_N, DEFAULT_K
 from data.data import SOURCE_FILE, OUTPUT_FILE
@@ -7,7 +6,7 @@ from text_analyzer.text_analyzer import analyze_text
 
 
 def main() -> None:
-    command_line_arguments = get_command_line_args(sys.argv[1:], DEFAULT_N, DEFAULT_K)
+    command_line_arguments = get_command_line_args(DEFAULT_N, DEFAULT_K)
     query = QueryStructure(*command_line_arguments)
     data = read_text_from_file(SOURCE_FILE)
 

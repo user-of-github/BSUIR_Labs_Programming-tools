@@ -5,6 +5,8 @@ from text_analyzer.utils import get_sentences_words_counts
 from text_analyzer.utils import get_average_sentence_words_count
 from text_analyzer.utils import get_median_sentence_words_count
 from text_analyzer.types import QueryStructure, ResponseStructure
+from text_analyzer.utils import get_k_grams_counts
+from text_analyzer.utils import get_most_frequent_k_grams
 
 
 def analyze_text(source: str, query: QueryStructure = QueryStructure()) -> ResponseStructure:
@@ -18,10 +20,14 @@ def analyze_text(source: str, query: QueryStructure = QueryStructure()) -> Respo
     average_words_count = get_average_sentence_words_count(words_in_sentences_counts)
     median_words_count = get_median_sentence_words_count(words_in_sentences_counts)
 
+    k_grams_counts = get_k_grams_counts(words, query.k)  # all
+    most_frequent_k_grams = get_most_frequent_k_grams(k_grams_counts, query.n)  # only first N needed
+
     return ResponseStructure(
         words_count=len(words),
         words_frequency=words_frequency,
         sentences_count=len(sentences),
         words_average=average_words_count,
-        words_median=median_words_count
+        words_median=median_words_count,
+        frequent_k_grams=most_frequent_k_grams
     )
