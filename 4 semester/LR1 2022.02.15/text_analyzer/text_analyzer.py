@@ -1,40 +1,28 @@
 import re
-
-from text_analyzer.utils import filter_empty_words
+from text_analyzer.utils import get_separate_words
 from text_analyzer.utils import get_frequencies_of_words
-from text_analyzer.utils import convert_to_same_case
-import text_analyzer.defaults
+from text_analyzer.utils import get_separate_sentences
+from text_analyzer.utils import get_sentences_words_counts
+from text_analyzer.utils import get_average_sentence_words_count
+from text_analyzer.utils import get_median_sentence_words_count
+from text_analyzer.types.types import QueryStructure, ResponseStructure
 
 
-class QueryStructure:  # object with parameters to pass to my function
-    def __init__(self, n: int = 10, k: int = 4):
-        self.n = 10
-        self.k = 4
+def analyze_text(source: str, query: QueryStructure = QueryStructure()) -> ResponseStructure:
+    text = source.lower()
 
-
-class ResponseStructure:  # structure of response of my function
-    def __init__(self, words_count: int, words_frequency: dict):
-        self.words_count = words_count
-        self.words_frequency = words_frequency
-
-    def __str__(self) -> str:
-        return f'Words count: {self.words_count}\n' \
-               f'Words frequency: {self.words_frequency}\n' \
-               f'Other information...\n'
-
-
-def analyze_text(text: str, query: QueryStructure = QueryStructure()) -> ResponseStructure:
-    words = filter_empty_words(re.split(text_analyzer.defaults.SPLIT_WORDS_BY, text))
-
-    convert_to_same_case(words)
-
+    words = get_separate_words(text)
     words_frequency = get_frequencies_of_words(words)
 
-    # average_sentence_words, median_sentence_words = 5, 6
-
-    # print(words)
+    sentences = get_separate_sentences(text)
+    words_in_sentences_counts = get_sentences_words_counts(sentences)
+    average_words_count = get_average_sentence_words_count(words_in_sentences_counts)
+    median_words_count = get_median_sentence_words_count(words_in_sentences_counts)
 
     return ResponseStructure(
-        len(words),
-        words_frequency
+        words_count=len(words),
+        words_frequency=words_frequency,
+        sentences_count=len(sentences),
+        words_average=average_words_count,
+        words_median=median_words_count
     )
