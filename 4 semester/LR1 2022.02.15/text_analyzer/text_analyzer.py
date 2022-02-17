@@ -1,11 +1,10 @@
-import re
 from text_analyzer.utils import get_separate_words
 from text_analyzer.utils import get_frequencies_of_words
 from text_analyzer.utils import get_separate_sentences
 from text_analyzer.utils import get_sentences_words_counts
 from text_analyzer.utils import get_average_sentence_words_count
 from text_analyzer.utils import get_median_sentence_words_count
-from text_analyzer.types.types import QueryStructure, ResponseStructure
+from text_analyzer.types import QueryStructure, ResponseStructure
 
 
 def analyze_text(source: str, query: QueryStructure = QueryStructure()) -> ResponseStructure:
