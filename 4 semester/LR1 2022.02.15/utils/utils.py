@@ -11,7 +11,7 @@ def read_text_from_file(file_name: str) -> str:
     return response
 
 
-# аргументы подаются в порядке N, K (например, pyhton3 main.py 10 4)
+# arguments should be passed in the following order: N, K (for example, pyhton3 analyzer.py 10 4)
 def get_command_line_args(*default_values: tuple) -> (int, int):
     argv = sys.argv[1:]
     if len(argv) >= 2:

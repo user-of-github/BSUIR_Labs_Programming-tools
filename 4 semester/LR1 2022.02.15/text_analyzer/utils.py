@@ -1,14 +1,11 @@
 import re
 import operator
-from text_analyzer.defaults import SPLIT_WORDS_BY, NOT_PART_OF_THE_WORD, SPLIT_SENTENCES_BY
+from text_analyzer.defaults import SPLIT_WORDS_BY, NOT_WORD, SPLIT_SENTENCES_BY
 
 
 def filter_invalid_words(words: list) -> list:
     def check_if_doesnt_consist_of_whitespaces(word: str) -> bool:
-        for sign in NOT_PART_OF_THE_WORD:
-            if word == sign:
-                return False
-        return True
+        return re.match(NOT_WORD, word) is None and word != ''
 
     return list(filter(check_if_doesnt_consist_of_whitespaces, words))
 
@@ -57,7 +54,7 @@ def get_median_sentence_words_count(sentences_words_count: list) -> int:
 def get_k_grams_for_word(word: str, length: int) -> list:
     response = list()
     for counter in range(0, len(word) - length + 1):
-        response.append(word[counter:counter+length])
+        response.append(word[counter:counter + length])
     return response
 
 

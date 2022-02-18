@@ -1,16 +1,16 @@
 from data.data import DEFAULT_N, DEFAULT_K
 
 
-class QueryStructure:  # object with parameters to pass to my function
+class Query:  # object with parameters to pass to function
     def __init__(self, n: int = DEFAULT_N, k: int = DEFAULT_K):
-        self.n = n
-        self.k = k
+        self.anagram_length = n
+        self.number_of_most_frequent = k
 
     def __str__(self):
-        return f'N = {self.n}, K = {self.k}'
+        return f'N = {self.anagram_length}, K = {self.number_of_most_frequent}'
 
 
-class ResponseStructure:  # structure of response of my function
+class Response:  # structure of response of function
     def __init__(self,
                  words_count: int, words_frequency: dict,
                  sentences_count: int, words_average: float,
