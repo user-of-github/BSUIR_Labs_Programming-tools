@@ -20,8 +20,8 @@ def analyze_text(source: str, query: Query = Query()) -> Response:
     average_words_count = get_average_sentence_words_count(words_in_sentences_counts)
     median_words_count = get_median_sentence_words_count(words_in_sentences_counts)
 
-    k_grams_counts = get_k_grams_counts(words, query.number_of_most_frequent)  # all
-    most_frequent_k_grams = get_most_frequent_k_grams(k_grams_counts, query.anagram_length)  # only first N needed
+    k_grams_counts = get_k_grams_counts(words, query.anagram_length)  # all
+    most_frequent_k_grams = get_most_frequent_k_grams(k_grams_counts, query.number_of_most_frequent)  # only first N needed
 
     return Response(
         words_count=len(words),

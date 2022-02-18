@@ -17,7 +17,7 @@ def get_command_line_args(*default_values: tuple) -> (int, int):
     if len(argv) >= 2:
         return int(argv[0]), int(argv[1])
     elif len(argv) == 1:
-        return int(argv[0]), default_values[0]
+        return int(argv[0]), default_values[1]
     else:
         return default_values[0], default_values[1]
 

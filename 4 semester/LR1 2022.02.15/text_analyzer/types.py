@@ -29,4 +29,4 @@ class Response:  # structure of response of function
                f'\tSentences count: {self.sentences_count}\n' \
                f'\tAverage number of words in sentences: {self.words_average_count}\n' \
                f'\tMedian number of words in sentences: {self.words_median_count}\n' \
-               f'\tThe most frequent K-grams (N pieces): {self.frequent_k_grams}'
+               f'\tThe most frequent N-grams (K pieces): {self.frequent_k_grams}'
