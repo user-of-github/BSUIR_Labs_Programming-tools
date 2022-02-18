@@ -23,7 +23,7 @@ class Response:  # structure of response of function
         self.frequent_k_grams = frequent_k_grams
 
     def __str__(self) -> str:
-        return f'Text analyze response:\n' \
+        return f'Text analyzer response:\n' \
                f'\tWords count: {self.words_count}\n' \
                f'\tWords frequency: {self.words_frequency}\n' \
                f'\tSentences count: {self.sentences_count}\n' \
