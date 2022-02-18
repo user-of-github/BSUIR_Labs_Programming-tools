@@ -3,9 +3,6 @@ from data.data import DEFAULT_N, DEFAULT_K, SOURCE_FILE, OUTPUT_FILE
 from text_analyzer.types import Query
 from text_analyzer.analyzer import analyze_text
 
-import os
-print(os.listdir('.'))
-
 
 def main() -> None:
     command_line_arguments = get_command_line_args(DEFAULT_N, DEFAULT_K)

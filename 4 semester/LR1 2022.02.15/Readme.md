@@ -40,7 +40,10 @@ _Статистика по тексту
 `sudo docker build -t <TITLE> .`
 
 #### Запуск контейнера с приложением
-`sudo docker run  --mount type=bind,source=<SOURCE>,target=/usr/src/LR1/source <TITLE>`, например, у меня вместо `SOURCE` == `/home/user/Documents/source` - это папка, где лежит файл, который нужно назвать `input.txt` и туда внести текст для анализа   
+`sudo docker run  --mount type=bind,source=<SOURCE>,target=/usr/src/LR1/source <TITLE> [ARGS]`, например, у меня вместо `SOURCE` == `/home/user/Documents/source` - это папка, где лежит файл, который нужно назвать `input.txt` и туда внести текст для анализа   
 __! файл для анализа должен быть таким же, какой указан в константе `SOURCE_FILE` в файле `./data/data.py` - у меня это `input.txt`__
+__! `[ARGS]` могут и не указываться. Ведь в константах файла `./data/data.py` есть значения по умолчанию__
+&nbsp;  
+
 &nbsp;  
 ###### © 2022 | BSUIR

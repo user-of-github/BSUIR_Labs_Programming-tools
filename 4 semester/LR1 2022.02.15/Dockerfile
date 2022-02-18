@@ -5,4 +5,5 @@ RUN mkdir -p /usr/src/LR1
 COPY . /usr/src/LR1
 
 WORKDIR /usr/src/LR1
-CMD ["python", "main.py"]
+
+ENTRYPOINT ["python", "main.py"]
