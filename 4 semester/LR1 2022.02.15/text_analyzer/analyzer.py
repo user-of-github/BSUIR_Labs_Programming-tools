@@ -12,6 +12,10 @@ from text_analyzer.utils import get_most_frequent_k_grams
 def analyze_text(query: Query) -> Response:
     sentences: list = get_separate_sentences(query.text)
 
+    # Demo of correct extracting of sentences
+    # for sentence in sentences:
+    #     print(sentence)
+
     words_in_sentences: list = get_words_in_sentences(sentences)
     all_words: list = sum(words_in_sentences, list())
     words_frequencies: dict = get_frequencies_of_words(all_words)
