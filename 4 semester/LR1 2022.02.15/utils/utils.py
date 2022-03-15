@@ -5,7 +5,7 @@ import sys
 def read_text_from_file(file_name: str) -> str:
     file = open(file_name, 'r')
 
-    response = ''
+    response: str = ''
 
     for line in file:
         response += line
@@ -16,7 +16,7 @@ def read_text_from_file(file_name: str) -> str:
 
 
 # arguments should be passed in the following order: N, K (for example, pyhton3 analyzer.py 10 4)
-def get_command_line_args(*default_values: tuple) -> (int, int):
+def get_command_line_args(default_values: tuple) -> (int, int):
     argv = sys.argv[1:]
 
     if len(argv) >= 2:

@@ -10,18 +10,18 @@ from text_analyzer.utils import get_most_frequent_k_grams
 
 
 def analyze_text(query: Query) -> Response:
-    sentences = get_separate_sentences(query.text)
+    sentences: list = get_separate_sentences(query.text)
 
-    words_in_sentences = get_words_in_sentences(sentences)
-    all_words = sum(words_in_sentences, list())
-    words_frequencies = get_frequencies_of_words(all_words)
+    words_in_sentences: list = get_words_in_sentences(sentences)
+    all_words: list = sum(words_in_sentences, list())
+    words_frequencies: dict = get_frequencies_of_words(all_words)
 
-    words_in_sentences_counts = get_sentences_words_counts(words_in_sentences)
-    average_sentence_words = get_average_sentence_words_count(words_in_sentences_counts)
-    median_sentence_words = get_median_sentence_words_count(words_in_sentences_counts)
+    words_in_sentences_counts: list = get_sentences_words_counts(words_in_sentences)
+    average_sentence_words: float = get_average_sentence_words_count(words_in_sentences_counts)
+    median_sentence_words: float = get_median_sentence_words_count(words_in_sentences_counts)
 
-    all_k_grams = get_k_grams_counts(all_words, query.anagram_length)
-    most_frequent_k_grams = get_most_frequent_k_grams(all_k_grams, query.number_of_most_frequent)
+    all_k_grams: dict = get_k_grams_counts(all_words, query.anagram_length)
+    most_frequent_k_grams: dict = get_most_frequent_k_grams(all_k_grams, query.number_of_most_frequent)
 
     return Response(
         words_count=len(all_words),

@@ -5,7 +5,7 @@ from text_analyzer.analyzer import analyze_text
 
 
 def main():
-    command_line_arguments = get_command_line_args(DEFAULT_N, DEFAULT_K)
+    command_line_arguments = get_command_line_args((DEFAULT_N, DEFAULT_K))
     text = read_text_from_file(SOURCE_FILE)
     query = Query(text, *command_line_arguments)
 

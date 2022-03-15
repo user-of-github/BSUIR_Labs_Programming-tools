@@ -1,4 +1,4 @@
-SPLIT_WORDS_BY = (
+SPLIT_WORDS_BY: str = (
     r'\;|'
     r'\,|'
     r'\.|'
@@ -16,9 +16,9 @@ SPLIT_WORDS_BY = (
     r'\»'
 )
 
-NOT_WORD = r'[0-9\)\(\"\@\,\.\ \«\»\-\—\;\:]+'
+NOT_WORD: str = r'[0-9\)\(\"\@\,\.\ \«\»\-\—\;\:]+'
 
-SENTENCE = (
+SENTENCE: str = (
     r'[А-ЯA-ZЁ0-9]'  # first Capital letter
     r'(?:'
     r'(?:[a-zа-яё0-9\,\-\ \\.\:\\"\\n]*)'  # any sequence (including big letters) without dot

@@ -1,15 +1,12 @@
-# object with parameters to pass to function
-class Query:
-    def __init__(self, text: str, n: int, k: int):
-        self.text = text
-        self.anagram_length = n
-        self.number_of_most_frequent = k
+import dataclasses
 
-    def __str__(self) -> str:
-        return (
-            f'Anagrams\' length: {self.anagram_length}. '
-            f'How many of most frequent to print: {self.number_of_most_frequent}'
-        )
+
+# object with parameters to pass to function
+@dataclasses.dataclass
+class Query:
+    text: str
+    anagram_length: int
+    number_of_most_frequent: int
 
 
 # structure of response of function
@@ -17,7 +14,7 @@ class Response:
     def __init__(self,
                  words_count: int, words_frequency: dict,
                  sentences_count: int, words_average: float,
-                 words_median: int, frequent_k_grams: dict):
+                 words_median: float, frequent_k_grams: dict):
         self.words_count = words_count
         self.words_frequency = words_frequency
         self.sentences_count = sentences_count

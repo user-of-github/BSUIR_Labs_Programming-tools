@@ -12,7 +12,7 @@ def get_separate_words(text: str) -> list:
 
 
 def get_frequencies_of_words(words: list) -> dict:
-    response = dict()
+    response: dict = dict()
 
     for word in words:
         if response.get(word) is None:
@@ -32,7 +32,7 @@ def get_separate_sentences(text: str) -> list:
 
 
 def get_words_in_sentences(sentences: list) -> list:
-    response = list()
+    response: list = list()
 
     for sentence in sentences:
         response.append(get_separate_words(sentence.lower()))
@@ -41,7 +41,7 @@ def get_words_in_sentences(sentences: list) -> list:
 
 
 def get_sentences_words_counts(words_in_sentences: list) -> list:
-    response = list()
+    response: list = list()
 
     for sentence in words_in_sentences:
         response.append(len(sentence))
@@ -53,15 +53,19 @@ def get_average_sentence_words_count(sentences_words_count: list) -> float:
     return sum(sentences_words_count) / len(sentences_words_count)
 
 
-def get_median_sentence_words_count(sentences_words_count: list) -> int:
-    query_copy = sentences_words_count.copy()
+def get_median_sentence_words_count(sentences_words_count: list) -> float:
+    query_copy: list = sentences_words_count.copy()
+
     query_copy.sort()
 
-    return query_copy[len(sentences_words_count) // 2]
+    if len(query_copy) % 2 == 0:
+        return (query_copy[len(query_copy) // 2] + query_copy[len(query_copy) // 2 - 1]) / 2
+    else:
+        return query_copy[len(query_copy) // 2]
 
 
 def get_k_grams_for_word(word: str, length: int) -> list:
-    response = list()
+    response: list = list()
 
     for counter in range(0, len(word) - length + 1):
         response.append(word[counter:counter + length])
@@ -70,12 +74,15 @@ def get_k_grams_for_word(word: str, length: int) -> list:
 
 
 def get_k_grams_counts(words: list, k: int) -> dict:
-    response = dict()
+    response: dict = dict()
 
     for word in words:
-        word_k_grams = get_k_grams_for_word(word, k)
+        word_k_grams: list = get_k_grams_for_word(word, k)
         for gram in word_k_grams:
-            response[gram] = 1 if response.get(gram) is None else response[gram] + 1
+            if response.get(gram) is None:
+                response[gram] = 1
+            else:
+                response[gram] += 1
 
     return response
 
