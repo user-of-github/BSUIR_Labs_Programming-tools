@@ -12,6 +12,7 @@ def main():
     response = analyze_text(query)
 
     print(response)
+
     write_to_file(OUTPUT_FILE, str(response))
 
 
