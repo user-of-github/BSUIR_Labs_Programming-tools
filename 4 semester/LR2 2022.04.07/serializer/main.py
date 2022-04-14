@@ -1,4 +1,8 @@
-from library.json.serialization_of_primitives.serialize_primitives import auto_serialize
+import types
+
+from library.iserializer import ISerializer
+from library.serializer import Serializer
+from library.serializer import SerializerType
 
 
 def main() -> None:
@@ -8,7 +12,15 @@ def main() -> None:
     test_dict['kek3'] = [4, 5, 6, "555"]
     test_dict[6] = [4, 5, 6, "555"]
 
-    print(auto_serialize(test_dict))
+    test_object: ISerializer = Serializer.create_serializer(SerializerType.JSON)
+
+    def test_function(a: int, b: float) -> float:
+        print(a, b)
+        return a + b
+
+    print(types.FunctionType, (test_function.__code__, {}, test_function.__name__,
+                               test_function.__defaults__, test_function.__closure__),
+          test_function.__dict__)
 
 
 if __name__ == '__main__':

@@ -7,10 +7,6 @@ obj/
 Debug/
 
 
-/Library
-*/Library
-Library
-
 *.sln
 *.csproj
 *.user

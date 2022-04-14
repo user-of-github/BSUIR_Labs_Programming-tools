@@ -1,3 +1,6 @@
+import types
+
+
 def is_primitive(to_check) -> bool:
     if isinstance(to_check, int):
         return True
@@ -17,3 +20,7 @@ def is_list(to_check) -> bool:
 
 def is_dict(to_check) -> bool:
     return isinstance(to_check, dict)
+
+
+def is_function(to_check) -> bool:
+    return isinstance(to_check, types.FunctionType) or isinstance(to_check, types.LambdaType)
