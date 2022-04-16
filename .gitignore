@@ -64,3 +64,5 @@ docs/_build/
 target/
 
 .ropeproject
+.drawio
+*.drawio
