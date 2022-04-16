@@ -1,8 +1,8 @@
 from enum import Enum
 from library.iserializer import ISerializer
-from library.json.json import Json
-from library.yaml.yaml import Yaml
-from library.toml.toml import Toml
+from library.formats.json.json import Json
+from library.formats.yaml.yaml import Yaml
+from library.formats.toml.toml import Toml
 
 
 class SerializerType(Enum):

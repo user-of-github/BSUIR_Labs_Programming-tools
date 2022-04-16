@@ -1,5 +1,5 @@
 class ISerializer:
-    def dump(self, object_to_serialize, file_name: str):
+    def dump(self, object_to_serialize, file_name: str) -> None:
         pass
 
     def dumps(self, object_to_serialize) -> str:

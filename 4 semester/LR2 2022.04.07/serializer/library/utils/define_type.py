@@ -1,4 +1,4 @@
-import types
+import inspect
 
 
 def is_primitive(to_check) -> bool:
@@ -14,6 +14,10 @@ def is_primitive(to_check) -> bool:
         return False
 
 
+def is_none(to_check) -> bool:
+    return to_check is None
+
+
 def is_list(to_check) -> bool:
     return isinstance(to_check, list)
 
@@ -23,4 +27,4 @@ def is_dict(to_check) -> bool:
 
 
 def is_function(to_check) -> bool:
-    return isinstance(to_check, types.FunctionType) or isinstance(to_check, types.LambdaType)
+    return inspect.isroutine(to_check)
