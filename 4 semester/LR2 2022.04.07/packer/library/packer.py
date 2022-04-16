@@ -1,8 +1,8 @@
 from enum import Enum
 from library.iserializer import ISerializer
-from library.formats.json.json import Json
-from library.formats.yaml.yaml import Yaml
-from library.formats.toml.toml import Toml
+from library.formats.json.json_packer import JsonPacker
+from library.formats.yaml.yaml_packer import YamlPacker
+from library.formats.toml.toml_packer import TomlPacker
 
 
 class SerializerType(Enum):
@@ -11,14 +11,14 @@ class SerializerType(Enum):
     TOML = 3
 
 
-class Serializer:
+class Packer:
     @staticmethod
     def create_serializer(serializer_type: SerializerType) -> ISerializer:
         if serializer_type == SerializerType.JSON:
-            return Json()
+            return JsonPacker()
         elif serializer_type == SerializerType.YAML:
-            return Yaml()
+            return YamlPacker()
         elif serializer_type == SerializerType.TOML:
-            return Toml()
+            return TomlPacker()
         else:
             raise Exception('Invalid serializer type')

@@ -1,8 +1,8 @@
 from library.iserializer import ISerializer
-from library.formats.json.serialization.serialize import JsonSerializer
+from library.formats.json.serializer import JsonSerializer
 
 
-class Json(ISerializer):
+class JsonPacker(ISerializer):
     def dumps(self, object_to_serialize) -> str:
         return JsonSerializer.auto_serialize(object_to_serialize)
 
@@ -14,7 +14,8 @@ class Json(ISerializer):
         file.close()
 
     def load(self, file_name: str):
-        pass
+        file = open(file_name, 'r')
+        source: str = file.read()
 
     def loads(self, source: str):
         pass

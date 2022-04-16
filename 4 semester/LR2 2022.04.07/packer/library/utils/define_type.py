@@ -10,6 +10,8 @@ def is_primitive(to_check) -> bool:
         return True
     elif isinstance(to_check, bool):
         return True
+    elif to_check is None:
+        return True
     else:
         return False
 

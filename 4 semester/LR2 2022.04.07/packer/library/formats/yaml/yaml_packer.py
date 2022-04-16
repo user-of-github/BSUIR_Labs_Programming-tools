@@ -1,5 +1,5 @@
 from library.iserializer import ISerializer
 
 
-class Toml(ISerializer):
+class YamlPacker(ISerializer):
     pass

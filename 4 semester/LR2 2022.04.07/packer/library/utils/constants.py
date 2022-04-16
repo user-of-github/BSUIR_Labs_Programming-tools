@@ -1,6 +1,6 @@
 ATTRIBUTES_OF_FUNCTION: list[str] = [
-    '__code__',
     '__name__',
+    '__code__',
     '__defaults__',
     '__closure__'
 ]
