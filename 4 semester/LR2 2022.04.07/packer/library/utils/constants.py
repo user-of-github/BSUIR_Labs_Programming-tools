@@ -7,6 +7,12 @@ ATTRIBUTES_OF_FUNCTION: list[str] = [
 
 FUNCTION_DESIGNATION: str = 'function'
 CLASS_DESIGNATION: str = 'class'
-NONE_DESIGNATION: str = 'none'
+
 LIST_DESIGNATION: str = 'list'
 TUPLE_DESIGNATION: str = 'tuple'
+DICTIONARY_DESIGNATION: str = 'dict'
+
+INT_DESIGNATION: str = 'int'
+FLOAT_DESIGNATION: str = 'float'
+BOOL_DESIGNATION: str = 'bool'
+NONE_DESIGNATION: str = 'None'

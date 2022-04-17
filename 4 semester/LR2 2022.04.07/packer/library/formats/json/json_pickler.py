@@ -1,8 +1,8 @@
 from library.iserializer import ISerializer
-from library.formats.json.serializer import JsonSerializer
+from library.formats.json.json_serializer import JsonSerializer
 
 
-class JsonPacker(ISerializer):
+class JsonPickler(ISerializer):
     def dumps(self, object_to_serialize) -> str:
         return JsonSerializer.auto_serialize(object_to_serialize)
 
