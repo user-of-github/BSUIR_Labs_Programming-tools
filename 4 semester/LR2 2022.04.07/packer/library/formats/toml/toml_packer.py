@@ -1,5 +1,5 @@
-from library.ipickler import IPickler
+from library.ipacker import IPacker
 
 
-class TomlPacker(IPickler):
+class TomlPacker(IPacker):
     pass

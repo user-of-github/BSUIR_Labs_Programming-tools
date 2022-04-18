@@ -1,6 +1,19 @@
+INT_DESIGNATION: str = 'int'
+FLOAT_DESIGNATION: str = 'float'
+BOOL_DESIGNATION: str = 'bool'
+NONE_DESIGNATION: str = 'None'
+STR_DESIGNATION: str = 'str'
+
+FUNCTION_DESIGNATION: str = 'function'
+CLASS_DESIGNATION: str = 'class'
+
+LIST_DESIGNATION: str = 'list'
+TUPLE_DESIGNATION: str = 'tuple'
+DICTIONARY_DESIGNATION: str = 'dict'
+
 ATTRIBUTES_OF_FUNCTION: list[str] = ['__name__', '__code__', '__defaults__', '__closure__']
 
-ATTRIBUTES_OF_CODE_ATTRIBUTE = [
+ATTRIBUTES_OF_CODE_ATTRIBUTE: list[str] = [
     'co_argcount',
     'co_posonlyargcount',
     'co_kwonlyargcount',
@@ -18,16 +31,3 @@ ATTRIBUTES_OF_CODE_ATTRIBUTE = [
     'co_freevars',
     'co_cellvars'
 ]
-
-FUNCTION_DESIGNATION: str = 'function'
-CLASS_DESIGNATION: str = 'class'
-
-LIST_DESIGNATION: str = 'list'
-TUPLE_DESIGNATION: str = 'tuple'
-DICTIONARY_DESIGNATION: str = 'dict'
-
-INT_DESIGNATION: str = 'int'
-FLOAT_DESIGNATION: str = 'float'
-BOOL_DESIGNATION: str = 'bool'
-NONE_DESIGNATION: str = 'None'
-STR_DESIGNATION: str = 'str'

@@ -1,9 +1,9 @@
 from library.formats.dictionary.dictionary_encoder import DictionaryEncoder
 from library.formats.json.parser import JsonParser
-from library.ipickler import IPickler
+from library.ipacker import IPacker
 
 
-class JsonPickler(IPickler):
+class JsonPacker(IPacker):
     def dumps(self, object_to_serialize) -> str:
         return str(DictionaryEncoder.auto_pack_to_dictionary(object_to_serialize)).replace('\'', '"')
 

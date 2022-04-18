@@ -1,4 +1,4 @@
-class IPickler:
+class IPacker:
     def dump(self, object_to_serialize, file_name: str) -> None:
         pass
 

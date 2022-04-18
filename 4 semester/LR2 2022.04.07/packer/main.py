@@ -1,10 +1,10 @@
-from library.ipickler import IPickler
-from library.pickler import Pickler
-from library.pickler import PicklerType
+from library.ipacker import IPacker
+from library.packer import Packer
+from library.packer import PackerType
 
 
 def main() -> None:
-    json_serializer: IPickler = Pickler.create_serializer(PicklerType.JSON)
+    json_serializer: IPacker = Packer.create_serializer(PackerType.JSON)
     c = 42
 
     test_dict: dict = {
