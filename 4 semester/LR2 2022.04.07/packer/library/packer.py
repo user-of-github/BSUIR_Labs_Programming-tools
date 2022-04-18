@@ -21,4 +21,4 @@ class Packer:
         elif serializer_type == PackerType.TOML:
             return TomlPacker()
         else:
-            raise Exception(f'Pickler error: {serializer_type} is invalid serializer type')
+            raise Exception(f'Packer error: {serializer_type} is invalid serializer type')

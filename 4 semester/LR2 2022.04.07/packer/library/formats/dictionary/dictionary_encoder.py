@@ -9,18 +9,27 @@ from library.utils.define_type import DefineType
 
 class DictionaryEncoder:
     @staticmethod
-    def auto_pack_to_dictionary(to_serialize) -> dict:
+    def auto_encode_to_dictionary(to_serialize) -> dict:
         if DefineType.is_primitive(to_serialize):
-            return DictionaryEncoder.pack_basic_primitive(to_serialize)
+            return DictionaryEncoder.encode_basic_primitive(to_serialize)
         elif DefineType.is_list_or_tuple(to_serialize):
-            return DictionaryEncoder.pack_list_or_tuple(to_serialize)
+            return DictionaryEncoder.encode_list_or_tuple(to_serialize)
         elif DefineType.is_dict(to_serialize):
-            return DictionaryEncoder.pack_dictionary(to_serialize)
+            return DictionaryEncoder.encode_dictionary(to_serialize)
         elif DefineType.is_function(to_serialize):
-            return DictionaryEncoder.pack_function(to_serialize)
+            return DictionaryEncoder.encode_function(to_serialize)
 
     @staticmethod
-    def pack_list_or_tuple(array: Union[list, tuple]) -> dict:
+    def encode_basic_primitive(to_serialize: Union[int, float, str, bool, None]) -> dict:
+        response: dict = dict()
+
+        response['type'] = DictionaryEncoder.__get_primitive_type_name(to_serialize)
+        response['value'] = DictionaryEncoder.__get_value_for_primitive(to_serialize)
+
+        return response
+
+    @staticmethod
+    def encode_list_or_tuple(array: Union[list, tuple]) -> dict:
         response: dict = dict()
 
         if isinstance(array, list):
@@ -33,37 +42,29 @@ class DictionaryEncoder:
         response['value'] = list()
 
         for value in array:
-            response['value'].append(DictionaryEncoder.auto_pack_to_dictionary(value))
+            response['value'].append(DictionaryEncoder.auto_encode_to_dictionary(value))
 
         return response
 
     @staticmethod
-    def pack_dictionary(dictionary: dict) -> dict:
+    def encode_dictionary(dictionary: dict) -> dict:
         response: dict = dict()
 
         response['type'] = constants.DICTIONARY_DESIGNATION
         response['value'] = dict()
 
         for key in dictionary.keys():
-            response['value'][str(key)] = DictionaryEncoder.auto_pack_to_dictionary(dictionary.get(key))
+            response['value'][str(key)] = DictionaryEncoder.auto_encode_to_dictionary(dictionary.get(key))
 
         return response
 
     @staticmethod
-    def pack_function(function) -> dict:
+    def encode_function(function) -> dict:
         response: dict = dict()
 
         response['type'] = constants.FUNCTION_DESIGNATION
-        response['value'] = DictionaryEncoder.pack_dictionary(DictionaryEncoder.__transform_function_to_dictionary(function))
-
-        return response
-
-    @staticmethod
-    def pack_basic_primitive(to_serialize: Union[int, float, str, bool, None]) -> dict:
-        response: dict = dict()
-
-        response['type'] = DictionaryEncoder.__get_primitive_type_name(to_serialize)
-        response['value'] = DictionaryEncoder.__get_value_for_primitive(to_serialize)
+        response['value'] = DictionaryEncoder.encode_dictionary(
+            DictionaryEncoder.__transform_function_to_dictionary(function))
 
         return response
 
@@ -102,11 +103,12 @@ class DictionaryEncoder:
                      code_argument[0] in constants.ATTRIBUTES_OF_CODE_ATTRIBUTE]
         for argument in arguments:
             if argument[0] != "__code__":
-                body["value"].update({argument[0]: DictionaryEncoder.auto_pack_to_dictionary(argument[1])})
+                body["value"].update({argument[0]: DictionaryEncoder.auto_encode_to_dictionary(argument[1])})
             else:
                 body["value"].update({"__code__": {}})
                 for code_arg in code_args:
-                    body["value"]["__code__"].update({code_arg[0]: DictionaryEncoder.auto_pack_to_dictionary(code_arg[1])})
+                    body["value"]["__code__"].update(
+                        {code_arg[0]: DictionaryEncoder.auto_encode_to_dictionary(code_arg[1])})
 
         globs_vals = {}
         globs = obj.__getattribute__("__globals__")
@@ -120,7 +122,7 @@ class DictionaryEncoder:
                     globs_vals.update({func_glob_arg: globs[func_glob_arg]})
 
         globs_vals.update({"__modules": modules_names})
-        globs_vals_serialized = DictionaryEncoder.auto_pack_to_dictionary(globs_vals)
+        globs_vals_serialized = DictionaryEncoder.auto_encode_to_dictionary(globs_vals)
         body["value"].update({"__globals__": globs_vals_serialized})
 
         return body

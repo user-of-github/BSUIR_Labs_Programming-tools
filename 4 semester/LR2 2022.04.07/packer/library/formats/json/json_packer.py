@@ -1,22 +1,25 @@
 from library.formats.dictionary.dictionary_encoder import DictionaryEncoder
-from library.formats.json.parser import JsonParser
+from library.formats.json.json_parser import JsonParser
 from library.ipacker import IPacker
 
 
 class JsonPacker(IPacker):
     def dumps(self, object_to_serialize) -> str:
-        return str(DictionaryEncoder.auto_pack_to_dictionary(object_to_serialize)).replace('\'', '"')
+        return str(DictionaryEncoder.auto_encode_to_dictionary(object_to_serialize)).replace('\'', '"')
 
     def dump(self, object_to_serialize, file_name: str) -> None:
         file = open(file_name, 'w')
-        file.write(str(DictionaryEncoder.auto_pack_to_dictionary(object_to_serialize)).replace('\'', '"'))
+        file.write(str(DictionaryEncoder.auto_encode_to_dictionary(object_to_serialize)).replace('\'', '"'))
         file.close()
+
+    def loads(self, source: str):
+        parsed_dictionary: dict = JsonParser.auto_parse_from_string_to_dictionary(source)
+
+        return parsed_dictionary
 
     def load(self, file_name: str):
         file = open(file_name, 'r')
         source: str = file.read()
         file.close()
 
-    def loads(self, source: str):
-        parsed_dictionary: dict = JsonParser.auto_unpack_from_string_to_dictionary(source)
-        return parsed_dictionary
+        return self.loads(source)

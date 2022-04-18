@@ -18,10 +18,6 @@ class DefineType:
             return False
 
     @staticmethod
-    def is_none(to_check) -> bool:
-        return to_check is None
-
-    @staticmethod
     def is_list_or_tuple(to_check) -> bool:
         return isinstance(to_check, list) or isinstance(to_check, tuple)
 
@@ -31,4 +27,4 @@ class DefineType:
 
     @staticmethod
     def is_function(to_check) -> bool:
-        return inspect.isroutine(to_check)
+        return inspect.isroutine(to_check) or inspect.isfunction(to_check)
