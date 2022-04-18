@@ -1,23 +1,21 @@
-from library.iserializer import ISerializer
+from library.ipickler import IPickler
 from library.pickler import Pickler
-from library.pickler import SerializerType
-
-c: int = 52
+from library.pickler import PicklerType
 
 
 def main() -> None:
-    json_serializer: ISerializer = Pickler.create_serializer(SerializerType.JSON)
-    yaml_serializer: ISerializer = Pickler.create_serializer(SerializerType.YAML)
-    toml_serializer: ISerializer = Pickler.create_serializer(SerializerType.TOML)
+    json_serializer: IPickler = Pickler.create_serializer(PicklerType.JSON)
+    c = 42
 
-    def test_funct(a: int = 410, b: int = 55) -> float:
-        print(c)
-        return a + b / 10 + c
+    test_dict: dict = {
+        'a': 5,
+        'c': [5, 6, 7]
+    }
 
-    # print(json_serializer.dumps(test_funct))
-
-    json_serializer.dump({'kek': 'shrek', 'nigga': {5: 6}}, 'output.json')
-    print(bool('True') == 1)
+    res = json_serializer.loads(json_serializer.dumps([['a', 'b', 2022], 6, 7]))
+    print('____________________')
+    for key in res['value']:
+        print(key)
 
 
 if __name__ == '__main__':

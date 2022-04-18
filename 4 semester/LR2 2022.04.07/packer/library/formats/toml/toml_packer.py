@@ -1,5 +1,5 @@
-from library.iserializer import ISerializer
+from library.ipickler import IPickler
 
 
-class TomlPacker(ISerializer):
+class TomlPacker(IPickler):
     pass

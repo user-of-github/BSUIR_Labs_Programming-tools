@@ -1,5 +1,5 @@
-from library.iserializer import ISerializer
+from library.ipickler import IPickler
 
 
-class YamlPacker(ISerializer):
+class YamlPacker(IPickler):
     pass

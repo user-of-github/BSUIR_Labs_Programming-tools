@@ -1,0 +1,2 @@
+class DictionaryDecoder:
+    pass

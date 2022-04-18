@@ -1,1 +1,1 @@
-{"type": "dict", "value": {"kek": {"type": "int", "value": "shrek"}, "nigga": {"type": "dict", "value": {"5": {"type": "int", "value": 6}}}}}
+{"a":{"type":"int","value":5},"b":{"type":"int","value":6}}
