@@ -10,5 +10,8 @@
 * [ ] CodeStyle, refactor  
 * [ ] YAML  
 * [ ] TOML  
-* [x] __Unit Tests__ setup
+* [x] Unit Tests setup
+* [x] Readme badge
 * [ ] setup.py  
+* [ ] Move 'value' and 'type' literals to constants  
+* [ ] Move all the literals in regular expressions to constants
