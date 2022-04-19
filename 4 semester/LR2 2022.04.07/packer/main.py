@@ -9,11 +9,19 @@ def main() -> None:
 
     test_dict: dict = {
         'a': 5,
-        'c': [5, 6, 7]
+        'c': [5, 6, 7],
+        'key': True,
+        '5': {'a': False}
     }
 
-    print(DictionaryEncoder.auto_encode_to_dictionary(test_dict)
-          == json_serializer.loads(json_serializer.dumps(test_dict)))
+    def test() -> None:
+        print(42)
+
+    array = [True, 2, 3, 4]
+    json = json_serializer.dumps(array)
+    print(json)
+    print(json_serializer.loads(json))
+
 
 
 if __name__ == '__main__':

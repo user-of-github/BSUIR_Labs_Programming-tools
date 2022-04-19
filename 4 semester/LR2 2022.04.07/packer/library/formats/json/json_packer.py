@@ -1,3 +1,4 @@
+from library.formats.dictionary.dictionary_decoder import DictionaryDecoder
 from library.formats.dictionary.dictionary_encoder import DictionaryEncoder
 from library.formats.json.json_parser import JsonParser
 from library.ipacker import IPacker
@@ -15,7 +16,7 @@ class JsonPacker(IPacker):
     def loads(self, source: str):
         parsed_dictionary: dict = JsonParser.auto_parse_from_string_to_dictionary(source)
 
-        return parsed_dictionary
+        return DictionaryDecoder.auto_decode_to_object(parsed_dictionary)
 
     def load(self, file_name: str):
         file = open(file_name, 'r')
