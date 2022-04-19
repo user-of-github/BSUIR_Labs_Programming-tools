@@ -5,7 +5,7 @@ from library.packer import PackerType
 
 
 def main() -> None:
-    json_serializer: IPacker = Packer.create_serializer(PackerType.JSON)
+    json_packer: IPacker = Packer.create_serializer(PackerType.JSON)
 
     test_dict: dict = {
         'a': 5,
@@ -18,10 +18,9 @@ def main() -> None:
         print(42)
 
     array = [True, 2, 3, 4]
-    json = json_serializer.dumps(array)
+    json = json_packer.dumps([])
     print(json)
-    print(json_serializer.loads(json))
-
+    print(json_packer.loads(json))
 
 
 if __name__ == '__main__':

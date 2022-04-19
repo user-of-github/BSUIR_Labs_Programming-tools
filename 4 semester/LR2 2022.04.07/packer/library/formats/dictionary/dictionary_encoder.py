@@ -70,21 +70,23 @@ class DictionaryEncoder:
 
     @staticmethod
     def __get_value_for_primitive(to_serialize: Union[int, float, str, bool, None]):
-        if (isinstance(to_serialize, bool)) or (to_serialize is None):
+        if isinstance(to_serialize, bool) or (to_serialize is None):
             return str(to_serialize)
+        elif isinstance(to_serialize, str):
+            return to_serialize.replace(' ', constants.SYMBOLS_TO_REPLACE_SPACE_IN_STRINGS)
         else:
             return to_serialize
 
     @staticmethod
     def __get_primitive_type_name(primitive: Union[int, float, str, bool, None]) -> str:
-        if isinstance(primitive, int):
-            return constants.INT_DESIGNATION
+        if isinstance(primitive, bool):
+            return constants.BOOL_DESIGNATION
         elif isinstance(primitive, float):
             return constants.FLOAT_DESIGNATION
         elif isinstance(primitive, str):
             return constants.STR_DESIGNATION
-        elif isinstance(primitive, bool):
-            return constants.BOOL_DESIGNATION
+        elif isinstance(primitive, int):
+            return constants.INT_DESIGNATION
         elif primitive is None:
             return constants.NONE_DESIGNATION
         else:

@@ -19,11 +19,11 @@ class JsonParser:
         if object_type_str == constants.INT_DESIGNATION:
             response['value'] = int(object_value_str)
         elif object_type_str == constants.FLOAT_DESIGNATION:
-            response['value'] = float
+            response['value'] = float(object_value_str)
         elif object_type_str == constants.STR_DESIGNATION:
             response['value'] = object_value_str[1:-1]
         elif object_type_str == constants.BOOL_DESIGNATION:
-            response['value'] = bool(object_value_str[1:-1])
+            response['value'] = True if object_value_str[1:-1] == 'True' else False
         elif object_type_str == constants.NONE_DESIGNATION:
             response['value'] = None
         elif object_type_str == constants.LIST_DESIGNATION or object_type_str == constants.TUPLE_DESIGNATION:
@@ -51,6 +51,9 @@ class JsonParser:
         source: str = list_string[1:-1]  # to put away '[' and ']'
 
         response: list = list()
+
+        if source == '':
+            return response
 
         object_beginning_index: int = 0
         depth_level: int = 0

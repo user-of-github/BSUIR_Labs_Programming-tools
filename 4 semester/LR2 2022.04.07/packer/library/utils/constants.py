@@ -1,7 +1,7 @@
 INT_DESIGNATION: str = 'int'
 FLOAT_DESIGNATION: str = 'float'
 BOOL_DESIGNATION: str = 'bool'
-NONE_DESIGNATION: str = 'None'
+NONE_DESIGNATION: str = 'none'
 STR_DESIGNATION: str = 'str'
 
 FUNCTION_DESIGNATION: str = 'function'
@@ -31,3 +31,6 @@ ATTRIBUTES_OF_CODE_ATTRIBUTE: list[str] = [
     'co_freevars',
     'co_cellvars'
 ]
+
+
+SYMBOLS_TO_REPLACE_SPACE_IN_STRINGS: str = '#&$'

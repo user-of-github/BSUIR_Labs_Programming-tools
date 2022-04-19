@@ -10,7 +10,7 @@ class JsonPacker(IPacker):
 
     def dump(self, object_to_serialize, file_name: str) -> None:
         file = open(file_name, 'w')
-        file.write(str(DictionaryEncoder.auto_encode_to_dictionary(object_to_serialize)).replace('\'', '"'))
+        file.write(self.dumps(object_to_serialize))
         file.close()
 
     def loads(self, source: str):

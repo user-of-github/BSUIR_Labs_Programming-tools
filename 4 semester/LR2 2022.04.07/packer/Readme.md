@@ -1,5 +1,7 @@
 ## ___Packer__ — a library for easy auto-serialization of different kinds of Python objects_
 
+
+![alt Unittest coverage result](coverage.svg)
 &nbsp;
 
 ### Project structure:
@@ -19,14 +21,23 @@ JSON-parser and form the same dictionary as I had before serialization. Then thi
 
 
 ### To run tests:  
+__[Percentage of code coverage is shown at the beginning of this Readme.md]__
 1. _From `packer` (root) folder:_  
 2. _Install `coverage` module: `pip install coverage`_  
 3. _Run `coverage run -m unittest tests.main` command_  
 4. _Generate results:_
    1. _To generate just report in console run `coverage report`_
    2. _To generate pretty HTML-report with results (coverage) run command `coverage html`_
+   
+
+___For myself I wrote a [short bash script](test.sh). It also generates coverage badge for this `Readme.md`. Uses `coverage-badge`___  
+&nbsp;    
 
 
-&nbsp;  
+### Developed with:
+* _JetBrains Pycharm_
+
+
+&nbsp;   
 
 ###### © 2022 | BSUIR
