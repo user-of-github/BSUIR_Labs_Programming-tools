@@ -53,8 +53,9 @@ class DictionaryEncoder:
         response['type'] = constants.DICTIONARY_DESIGNATION
         response['value'] = dict()
 
-        for key in dictionary.keys():
-            response['value'][str(key)] = DictionaryEncoder.auto_encode_to_dictionary(dictionary.get(key))
+        if dictionary:
+            for key in dictionary.keys():
+                response['value'][key] = DictionaryEncoder.auto_encode_to_dictionary(dictionary[key])
 
         return response
 
@@ -101,16 +102,14 @@ class DictionaryEncoder:
         all_arguments = inspect.getmembers(obj)
         code_all_arguments = inspect.getmembers(obj.__code__)
         arguments = [argument for argument in all_arguments if argument[0] in constants.ATTRIBUTES_OF_FUNCTION]
-        code_args = [code_argument for code_argument in code_all_arguments if
-                     code_argument[0] in constants.ATTRIBUTES_OF_CODE_ATTRIBUTE]
+        code_args = [code_argument for code_argument in code_all_arguments if code_argument[0] in constants.ATTRIBUTES_OF_CODE_ATTRIBUTE]
         for argument in arguments:
             if argument[0] != "__code__":
                 body["value"].update({argument[0]: DictionaryEncoder.auto_encode_to_dictionary(argument[1])})
             else:
                 body["value"].update({"__code__": {}})
                 for code_arg in code_args:
-                    body["value"]["__code__"].update(
-                        {code_arg[0]: DictionaryEncoder.auto_encode_to_dictionary(code_arg[1])})
+                    body["value"]["__code__"].update({code_arg[0]: DictionaryEncoder.auto_encode_to_dictionary(code_arg[1])})
 
         globs_vals = {}
         globs = obj.__getattribute__("__globals__")
@@ -128,17 +127,3 @@ class DictionaryEncoder:
         body["value"].update({"__globals__": globs_vals_serialized})
 
         return body
-
-    @staticmethod
-    def __get_closure_globals(item, globals_response: dict) -> None:
-        if hasattr(item, '__code__'):
-            code_object = item.__code__
-
-            for co_const in code_object.co_consts:
-                DictionaryEncoder.__get_closure_globals(co_const, globals_response)
-
-            for co_name in code_object.co_names:
-                if co_name in item.__globals__.keys() and co_name != item.__name__:
-                    globals_response[co_name] = item.__globals__[co_name]
-                elif co_name in dir(builtins):
-                    globals_response[co_name] = getattr(builtins, co_name)

@@ -30,6 +30,10 @@ class JsonParser:
             response['value'] = JsonParser.__parse_list_or_tuple(object_value_str, object_type_str)
         elif object_type_str == constants.DICTIONARY_DESIGNATION:
             response['value'] = JsonParser.__parse_dictionary(object_value_str)
+        elif object_type_str == constants.FUNCTION_DESIGNATION:
+            response['value'] = JsonParser.auto_parse_from_string_to_dictionary(object_value_str)
+        else:
+            raise Exception(f'JsonParser error: invalid format in JSON - unknown type: {object_type_str}')
 
         return response
 
@@ -103,7 +107,7 @@ class JsonParser:
 
             if depth_level == 0 and (quotes_count >= 2) and (index > pair_beginning_index) and has_met_brackets:
                 single_pair_string: str = source[pair_beginning_index:index+1]
-                key_string: str = re.findall('"([A-Za-z0-9]+)"', single_pair_string)[0]
+                key_string: str = re.findall('"([A-Za-z0-9_]+)"', single_pair_string)[0]
                 value_string: str = single_pair_string[3 + len(key_string):len(single_pair_string)]
                 response.append((key_string, value_string))
                 pair_beginning_index = index + 2

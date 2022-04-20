@@ -57,6 +57,12 @@ class TestJsonPacker(unittest.TestCase):
             self.json_packer.dump(dictionary, self.output_file)
             self.assertEqual(dictionary, self.json_packer.load(self.output_file))
 
+    def test_complex_dictionaries_and_lists(self):
+        for obj in SOME_MORE_COMPLEX:
+            self.assertEqual(obj, self.json_packer.loads(self.json_packer.dumps(obj)))
+            self.json_packer.dump(obj, self.output_file)
+            self.assertEqual(obj, self.json_packer.load(self.output_file))
+
 
 if __name__ == '__test_cases__':
     unittest.main()

@@ -1,4 +1,6 @@
-from library.formats.dictionary.dictionary_encoder import DictionaryEncoder
+import math
+
+from library.formats.dictionary.dictionary_decoder import DictionaryDecoder
 from library.ipacker import IPacker
 from library.packer import Packer
 from library.packer import PackerType
@@ -7,20 +9,15 @@ from library.packer import PackerType
 def main() -> None:
     json_packer: IPacker = Packer.create_serializer(PackerType.JSON)
 
-    test_dict: dict = {
-        'a': 5,
-        'c': [5, 6, 7],
-        'key': True,
-        '5': {'a': False}
-    }
+    c: int = 42
 
     def test() -> None:
-        print(42)
+        print(c)
+        print(math.pi)
 
-    array = [True, 2, 3, 4]
-    json = json_packer.dumps([])
-    print(json)
-    print(json_packer.loads(json))
+    json = json_packer.dump(test, 'test_output.json')
+    parsed = json_packer.load('test_output.json')
+    print(parsed)
 
 
 if __name__ == '__main__':
