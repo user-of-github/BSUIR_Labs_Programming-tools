@@ -95,24 +95,28 @@ class DictionaryEncoder:
 
     @staticmethod
     def __transform_function_to_dictionary(obj) -> dict:
-        body: dict = dict()
+        response: dict = dict()
 
-        body["type"] = "function"
-        body["value"] = {}
-        all_arguments = inspect.getmembers(obj)
-        code_all_arguments = inspect.getmembers(obj.__code__)
-        arguments = [argument for argument in all_arguments if argument[0] in constants.ATTRIBUTES_OF_FUNCTION]
-        code_args = [code_argument for code_argument in code_all_arguments if code_argument[0] in constants.ATTRIBUTES_OF_CODE_ATTRIBUTE]
+        response['type'] = 'function'
+        response['value'] = dict()
+
+        all_arguments: list = inspect.getmembers(obj)
+        code_all_arguments: list = inspect.getmembers(obj.__code__)
+        arguments: list = [argument for argument in all_arguments if argument[0] in constants.ATTRIBUTES_OF_FUNCTION]
+        code_args: list = [code_argument for code_argument in code_all_arguments if
+                           code_argument[0] in constants.ATTRIBUTES_OF_CODE_ATTRIBUTE]
+
         for argument in arguments:
-            if argument[0] != "__code__":
-                body["value"].update({argument[0]: DictionaryEncoder.auto_encode_to_dictionary(argument[1])})
+            if argument[0] != '__code__':
+                response['value'].update({argument[0]: DictionaryEncoder.auto_encode_to_dictionary(argument[1])})
             else:
-                body["value"].update({"__code__": {}})
+                response['value'].update({'__code__': {}})
                 for code_arg in code_args:
-                    body["value"]["__code__"].update({code_arg[0]: DictionaryEncoder.auto_encode_to_dictionary(code_arg[1])})
+                    response['value']['__code__'].update(
+                        {code_arg[0]: DictionaryEncoder.auto_encode_to_dictionary(code_arg[1])})
 
         globs_vals = {}
-        globs = obj.__getattribute__("__globals__")
+        globs = obj.__getattribute__('__globals__')
         func_glob_args = obj.__code__.co_names
         modules_names = []
         for func_glob_arg in func_glob_args:
@@ -122,8 +126,8 @@ class DictionaryEncoder:
                 else:
                     globs_vals.update({func_glob_arg: globs[func_glob_arg]})
 
-        globs_vals.update({"__modules": modules_names})
+        globs_vals.update({'__modules': modules_names})
         globs_vals_serialized = DictionaryEncoder.auto_encode_to_dictionary(globs_vals)
-        body["value"].update({"__globals__": globs_vals_serialized})
+        response['value'].update({'__globals__': globs_vals_serialized})
 
-        return body
+        return response

@@ -62,7 +62,3 @@ class TestJsonPacker(unittest.TestCase):
             self.assertEqual(obj, self.json_packer.loads(self.json_packer.dumps(obj)))
             self.json_packer.dump(obj, self.output_file)
             self.assertEqual(obj, self.json_packer.load(self.output_file))
-
-
-if __name__ == '__test_cases__':
-    unittest.main()

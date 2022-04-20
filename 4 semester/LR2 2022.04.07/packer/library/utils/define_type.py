@@ -4,13 +4,7 @@ import inspect
 class DefineType:
     @staticmethod
     def is_primitive(to_check) -> bool:
-        if isinstance(to_check, int):
-            return True
-        elif isinstance(to_check, float):
-            return True
-        elif isinstance(to_check, str):
-            return True
-        elif isinstance(to_check, bool):
+        if isinstance(to_check, (int, float, str, bool)):
             return True
         elif to_check is None:
             return True
@@ -27,4 +21,4 @@ class DefineType:
 
     @staticmethod
     def is_function(to_check) -> bool:
-        return inspect.isroutine(to_check) or inspect.isfunction(to_check)
+        return inspect.isroutine(to_check)
