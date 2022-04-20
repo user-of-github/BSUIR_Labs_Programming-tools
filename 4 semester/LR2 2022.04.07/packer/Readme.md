@@ -30,7 +30,7 @@ __[Percentage of code coverage is shown at the beginning of this Readme.md]__
    2. _To generate pretty HTML-report with results (coverage) run command `coverage html`_
    
 
-___For myself I wrote a [short bash script](test.sh). It also generates coverage badge for this `Readme.md`. Uses `coverage-badge`___  
+___For myself I wrote a [short bash script](test.sh). It generates coverage badge for this `Readme.md` and html-report. Uses `coverage-badge` library___  
 &nbsp;    
 
 
