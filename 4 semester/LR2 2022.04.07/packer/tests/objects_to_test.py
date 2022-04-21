@@ -20,3 +20,9 @@ SOME_MORE_COMPLEX: list = [
     [[[5, 6], True], False, True, 2022, [{}, [], {'field': [1, 2, 3]}], None, {'key': None}],
     [('key with value', [1]), {'author': 'User2022', 'message': 'Hi there ! How are you ? Greetings from April, 2022'}]
 ]
+
+GLOBAL_INT: int = 42
+
+
+def SIMPLE_FUNCTION_1(a: int, b: int) -> int:
+    return (a * b) + GLOBAL_INT

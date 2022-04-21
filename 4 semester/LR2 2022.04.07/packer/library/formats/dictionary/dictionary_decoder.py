@@ -1,3 +1,4 @@
+import types
 from typing import Union
 
 from library.utils import constants
@@ -27,10 +28,11 @@ class DictionaryDecoder:
         elif source['type'] == constants.DICTIONARY_DESIGNATION:
             return DictionaryDecoder.__decode_dictionary(source['value'])
         elif source['type'] == constants.FUNCTION_DESIGNATION:
-            return DictionaryDecoder.auto_decode_to_object({
-                'type': 'dict',
-                'value': DictionaryDecoder.auto_decode_to_object(source['value']['value']['value'])
-            })
+            return DictionaryDecoder.__decode_function(source)
+        elif source['type'] == constants.BYTES_DESIGNATION:
+            return bytes.fromhex(source['value'])
+        elif source['type'] == constants.CELL_DESIGNATION:
+            return None
         else:
             raise Exception(f'DictionaryDecoder error: unknown type: {source["type"]}')
 
@@ -54,3 +56,18 @@ class DictionaryDecoder:
             response[key] = DictionaryDecoder.auto_decode_to_object(source[key])
 
         return response
+
+    @staticmethod
+    def __decode_function(source: dict):
+        data_to_create_function: dict = DictionaryDecoder.auto_decode_to_object({
+            'type': 'dict',
+            'value': DictionaryDecoder.auto_decode_to_object(source['value']['value']['value'])
+        })
+
+        code_object: list = list()
+        for attr in constants.ATTRIBUTES_OF_CODE_ATTRIBUTE:
+            code_object.append(data_to_create_function['__code__'][attr])
+
+        code: types.CodeType = types.CodeType(*tuple(code_object))
+
+        return types.FunctionType(code, data_to_create_function['__globals__'])

@@ -1,7 +1,10 @@
 import math
+import types
+
 from library.ipacker import IPacker
 from library.packer import Packer
 from library.packer import PackerType
+from library.utils.constants import ATTRIBUTES_OF_CODE_ATTRIBUTE
 
 
 def main() -> None:
@@ -9,13 +12,15 @@ def main() -> None:
 
     c: int = 42
 
-    def test() -> None:
-        print(c)
-        print(math.pi)
+    def test(a: int) -> int:
+        return a
 
     json_packer.dump(test, 'test_output.json')
     parsed = json_packer.load('test_output.json')
-    print(parsed)
+
+
+
+    print(func(100))
 
 
 if __name__ == '__main__':

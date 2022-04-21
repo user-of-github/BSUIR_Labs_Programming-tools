@@ -1,4 +1,5 @@
 import inspect
+import types
 
 
 class DefineType:
@@ -22,3 +23,11 @@ class DefineType:
     @staticmethod
     def is_function(to_check) -> bool:
         return inspect.isroutine(to_check)
+
+    @staticmethod
+    def is_bytes(to_check) -> bool:
+        return isinstance(to_check, (bytes, bytearray))
+
+    @staticmethod
+    def is_cell(to_check) -> bool:
+        return isinstance(to_check, types.CellType)

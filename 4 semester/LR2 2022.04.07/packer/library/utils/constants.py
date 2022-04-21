@@ -10,6 +10,9 @@ CLASS_DESIGNATION: str = 'class'
 LIST_DESIGNATION: str = 'list'
 TUPLE_DESIGNATION: str = 'tuple'
 DICTIONARY_DESIGNATION: str = 'dict'
+BYTES_DESIGNATION: str = 'bytes'
+
+CELL_DESIGNATION: str = 'cell'
 
 ATTRIBUTES_OF_FUNCTION: list[str] = ['__name__', '__code__', '__defaults__', '__closure__']
 

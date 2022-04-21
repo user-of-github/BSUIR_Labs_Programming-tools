@@ -62,3 +62,15 @@ class TestJsonPacker(unittest.TestCase):
             self.assertEqual(obj, self.json_packer.loads(self.json_packer.dumps(obj)))
             self.json_packer.dump(obj, self.output_file)
             self.assertEqual(obj, self.json_packer.load(self.output_file))
+
+    def test_functions(self):
+        self.assertEqual(
+            SIMPLE_FUNCTION_1(2022, -2),
+            self.json_packer.loads(self.json_packer.dumps(SIMPLE_FUNCTION_1))(2022, -2)
+        )
+
+        self.json_packer.dump(SIMPLE_FUNCTION_1, self.output_file)
+        self.assertEqual(
+            SIMPLE_FUNCTION_1(2022, -2),
+            self.json_packer.load(self.output_file)(2022, -2)
+        )
