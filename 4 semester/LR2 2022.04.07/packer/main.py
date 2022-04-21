@@ -1,5 +1,4 @@
-import math
-import types
+import importlib
 
 from library.ipacker import IPacker
 from library.packer import Packer
@@ -12,15 +11,17 @@ def main() -> None:
 
     c: int = 42
 
-    def test(a: int) -> int:
-        return a
+    def test(a: float) -> None:
+        print(c)
 
     json_packer.dump(test, 'test_output.json')
-    parsed = json_packer.load('test_output.json')
+
+    a = importlib.import_module('math')
+    print(a.sin(5))
 
 
 
-    print(func(100))
+
 
 
 if __name__ == '__main__':

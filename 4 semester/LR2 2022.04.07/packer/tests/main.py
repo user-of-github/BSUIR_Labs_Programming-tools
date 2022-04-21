@@ -74,3 +74,25 @@ class TestJsonPacker(unittest.TestCase):
             SIMPLE_FUNCTION_1(2022, -2),
             self.json_packer.load(self.output_file)(2022, -2)
         )
+
+        self.assertEqual(
+            SIMPLE_FUNCTION_2(2022, 2022),
+            self.json_packer.loads(self.json_packer.dumps(SIMPLE_FUNCTION_2))(2022, 2022)
+        )
+
+        self.json_packer.dump(SIMPLE_FUNCTION_2, self.output_file)
+        self.assertEqual(
+            SIMPLE_FUNCTION_2(2022, -2),
+            self.json_packer.load(self.output_file)(2022, -2)
+        )
+
+        self.assertEqual(
+            COUNT_AND_PRINT_SINUS(2022),
+            self.json_packer.loads(self.json_packer.dumps(COUNT_AND_PRINT_SINUS))(2022)
+        )
+
+        self.json_packer.dump(COUNT_AND_PRINT_SINUS, self.output_file)
+        self.assertEqual(
+            COUNT_AND_PRINT_SINUS(2022),
+            self.json_packer.load(self.output_file)(2022)
+        )

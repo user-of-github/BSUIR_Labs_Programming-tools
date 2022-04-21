@@ -1,3 +1,5 @@
+import builtins
+import importlib
 import types
 from typing import Union
 
@@ -70,4 +72,15 @@ class DictionaryDecoder:
 
         code: types.CodeType = types.CodeType(*tuple(code_object))
 
-        return types.FunctionType(code, data_to_create_function['__globals__'])
+        for name in code.co_names:
+            print('NAME ', name)
+            if builtins.__dict__.get(name) == 42:
+                try:
+                    builtins.__dict__[name] = importlib.import_module(name)
+                except ModuleNotFoundError:
+                    builtins.__dict__[name] = 42
+
+        globals_dict: dict = dict(data_to_create_function['__globals__'])
+        globals_dict['__builtins__'] = __builtins__
+
+        return types.FunctionType(code, globals_dict)

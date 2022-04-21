@@ -1,3 +1,5 @@
+import math
+
 TEST_INTS: list[int] = [1, 2, 3, 4, 0, -1, 19999, -2022, 2022, 123456789]
 
 TEST_FLOATS: list[float] = [1.0005, -2.1234, 3.0258480, 2022.20222022, 6, 7, -8, 0, 0.000]
@@ -26,3 +28,16 @@ GLOBAL_INT: int = 42
 
 def SIMPLE_FUNCTION_1(a: int, b: int) -> int:
     return (a * b) + GLOBAL_INT
+
+
+def SIMPLE_FUNCTION_2(a: int, b: int) -> int:
+    print(GLOBAL_INT)
+    return (a * b) + GLOBAL_INT
+
+
+GLOBAL_INT_2: int = 1
+
+
+def COUNT_AND_PRINT_SINUS(argument: float) -> float:
+    print(f'Sinus of {argument} is: ', math.sin(argument))
+    return math.sin(argument * GLOBAL_INT_2) * GLOBAL_INT_2
