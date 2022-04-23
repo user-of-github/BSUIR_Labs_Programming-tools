@@ -1,3 +1,4 @@
+import math
 import unittest
 
 from library.ipacker import IPacker
@@ -87,12 +88,23 @@ class TestJsonPacker(unittest.TestCase):
         )
 
         self.assertEqual(
-            COUNT_AND_PRINT_SINUS(2022),
-            self.json_packer.loads(self.json_packer.dumps(COUNT_AND_PRINT_SINUS))(2022)
+            MORE_COMPLEX_FUNCTION(2022),
+            self.json_packer.loads(self.json_packer.dumps(MORE_COMPLEX_FUNCTION))(2022)
         )
 
-        self.json_packer.dump(COUNT_AND_PRINT_SINUS, self.output_file)
+        self.json_packer.dump(MORE_COMPLEX_FUNCTION, self.output_file)
         self.assertEqual(
-            COUNT_AND_PRINT_SINUS(2022),
-            self.json_packer.load(self.output_file)(2022)
+            MORE_COMPLEX_FUNCTION(math.pi / 2),
+            self.json_packer.load(self.output_file)(math.pi / 2)
+        )
+
+        self.assertEqual(
+            MEGA_COMPLEX_FUNCTION([5, 4, 3, 2, 1]),
+            self.json_packer.loads(self.json_packer.dumps(MEGA_COMPLEX_FUNCTION))([5, 4, 3, 2, 1])
+        )
+
+        self.json_packer.dump(MEGA_COMPLEX_FUNCTION, self.output_file)
+        self.assertEqual(
+            MEGA_COMPLEX_FUNCTION([2022, 2021, 2020, 2019, 0, -5]),
+            self.json_packer.load(self.output_file)([2022, 2021, 2020, 2019, 0, -5])
         )

@@ -1,5 +1,3 @@
-import base64
-import builtins
 import inspect
 import types
 from typing import Union
@@ -107,21 +105,18 @@ class DictionaryEncoder:
         response['type'] = 'function'
         response['value'] = dict()
 
-        all_arguments: list = inspect.getmembers(function)
-        code_all_arguments: list = inspect.getmembers(function.__code__)
-        arguments: list = [argument for argument in all_arguments if argument[0] in constants.ATTRIBUTES_OF_FUNCTION]
-        code_args: list = [code_argument for code_argument in code_all_arguments if
-                           code_argument[0] in constants.ATTRIBUTES_OF_CODE_ATTRIBUTE]
+        response['value']['__name__'] = DictionaryEncoder.auto_encode_to_dictionary(function.__name__)
+        response['value']['__defaults__'] = DictionaryEncoder.auto_encode_to_dictionary(function.__defaults__)
+        response['value']['__closure__'] = DictionaryEncoder.auto_encode_to_dictionary(function.__closure__)
+        response['value']['__code__'] = dict()
 
-        for argument in arguments:
-            if argument[0] != '__code__':
-                response['value'].update({argument[0]: DictionaryEncoder.auto_encode_to_dictionary(argument[1])})
-            else:
-                response['value'].update({'__code__': {}})
+        code_args: list = list(filter(
+            lambda arg: arg[0] in constants.ATTRIBUTES_OF_CODE_ATTRIBUTE,
+            inspect.getmembers(function.__code__)
+        ))
 
-                for code_arg in code_args:
-                    response['value']['__code__'].update(
-                        {code_arg[0]: DictionaryEncoder.auto_encode_to_dictionary(code_arg[1])})
+        for code_arg in code_args:
+            response['value']['__code__'][code_arg[0]] = DictionaryEncoder.auto_encode_to_dictionary(code_arg[1])
 
         globs_vals: dict = dict()
         globs = function.__getattribute__('__globals__')
@@ -133,11 +128,10 @@ class DictionaryEncoder:
                 if isinstance(globs[func_glob_arg], types.ModuleType):
                     modules_names.append(func_glob_arg)
                 else:
-                    globs_vals.update({func_glob_arg: globs[func_glob_arg]})
+                    globs_vals[func_glob_arg] = globs[func_glob_arg]
 
-        globs_vals.update({'__modules': modules_names})
-        globs_vals_serialized: dict = DictionaryEncoder.auto_encode_to_dictionary(globs_vals)
-        response['value'].update({'__globals__': globs_vals_serialized})
+        globs_vals['__modules'] = modules_names
+        response['value']['__globals__'] = DictionaryEncoder.auto_encode_to_dictionary(globs_vals)
 
         return response
 

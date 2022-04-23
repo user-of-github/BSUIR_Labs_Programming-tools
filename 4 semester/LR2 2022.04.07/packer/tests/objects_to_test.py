@@ -1,4 +1,5 @@
 import math
+import sys
 
 TEST_INTS: list[int] = [1, 2, 3, 4, 0, -1, 19999, -2022, 2022, 123456789]
 
@@ -31,13 +32,27 @@ def SIMPLE_FUNCTION_1(a: int, b: int) -> int:
 
 
 def SIMPLE_FUNCTION_2(a: int, b: int) -> int:
-    print(GLOBAL_INT)
     return (a * b) + GLOBAL_INT
 
 
 GLOBAL_INT_2: int = 1
 
 
-def COUNT_AND_PRINT_SINUS(argument: float) -> float:
-    print(f'Sinus of {argument} is: ', math.sin(argument))
-    return math.sin(argument * GLOBAL_INT_2) * GLOBAL_INT_2
+def MORE_COMPLEX_FUNCTION(argument: float) -> (float, int):
+    # print(f'SINUS of {argument} = ', math.sin(argument))
+    return math.sin(argument), sys.getsizeof(argument)
+
+
+GLOBAL_STRING: str = 'Hello from user-of-github !!!'
+
+
+def MEGA_COMPLEX_FUNCTION(array: list[int]) -> (list, int, str):
+    sorted_response: list = list(array)
+    sorted_response.sort()
+
+    sum_response: int = 0
+
+    for item in sorted_response:
+        sum_response += item
+
+    return sorted_response, sum_response, GLOBAL_STRING

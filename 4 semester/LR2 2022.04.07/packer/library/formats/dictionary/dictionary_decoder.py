@@ -70,17 +70,12 @@ class DictionaryDecoder:
         for attr in constants.ATTRIBUTES_OF_CODE_ATTRIBUTE:
             code_object.append(data_to_create_function['__code__'][attr])
 
-        code: types.CodeType = types.CodeType(*tuple(code_object))
+        code: types.CodeType = types.CodeType(*code_object)
 
-        for name in code.co_names:
-            print('NAME ', name)
-            if builtins.__dict__.get(name) == 42:
-                try:
-                    builtins.__dict__[name] = importlib.import_module(name)
-                except ModuleNotFoundError:
-                    builtins.__dict__[name] = 42
+        for module_name in data_to_create_function['__globals__']['__modules']:
+            builtins.__dict__[module_name] = importlib.import_module(module_name)
 
-        globals_dict: dict = dict(data_to_create_function['__globals__'])
+        globals_dict: dict = data_to_create_function['__globals__']
         globals_dict['__builtins__'] = __builtins__
 
         return types.FunctionType(code, globals_dict)
