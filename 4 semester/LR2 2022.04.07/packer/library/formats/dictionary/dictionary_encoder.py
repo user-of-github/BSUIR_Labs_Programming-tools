@@ -110,7 +110,7 @@ class DictionaryEncoder:
         response['value']['__name__'] = DictionaryEncoder.auto_encode_to_dictionary(function.__name__)
         response['value']['__defaults__'] = DictionaryEncoder.auto_encode_to_dictionary(function.__defaults__)
         response['value']['__closure__'] = DictionaryEncoder.auto_encode_to_dictionary(function.__closure__)
-        response['value']['__code__'] = DictionaryEncoder.__encode_code_type(function.__code__)
+        response['value']['__code__'] = DictionaryEncoder.auto_encode_to_dictionary(function.__code__)
 
         globs_vals: dict = dict()
         globs = function.__getattribute__('__globals__')
