@@ -35,6 +35,8 @@ class DictionaryDecoder:
             return bytes.fromhex(source['value'])
         elif source['type'] == constants.CELL_DESIGNATION:
             return None
+        elif source['type'] == constants.CODE_DESIGNATION:
+            return DictionaryDecoder.__decode_code_type(source['value'])
         else:
             raise Exception(f'DictionaryDecoder error: unknown type: {source["type"]}')
 
@@ -60,22 +62,29 @@ class DictionaryDecoder:
         return response
 
     @staticmethod
-    def __decode_function(source: dict):
-        data_to_create_function: dict = DictionaryDecoder.auto_decode_to_object({
-            'type': 'dict',
-            'value': DictionaryDecoder.auto_decode_to_object(source['value']['value']['value'])
-        })
+    def __decode_function(source: dict) -> types.FunctionType:
+        data_to_create_function: dict = DictionaryDecoder.__decode_dictionary(
+            source['value']['value']['value']['value'])
 
-        code_object: list = list()
-        for attr in constants.ATTRIBUTES_OF_CODE_ATTRIBUTE:
-            code_object.append(data_to_create_function['__code__'][attr])
+        code: types.CodeType = DictionaryDecoder.__decode_code_type(data_to_create_function['__code__']['value'])
 
-        code: types.CodeType = types.CodeType(*code_object)
-
-        for module_name in data_to_create_function['__globals__']['__modules']:
+        for module_name in DictionaryDecoder.auto_decode_to_object(data_to_create_function['__globals__'])['__modules']:
             builtins.__dict__[module_name] = importlib.import_module(module_name)
 
-        globals_dict: dict = data_to_create_function['__globals__']
+        globals_dict: dict = DictionaryDecoder.__decode_dictionary(data_to_create_function['__globals__']['value'])
         globals_dict['__builtins__'] = __builtins__
 
         return types.FunctionType(code, globals_dict)
+
+    @staticmethod
+    def __decode_code_type(source_dict: dict) -> types.CodeType:
+        source: dict = source_dict
+
+        code_object: list = list()
+
+        for attr in constants.ATTRIBUTES_OF_CODE_ATTRIBUTE:
+            code_object.append(DictionaryDecoder.auto_decode_to_object(source[attr]))
+
+        response: types.CodeType = types.CodeType(*code_object)
+
+        return response

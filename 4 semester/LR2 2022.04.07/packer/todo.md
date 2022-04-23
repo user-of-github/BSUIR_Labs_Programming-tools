@@ -1,14 +1,15 @@
 ### Current tasks to do:  
 
 
-* [x] [not exactly] Convert functions to dictionary  
+* [x] Convert functions to dictionary  
 * [ ] Convert classes types to dictionary  
 * [ ] Convert instances to dictionary  
 * [ ] Parse string to dictionary
   * [x] Simple types (dicts, strs, lists ...)  
   * [ ] Complex: 
-    * [x] [not exactly] functions
-    * [ ] classes  
+    * [x] functions
+    * [ ] classes
+    * [ ] codetype
 * [ ] CodeStyle, refactor  
 * [ ] YAML  
 * [ ] TOML  

@@ -35,7 +35,9 @@ class JsonParser:
         elif object_type_str == constants.BYTES_DESIGNATION:
             response['value'] = object_value_str[1:-1]
         elif object_type_str == constants.CELL_DESIGNATION:
-            response['value'] = None # !!!!!!!!!!!1
+            response['value'] = None # !!!!!!!!!!!
+        elif object_type_str == constants.CODE_DESIGNATION:
+            response['value'] = JsonParser.auto_parse_from_string_to_dictionary(object_value_str)
         else:
             raise Exception(f'JsonParser error: invalid format in JSON - unknown type: {object_type_str}')
 

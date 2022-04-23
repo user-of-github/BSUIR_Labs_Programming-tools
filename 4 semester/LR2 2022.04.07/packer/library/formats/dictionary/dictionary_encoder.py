@@ -21,6 +21,8 @@ class DictionaryEncoder:
             return DictionaryEncoder.__encode_bytes(to_serialize)
         elif DefineType.is_cell(to_serialize):
             return DictionaryEncoder.__encode_cell(to_serialize)
+        elif DefineType.is_code(to_serialize):
+            return DictionaryEncoder.__encode_code_type(to_serialize)
         else:
             raise Exception(f'DictionaryEncoder error: {to_serialize} : {type(to_serialize)} - unknown type')
 
@@ -108,15 +110,7 @@ class DictionaryEncoder:
         response['value']['__name__'] = DictionaryEncoder.auto_encode_to_dictionary(function.__name__)
         response['value']['__defaults__'] = DictionaryEncoder.auto_encode_to_dictionary(function.__defaults__)
         response['value']['__closure__'] = DictionaryEncoder.auto_encode_to_dictionary(function.__closure__)
-        response['value']['__code__'] = dict()
-
-        code_args: list = list(filter(
-            lambda arg: arg[0] in constants.ATTRIBUTES_OF_CODE_ATTRIBUTE,
-            inspect.getmembers(function.__code__)
-        ))
-
-        for code_arg in code_args:
-            response['value']['__code__'][code_arg[0]] = DictionaryEncoder.auto_encode_to_dictionary(code_arg[1])
+        response['value']['__code__'] = DictionaryEncoder.__encode_code_type(function.__code__)
 
         globs_vals: dict = dict()
         globs = function.__getattribute__('__globals__')
@@ -150,5 +144,22 @@ class DictionaryEncoder:
 
         response['type'] = constants.CELL_DESIGNATION
         response['value'] = str(cell)
+
+        return response
+
+    @staticmethod
+    def __encode_code_type(code: types.CodeType) -> dict:
+        response: dict = dict()
+
+        response['key'] = constants.CODE_DESIGNATION
+        response['value'] = dict()
+
+        code_args: list = list(filter(
+            lambda arg: arg[0] in constants.ATTRIBUTES_OF_CODE_ATTRIBUTE,
+            inspect.getmembers(code)
+        ))
+
+        for code_arg in code_args:
+            response['value'][code_arg[0]] = DictionaryEncoder.auto_encode_to_dictionary(code_arg[1])
 
         return response

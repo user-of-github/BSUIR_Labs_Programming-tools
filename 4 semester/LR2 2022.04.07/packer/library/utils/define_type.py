@@ -31,3 +31,7 @@ class DefineType:
     @staticmethod
     def is_cell(to_check) -> bool:
         return isinstance(to_check, types.CellType)
+
+    @staticmethod
+    def is_code(to_check) -> bool:
+        return isinstance(to_check, types.CodeType)
