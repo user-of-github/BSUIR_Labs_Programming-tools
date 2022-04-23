@@ -15,9 +15,7 @@ BYTES_DESIGNATION: str = 'bytes'
 CELL_DESIGNATION: str = 'cell'
 CODE_DESIGNATION: str = 'code'
 
-ATTRIBUTES_OF_FUNCTION: list[str] = ['__name__', '__code__', '__defaults__', '__closure__']
-
-ATTRIBUTES_OF_CODE_ATTRIBUTE: list[str] = [
+ATTRIBUTES_OF_CODE_TYPE: list[str] = [
     'co_argcount',
     'co_posonlyargcount',
     'co_kwonlyargcount',
@@ -36,5 +34,4 @@ ATTRIBUTES_OF_CODE_ATTRIBUTE: list[str] = [
     'co_cellvars'
 ]
 
-
-SYMBOLS_TO_REPLACE_SPACE_IN_STRINGS: str = '#&$'
+SYMBOLS_TO_REPLACE_SPACE_IN_STRINGS: str = '#&$%'

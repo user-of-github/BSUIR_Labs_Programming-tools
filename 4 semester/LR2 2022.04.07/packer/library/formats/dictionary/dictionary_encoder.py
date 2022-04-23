@@ -19,8 +19,6 @@ class DictionaryEncoder:
             return DictionaryEncoder.__encode_function(to_serialize)
         elif DefineType.is_bytes(to_serialize):
             return DictionaryEncoder.__encode_bytes(to_serialize)
-        elif DefineType.is_cell(to_serialize):
-            return DictionaryEncoder.__encode_cell(to_serialize)
         elif DefineType.is_code(to_serialize):
             return DictionaryEncoder.__encode_code_type(to_serialize)
         else:
@@ -104,7 +102,7 @@ class DictionaryEncoder:
     def __transform_function_to_dictionary(function) -> dict:
         response: dict = dict()
 
-        response['type'] = 'function'
+        response['type'] = constants.FUNCTION_DESIGNATION
         response['value'] = dict()
 
         response['value']['__name__'] = DictionaryEncoder.auto_encode_to_dictionary(function.__name__)
@@ -139,15 +137,6 @@ class DictionaryEncoder:
         return response
 
     @staticmethod
-    def __encode_cell(cell: types.CellType) -> dict:
-        response: dict = dict()
-
-        response['type'] = constants.CELL_DESIGNATION
-        response['value'] = str(cell)
-
-        return response
-
-    @staticmethod
     def __encode_code_type(code: types.CodeType) -> dict:
         response: dict = dict()
 
@@ -155,7 +144,7 @@ class DictionaryEncoder:
         response['value'] = dict()
 
         code_args: list = list(filter(
-            lambda arg: arg[0] in constants.ATTRIBUTES_OF_CODE_ATTRIBUTE,
+            lambda arg: arg[0] in constants.ATTRIBUTES_OF_CODE_TYPE,
             inspect.getmembers(code)
         ))
 

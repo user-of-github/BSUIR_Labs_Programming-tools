@@ -1,9 +1,6 @@
-import importlib
-
 from library.ipacker import IPacker
 from library.packer import Packer
 from library.packer import PackerType
-from library.utils.constants import ATTRIBUTES_OF_CODE_ATTRIBUTE
 
 
 GLOBAL_INT: int = 4

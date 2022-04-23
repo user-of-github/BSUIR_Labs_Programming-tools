@@ -34,8 +34,6 @@ class JsonParser:
             response['value'] = JsonParser.auto_parse_from_string_to_dictionary(object_value_str)
         elif object_type_str == constants.BYTES_DESIGNATION:
             response['value'] = object_value_str[1:-1]
-        elif object_type_str == constants.CELL_DESIGNATION:
-            response['value'] = None # !!!!!!!!!!!
         elif object_type_str == constants.CODE_DESIGNATION:
             response['value'] = JsonParser.auto_parse_from_string_to_dictionary(object_value_str)
         else:
