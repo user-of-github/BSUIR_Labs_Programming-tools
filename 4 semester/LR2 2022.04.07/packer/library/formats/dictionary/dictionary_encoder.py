@@ -21,6 +21,8 @@ class DictionaryEncoder:
             return DictionaryEncoder.__encode_bytes(to_serialize)
         elif DefineType.is_code(to_serialize):
             return DictionaryEncoder.__encode_code_type(to_serialize)
+        elif DefineType.is_class(to_serialize):
+            return DictionaryEncoder.__encode_custom_user_class(to_serialize)
         else:
             raise Exception(f'DictionaryEncoder error: {to_serialize} : {type(to_serialize)} - unknown type')
 
@@ -112,10 +114,10 @@ class DictionaryEncoder:
 
         globs_vals: dict = dict()
         globs = function.__getattribute__('__globals__')
-        func_glob_args = function.__code__.co_names
+
         modules_names: list = list()
 
-        for func_glob_arg in func_glob_args:
+        for func_glob_arg in function.__code__.co_names:
             if func_glob_arg in globs:
                 if isinstance(globs[func_glob_arg], types.ModuleType):
                     modules_names.append(func_glob_arg)
@@ -150,5 +152,43 @@ class DictionaryEncoder:
 
         for code_arg in code_args:
             response['value'][code_arg[0]] = DictionaryEncoder.auto_encode_to_dictionary(code_arg[1])
+
+        return response
+
+    @staticmethod
+    def __encode_custom_user_class(user_class) -> dict:
+        response: dict = dict()
+
+        methods_names: list = list(filter(
+            lambda method: callable(getattr(user_class, method))
+                           and method not in constants.UNNECESSARY_CLASS_ATTRIBUTES,
+            dir(user_class)
+        ))
+
+        value: dict = dict()
+
+        methods: list = list()
+
+        for method_name in methods_names:
+            methods.append(getattr(user_class, method_name))
+
+        static_variables_names: list = list(filter(
+            lambda static_var_name: not callable(getattr(user_class, static_var_name))
+                                    and static_var_name not in constants.UNNECESSARY_CLASS_ATTRIBUTES,
+            dir(user_class)
+        ))
+
+        static_variables: dict = dict()
+
+        for var_name in static_variables_names:
+            static_variables[var_name] = getattr(user_class, var_name)
+
+        value['methods'] = methods
+        value['name'] = user_class.__name__
+        value['static_variables'] = dict()
+
+        response['type'] = constants.CLASS_DESIGNATION
+        response['value'] = dict()
+        response['value'] = DictionaryEncoder.auto_encode_to_dictionary(value)
 
         return response

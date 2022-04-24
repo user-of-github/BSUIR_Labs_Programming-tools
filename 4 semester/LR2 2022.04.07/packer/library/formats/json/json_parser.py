@@ -11,6 +11,13 @@ class JsonParser:
 
         source: str = re.sub(re.compile(r'\s+'), '', string_source)
 
+        regex_result = re.findall('"type":"([a-z]+)"', source)
+
+        if len(regex_result) == 0:
+            response['type'] = constants.DICTIONARY_DESIGNATION
+            response['value'] = JsonParser.__parse_dictionary(source)
+            return response
+
         object_type_str: str = re.findall('"type":"([a-z]+)"', source)[0]
         object_value_str: str = source[19 + len(object_type_str):len(source) - 1]
 
@@ -35,6 +42,8 @@ class JsonParser:
         elif object_type_str == constants.BYTES_DESIGNATION:
             response['value'] = object_value_str[1:-1]
         elif object_type_str == constants.CODE_DESIGNATION:
+            response['value'] = JsonParser.auto_parse_from_string_to_dictionary(object_value_str)
+        elif object_type_str == constants.CLASS_DESIGNATION:
             response['value'] = JsonParser.auto_parse_from_string_to_dictionary(object_value_str)
         else:
             raise Exception(f'JsonParser error: invalid format in JSON - unknown type: {object_type_str}')
@@ -110,7 +119,7 @@ class JsonParser:
                 quotes_count += 1
 
             if depth_level == 0 and (quotes_count >= 2) and (index > pair_beginning_index) and has_met_brackets:
-                single_pair_string: str = source[pair_beginning_index:index+1]
+                single_pair_string: str = source[pair_beginning_index:index + 1]
                 key_string: str = re.findall('"([A-Za-z0-9_]+)"', single_pair_string)[0]
                 value_string: str = single_pair_string[3 + len(key_string):len(single_pair_string)]
                 response.append((key_string, value_string))

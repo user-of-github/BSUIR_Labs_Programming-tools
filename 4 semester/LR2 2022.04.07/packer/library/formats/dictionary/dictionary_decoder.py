@@ -9,9 +9,6 @@ from library.utils import constants
 class DictionaryDecoder:
     @staticmethod
     def auto_decode_to_object(source: dict):
-        if 'type' not in source:
-            return DictionaryDecoder.__decode_dictionary(source)
-
         if source['type'] == constants.INT_DESIGNATION:
             return source['value']
         elif source['type'] == constants.FLOAT_DESIGNATION:
@@ -32,6 +29,9 @@ class DictionaryDecoder:
             return bytes.fromhex(source['value'])
         elif source['type'] == constants.CODE_DESIGNATION:
             return DictionaryDecoder.__decode_code_type(source['value'])
+        elif source['type'] == constants.CLASS_DESIGNATION:
+            # print(source)
+            return DictionaryDecoder.__decode_class(source['value'])
         else:
             raise Exception(f'DictionaryDecoder error: unknown type: {source["type"]}')
 
@@ -71,7 +71,9 @@ class DictionaryDecoder:
         globals_dict: dict = DictionaryDecoder.__decode_dictionary(function_dictionary['__globals__']['value'])
         globals_dict['__builtins__'] = __builtins__
 
-        return types.FunctionType(code, globals_dict)
+        function_name: str = DictionaryDecoder.auto_decode_to_object(function_dictionary['__name__'])
+
+        return types.FunctionType(code, globals_dict, function_name)
 
     @staticmethod
     def __decode_code_type(source: dict) -> types.CodeType:
@@ -81,5 +83,27 @@ class DictionaryDecoder:
             code_object.append(DictionaryDecoder.auto_decode_to_object(source[attr]))
 
         response: types.CodeType = types.CodeType(*code_object)
+
+        return response
+
+    @staticmethod
+    def __decode_class(initial_source: dict):
+        source: dict = initial_source['value']
+
+        name: str = DictionaryDecoder.auto_decode_to_object(source['name'])
+
+
+        def temp(self):
+            pass
+
+        decoded_functions = DictionaryDecoder.__decode_list_or_tuple(source['methods'])
+
+        methods: dict = dict()
+
+        for method in decoded_functions:
+            methods[method.__name__] = method
+
+
+        response = type(name, (object,), methods)
 
         return response

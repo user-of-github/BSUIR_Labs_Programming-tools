@@ -35,3 +35,7 @@ class DefineType:
     @staticmethod
     def is_code(to_check) -> bool:
         return isinstance(to_check, types.CodeType)
+
+    @staticmethod
+    def is_class(to_check) -> bool:
+        return inspect.isclass(to_check)

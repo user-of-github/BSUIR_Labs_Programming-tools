@@ -18,7 +18,9 @@ TEST_DICTIONARIES: list[dict] = [{}, {'a': 'b', 'c': 'd'}, {'a': 25.5, 'b': Fals
 
 TEST_TUPLES: list[tuple] = [(1, 2, 3), (True, '2022 test', 5), (), (5, 7, 5.2, False)]
 
-SOME_MORE_COMPLEX: list = [
+TEST_BYTES: list[bytes] = [b'\x00\x00\x00\x00\x00']
+
+TEST_COMPLEX_STRUCTS: list = [
     [{'a': 2022, 'b': 4, 'c': 20, 'd': False}, True, None, 2022.0001],
     {'field1': True, 'field2': [1, 2, 3, {'a': True}], 'field3': {'field3_1': '   2022.0420   ', 'field3_2': 19}},
     [[[5, 6], True], False, True, 2022, [{}, [], {'field': [1, 2, 3]}], None, {'key': None}],
