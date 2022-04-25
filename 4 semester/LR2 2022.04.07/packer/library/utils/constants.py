@@ -6,6 +6,7 @@ STR_DESIGNATION: str = 'str'
 
 FUNCTION_DESIGNATION: str = 'function'
 CLASS_DESIGNATION: str = 'class'
+INSTANCE_DESIGNATION: str = 'instance'
 
 LIST_DESIGNATION: str = 'list'
 TUPLE_DESIGNATION: str = 'tuple'

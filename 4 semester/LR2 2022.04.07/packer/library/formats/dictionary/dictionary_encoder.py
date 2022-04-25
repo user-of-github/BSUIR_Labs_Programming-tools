@@ -24,7 +24,7 @@ class DictionaryEncoder:
         elif DefineType.is_class(to_serialize):
             return DictionaryEncoder.__encode_custom_user_class(to_serialize)
         else:
-            raise Exception(f'DictionaryEncoder error: {to_serialize} : {type(to_serialize)} - unknown type')
+            return DictionaryEncoder.__encode_instance(to_serialize)
 
     @staticmethod
     def __encode_basic_primitive(to_serialize: Union[int, float, str, bool, None]) -> dict:
@@ -190,5 +190,27 @@ class DictionaryEncoder:
         response['type'] = constants.CLASS_DESIGNATION
         response['value'] = dict()
         response['value'] = DictionaryEncoder.auto_encode_to_dictionary(value)
+
+        return response
+
+    @staticmethod
+    def __encode_instance(instance) -> dict:
+        response: dict = dict()
+
+        response['type'] = constants.INSTANCE_DESIGNATION
+        response['value'] = dict()
+
+        response['value']['class'] = DictionaryEncoder.auto_encode_to_dictionary(instance.__class__)
+
+        fields: list = list()
+
+        for code_arg in inspect.getmembers(instance.__class__.__init__.__code__):
+            if code_arg[0] == 'co_names':
+                for name in code_arg[1]:
+                    fields.append(instance.__dict__[name])
+
+                break
+
+        response['value']['fields'] = DictionaryEncoder.auto_encode_to_dictionary(fields)
 
         return response

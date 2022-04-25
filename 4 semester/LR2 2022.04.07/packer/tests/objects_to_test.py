@@ -1,13 +1,12 @@
 import math
 import sys
-from random import random
 
 TEST_INTS: list[int] = [1, 2, 3, 4, 0, -1, 19999, -2022, 2022, 123456789]
 
 TEST_FLOATS: list[float] = [1.0005, -2.1234, 3.0258480, 2022.20222022, 6, 7, -8, 0, 0.000]
 
 TEST_STRINGS: list[str] = ['', 'some string', 'string with spaces', '    ',
-                           '   string with Lots spaces and numbers: 1424848   ']
+                           '   string with Lots spaces and numbers: 1424848   ', ""]
 
 TEST_BOOLEANS: list[bool] = [True, False]
 
@@ -59,6 +58,7 @@ def MEGA_COMPLEX_FUNCTION(array: list[int]) -> (list, int, int, str, (float, int
 
     return sorted_response, sum_response, sum(array), GLOBAL_STRING, MORE_COMPLEX_FUNCTION(42)
 
+
 class Test:
     static_var_example = 42
 
@@ -70,6 +70,9 @@ class Test:
         print('hello from foo !')
         print(f'Check if we can use globals from class: {GLOBAL_STRING}')
         self.some_funct()
+
+    def change_age(self):
+        self._age += 1
 
     def some_funct(self):
         print('Hello from some_funct !, ', self.__name)

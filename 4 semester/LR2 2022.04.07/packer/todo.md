@@ -2,14 +2,14 @@
 
 
 * [x] Convert functions to dictionary  
-* [ ] Convert classes types to dictionary  
-* [ ] Convert instances to dictionary  
-* [ ] Parse string to dictionary
+* [x] Convert classes types to dictionary  
+* [x] Convert instances to dictionary  
+* [x] Parse string to dictionary
   * [x] Simple types (dicts, strs, lists ...)  
-  * [ ] Complex: 
+  * [x] Complex: 
     * [x] functions
-    * [ ] classes
-    * [ ] codetype
+    * [x] classes
+    * [x] codetype
 * [ ] CodeStyle, refactor  
 * [ ] YAML  
 * [ ] TOML  

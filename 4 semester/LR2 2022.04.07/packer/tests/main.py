@@ -122,5 +122,17 @@ class TestJsonPacker(unittest.TestCase):
         NewTest = self.json_packer.loads(json)
 
         second_instance: NewTest = NewTest('John', 19)
+
         self.assertEqual(str(second_instance), str(first_instance))
         self.assertEqual(Test.static_var_example, NewTest.static_var_example)
+
+    def test_instances(self):
+        first_instance: Test = Test('John', 19)
+
+        second_instance = self.json_packer.loads(self.json_packer.dumps(first_instance))
+
+        self.assertEqual(str(first_instance), str(second_instance))
+
+        second_instance.change_age()
+
+        self.assertNotEqual(str(first_instance), str(second_instance))

@@ -1,3 +1,4 @@
+import inspect
 import types
 
 from library.ipacker import IPacker
@@ -9,7 +10,7 @@ class Test:
 
     def __init__(self, name: str, age: int):
         self.__name = name
-        self._age = age
+        self.age = age
 
     def foo(self):
         print('hello from foo !')
@@ -19,7 +20,8 @@ class Test:
         print('Hello from some_funct !, ', self.__name)
 
     def __str__(self):
-        return f'Person: name = {self.__name}, age: {self._age}'
+        self.kek = 'kek'
+        return f'Person: name = {self.__name}, age: {self.age}'
 
 
 def main() -> None:
@@ -27,10 +29,14 @@ def main() -> None:
 
     json_packer.dump(Test, 'test_output.json')
 
-    Cl = json_packer.load('test_output.json')
-
-    kek = Cl('kek', 52)
+    kek = Test('name', 2)
     print(kek)
+
+    json_packer.dump(kek, 'test_output.json')
+    kek2 = json_packer.load('test_output.json')
+
+    kek.age = 10
+    print(kek2, kek)
 
 
 if __name__ == '__main__':

@@ -31,6 +31,8 @@ class DictionaryDecoder:
             return DictionaryDecoder.__decode_code_type(source['value'])
         elif source['type'] == constants.CLASS_DESIGNATION:
             return DictionaryDecoder.__decode_class(source['value'])
+        elif source['type'] == constants.INSTANCE_DESIGNATION:
+            return DictionaryDecoder.__decode_instance(source['value'])
         else:
             raise Exception(f'DictionaryDecoder error: unknown type: {source["type"]}')
 
@@ -105,3 +107,10 @@ class DictionaryDecoder:
         response = type(name, (), methods_and_static_vars)
 
         return response
+
+    @staticmethod
+    def __decode_instance(source: dict):
+        decoded_class = DictionaryDecoder.auto_decode_to_object(source['class'])
+        decoded_params = DictionaryDecoder.auto_decode_to_object(source['fields'])
+
+        return decoded_class(*decoded_params)
