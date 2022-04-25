@@ -58,3 +58,21 @@ def MEGA_COMPLEX_FUNCTION(array: list[int]) -> (list, int, int, str, (float, int
         sum_response += item
 
     return sorted_response, sum_response, sum(array), GLOBAL_STRING, MORE_COMPLEX_FUNCTION(42)
+
+class Test:
+    static_var_example = 42
+
+    def __init__(self, name: str, age: int):
+        self.__name = name
+        self._age = age
+
+    def foo(self):
+        print('hello from foo !')
+        print(f'Check if we can use globals from class: {GLOBAL_STRING}')
+        self.some_funct()
+
+    def some_funct(self):
+        print('Hello from some_funct !, ', self.__name)
+
+    def __str__(self):
+        return f'Person: name = {self.__name}, age: {self._age}'

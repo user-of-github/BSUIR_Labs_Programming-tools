@@ -30,7 +30,6 @@ class DictionaryDecoder:
         elif source['type'] == constants.CODE_DESIGNATION:
             return DictionaryDecoder.__decode_code_type(source['value'])
         elif source['type'] == constants.CLASS_DESIGNATION:
-            # print(source)
             return DictionaryDecoder.__decode_class(source['value'])
         else:
             raise Exception(f'DictionaryDecoder error: unknown type: {source["type"]}')
@@ -60,6 +59,8 @@ class DictionaryDecoder:
     def __decode_function(source: dict) -> types.FunctionType:
         function_dictionary: dict = DictionaryDecoder.__decode_dictionary(source['value']['value']['value']['value'])
 
+        function_name: str = DictionaryDecoder.auto_decode_to_object(function_dictionary['__name__'])
+
         code: types.CodeType = DictionaryDecoder.auto_decode_to_object({
             'type': constants.CODE_DESIGNATION,
             'value': function_dictionary['__code__']['value']
@@ -70,8 +71,6 @@ class DictionaryDecoder:
 
         globals_dict: dict = DictionaryDecoder.__decode_dictionary(function_dictionary['__globals__']['value'])
         globals_dict['__builtins__'] = __builtins__
-
-        function_name: str = DictionaryDecoder.auto_decode_to_object(function_dictionary['__name__'])
 
         return types.FunctionType(code, globals_dict, function_name)
 
@@ -92,18 +91,17 @@ class DictionaryDecoder:
 
         name: str = DictionaryDecoder.auto_decode_to_object(source['name'])
 
-
-        def temp(self):
-            pass
-
         decoded_functions = DictionaryDecoder.__decode_list_or_tuple(source['methods'])
 
-        methods: dict = dict()
+        methods_and_static_vars: dict = dict()
+
+        decoded_static_variables: dict = DictionaryDecoder.auto_decode_to_object(source['static_variables'])
+        for static in decoded_static_variables:
+            methods_and_static_vars[static] = decoded_static_variables[static]
 
         for method in decoded_functions:
-            methods[method.__name__] = method
+            methods_and_static_vars[method.__name__] = method
 
-
-        response = type(name, (object,), methods)
+        response = type(name, (), methods_and_static_vars)
 
         return response

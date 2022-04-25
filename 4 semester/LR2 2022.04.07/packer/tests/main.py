@@ -114,3 +114,13 @@ class TestJsonPacker(unittest.TestCase):
             MEGA_COMPLEX_FUNCTION([2022, 2021, 2020, 2019, 0, -5]),
             self.json_packer.load(self.output_file)([2022, 2021, 2020, 2019, 0, -5])
         )
+
+    def test_classes(self):
+        first_instance: Test = Test('John', 19)
+
+        json: str = self.json_packer.dumps(Test)
+        NewTest = self.json_packer.loads(json)
+
+        second_instance: NewTest = NewTest('John', 19)
+        self.assertEqual(str(second_instance), str(first_instance))
+        self.assertEqual(Test.static_var_example, NewTest.static_var_example)

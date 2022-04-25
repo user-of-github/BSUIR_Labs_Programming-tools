@@ -185,7 +185,7 @@ class DictionaryEncoder:
 
         value['methods'] = methods
         value['name'] = user_class.__name__
-        value['static_variables'] = dict()
+        value['static_variables'] = static_variables
 
         response['type'] = constants.CLASS_DESIGNATION
         response['value'] = dict()

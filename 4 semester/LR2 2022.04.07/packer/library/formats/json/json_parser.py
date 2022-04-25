@@ -11,13 +11,6 @@ class JsonParser:
 
         source: str = re.sub(re.compile(r'\s+'), '', string_source)
 
-        regex_result = re.findall('"type":"([a-z]+)"', source)
-
-        if len(regex_result) == 0:
-            response['type'] = constants.DICTIONARY_DESIGNATION
-            response['value'] = JsonParser.__parse_dictionary(source)
-            return response
-
         object_type_str: str = re.findall('"type":"([a-z]+)"', source)[0]
         object_value_str: str = source[19 + len(object_type_str):len(source) - 1]
 
