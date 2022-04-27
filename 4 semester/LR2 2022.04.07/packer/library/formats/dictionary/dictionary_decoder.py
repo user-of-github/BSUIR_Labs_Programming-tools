@@ -16,7 +16,7 @@ class DictionaryDecoder:
         elif source['type'] == constants.STR_DESIGNATION:
             return str(source['value']).replace(constants.SYMBOLS_TO_REPLACE_SPACE_IN_STRINGS, ' ')
         elif source['type'] == constants.BOOL_DESIGNATION:
-            return source['value']
+            return source['value'] if isinstance(source['value'], bool) else True if source['value'] == 'True' else False
         elif source['type'] == constants.NONE_DESIGNATION:
             return None
         elif source['type'] == constants.LIST_DESIGNATION or source['type'] == constants.TUPLE_DESIGNATION:

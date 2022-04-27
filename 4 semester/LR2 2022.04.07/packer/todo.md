@@ -11,8 +11,8 @@
     * [x] classes
     * [x] codetype
 * [ ] CodeStyle, refactor  
-* [ ] YAML  
-* [ ] TOML  
+* [x] YAML  
+* [x] TOML  
 * [x] Unit Tests setup
 * [x] Readme badge
 * [ ] setup.py  

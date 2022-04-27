@@ -1,9 +1,12 @@
 import inspect
 import types
+import toml
 
+from library.formats.dictionary.dictionary_encoder import DictionaryEncoder
 from library.ipacker import IPacker
 from library.packer import Packer
 from library.packer import PackerType
+
 
 class Test:
     static_var_example = 42
@@ -25,9 +28,11 @@ class Test:
 
 
 def main() -> None:
+    yaml_packer: IPacker = Packer.create_serializer(PackerType.YAML)
     json_packer: IPacker = Packer.create_serializer(PackerType.JSON)
+    toml_packer: IPacker = Packer.create_serializer(PackerType.TOML)
 
-    json_packer.dump(Test, 'test_output.json')
+    '''json_packer.dump(Test, 'test_output.json')
 
     kek = Test('name', 2)
     print(kek)
@@ -37,6 +42,12 @@ def main() -> None:
 
     kek.age = 10
     print(kek2, kek)
+    '''
+
+    arr = [1, 2, 3, [1, 2, 3, []], None]
+
+    #toml.dump(5, 'test_output.toml')
+    #print(toml.load('test_output.toml'))
 
 
 if __name__ == '__main__':
