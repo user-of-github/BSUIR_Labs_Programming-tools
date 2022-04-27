@@ -12,7 +12,7 @@
 #### JSON:
 
 All kinds of objects are transformed to dictionary with help of `DictionaryEncoder` class. Even primitives.   
-Example: `test_variable: int = 42` => `{ type: 'int', value: 42}`. Complex objects are simplified and transformed to
+Example: `test_variable: int = 42` => `{type: 'int', value: 42}`. Complex objects are simplified and transformed to
 dictionaries of primitives. And dictionary with usual primitives can be easily serialized just with `str(dictionary)`.  
 Now about decoding. I have a string with a view like: `'{ "type": "int", "value": 42}'`. I parse it with __my self-made
 JSON-parser__ and form the same dictionary as I had before serialization. Then this dictionary is computed

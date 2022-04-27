@@ -1,11 +1,6 @@
-import inspect
-import types
-import toml
-
-from library.formats.dictionary.dictionary_encoder import DictionaryEncoder
-from library.ipacker import IPacker
-from library.packer import Packer
-from library.packer import PackerType
+from packer.ipacker import IPacker
+from packer.packer import Packer
+from packer.packer import PackerType
 
 
 class Test:

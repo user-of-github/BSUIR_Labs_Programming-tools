@@ -2,8 +2,8 @@ import inspect
 import types
 from typing import Union
 
-from library.utils import constants
-from library.utils.define_type import DefineType
+from packer.utils import constants
+from packer.utils.define_type import DefineType
 
 
 class DictionaryEncoder:

@@ -1,8 +1,8 @@
 from enum import Enum
-from library.ipacker import IPacker
-from library.formats.json.json_packer import JsonPacker
-from library.formats.yaml.yaml_packer import YamlPacker
-from library.formats.toml.toml_packer import TomlPacker
+from packer.ipacker import IPacker
+from packer.formats.json.json_packer import JsonPacker
+from packer.formats.yaml.yaml_packer import YamlPacker
+from packer.formats.toml.toml_packer import TomlPacker
 
 
 class PackerType(Enum):

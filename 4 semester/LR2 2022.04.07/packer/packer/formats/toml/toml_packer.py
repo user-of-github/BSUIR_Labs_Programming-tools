@@ -1,8 +1,8 @@
 import toml
 
-from library.formats.dictionary.dictionary_decoder import DictionaryDecoder
-from library.formats.dictionary.dictionary_encoder import DictionaryEncoder
-from library.ipacker import IPacker
+from packer.formats.dictionary.dictionary_decoder import DictionaryDecoder
+from packer.formats.dictionary.dictionary_encoder import DictionaryEncoder
+from packer.ipacker import IPacker
 
 
 class TomlPacker(IPacker):

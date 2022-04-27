@@ -1,7 +1,7 @@
-from library.formats.dictionary.dictionary_decoder import DictionaryDecoder
-from library.formats.dictionary.dictionary_encoder import DictionaryEncoder
-from library.formats.json.json_parser import JsonParser
-from library.ipacker import IPacker
+from packer.formats.dictionary.dictionary_decoder import DictionaryDecoder
+from packer.formats.dictionary.dictionary_encoder import DictionaryEncoder
+from packer.formats.json.json_parser import JsonParser
+from packer.ipacker import IPacker
 
 
 class JsonPacker(IPacker):

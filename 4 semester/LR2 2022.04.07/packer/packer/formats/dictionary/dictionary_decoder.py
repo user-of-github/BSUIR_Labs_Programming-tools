@@ -3,7 +3,7 @@ import importlib
 import types
 from typing import Union
 
-from library.utils import constants
+from packer.utils import constants
 
 
 class DictionaryDecoder:
