@@ -1,0 +1,14 @@
+htmlcov/
+.coverage
+output.json
+test_output.json
+test.json
+test_output.*
+test_output.yaml
+test_output.txt
+packerByUserOfGithub.egg-info/
+dist/
+venv/
+.idea/
+packer.egg-info/
+build/

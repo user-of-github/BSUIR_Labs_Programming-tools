@@ -7,10 +7,6 @@ obj/
 Debug/
 
 
-/Library
-*/Library
-Library
-
 *.sln
 *.csproj
 *.user
@@ -68,3 +64,5 @@ docs/_build/
 target/
 
 .ropeproject
+.drawio
+*.drawio
