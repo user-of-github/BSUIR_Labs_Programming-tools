@@ -1,7 +1,7 @@
 import unittest
 
 from packer.ipacker import IPacker
-from packer.packer import PackerType, Packer
+from packer.packer_main import PackerType, Packer
 from tests.objects_to_test import *
 
 

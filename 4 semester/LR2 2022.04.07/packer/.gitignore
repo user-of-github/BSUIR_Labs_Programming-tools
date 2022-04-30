@@ -10,3 +10,5 @@ packerByUserOfGithub.egg-info/
 dist/
 venv/
 .idea/
+packer.egg-info/
+build/

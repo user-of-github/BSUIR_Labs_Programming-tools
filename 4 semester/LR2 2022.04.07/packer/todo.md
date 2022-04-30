@@ -15,6 +15,6 @@
 * [x] TOML  
 * [x] Unit Tests setup
 * [x] Readme badge
-* [ ] setup.py  
+* [x] setup.py  
 * [ ] Move 'value' and 'type' literals to constants  
 * [ ] Move all the literals in regular expressions to constants

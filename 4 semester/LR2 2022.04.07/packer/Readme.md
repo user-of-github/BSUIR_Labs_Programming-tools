@@ -27,9 +27,12 @@ parsing to dictionary.
 
 &nbsp;
 
-### To run console utility from source folder:  
-1. _From `packer` (root) folder:_  
-2. `python console_utility.py <SOURCE FILE NAME> <DESTINATION FILE NAME> <SOURCE FORMAT> <DESTINATION FORMAT>`  
+### To run console utility from source folder:
+
+1. _From `packer` (root) folder:_
+2. `python console_utility.py <SOURCE FILE NAME> <DESTINATION FILE NAME> <SOURCE FORMAT> <DESTINATION FORMAT>`
+3. _Example: `python .\console_utility.py test_output.json test_output.yaml json yaml`_
+
 ### To run tests:
 
 __[Percentage of code coverage is shown at the beginning of this Readme.md]__

@@ -1,6 +1,6 @@
 from packer.ipacker import IPacker
-from packer.packer import Packer
-from packer.packer import PackerType
+from packer.packer_main import Packer
+from packer.packer_main import PackerType
 
 
 class Test:
@@ -27,22 +27,7 @@ def main() -> None:
     json_packer: IPacker = Packer.create_serializer(PackerType.JSON)
     toml_packer: IPacker = Packer.create_serializer(PackerType.TOML)
 
-    '''json_packer.dump(Test, 'test_output.json')
-
-    kek = Test('name', 2)
-    print(kek)
-
-    json_packer.dump(kek, 'test_output.json')
-    kek2 = json_packer.load('test_output.json')
-
-    kek.age = 10
-    print(kek2, kek)
-    '''
-
-    arr = [1, 2, 3, [1, 2, 3, []], None]
-
-    #toml.dump(5, 'test_output.toml')
-    #print(toml.load('test_output.toml'))
+    json_packer.dump(Test, 'test_output.json')
 
 
 if __name__ == '__main__':
