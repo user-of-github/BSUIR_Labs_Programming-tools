@@ -1,7 +1,4 @@
-import json
-
 from django.forms import model_to_dict
-from django.http import HttpResponse
 from rest_framework import views
 from rest_framework.response import Response
 from rest_framework.request import Request
@@ -10,8 +7,12 @@ from .models import Movie
 
 class MoviesAPIView(views.APIView):
     def get(self, request: Request) -> Response:
-        print(request.query_params)
-        return Response({'posts': []})
+        response: list = list()
+
+        for item in Movie.objects.all():
+            response.append(model_to_dict(item))
+
+        return Response({'posts': response})
 
 
 class MovieAPIView(views.APIView):
