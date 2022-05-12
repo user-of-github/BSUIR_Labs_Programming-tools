@@ -6,13 +6,33 @@ from .models import Movie
 
 
 class MoviesAPIView(views.APIView):
-    def get(self, request: Request) -> Response:
-        response: list = list()
+    STATUS_SUCCESS_RETURNED: str = 'Successfully returned movies'
+    STATUS_SUCCESS_BUT_RETURNED_LESS: str = 'Successfully returned, but only available part'
+    STATUS_ERROR_INVALID_QUERY: str = 'Nothing to return. Invalid query'
 
-        for item in Movie.objects.all():
-            response.append(model_to_dict(item))
+    def get(self, request: Request, load_from: int = 0, load_to: int = 4) -> Response:
+        response: dict = dict()
 
-        return Response({'posts': response})
+        all_movies: list = list(Movie.objects.all())
+
+        real_load_to: int = min(len(all_movies), max(0, load_to) + 1)
+
+        if 0 <= load_from <= real_load_to <= len(all_movies):
+            response['success'] = True
+            response['data'] = [model_to_dict(item) for item in all_movies[load_from:real_load_to]]
+            response['howManyLeft'] = len(all_movies) - real_load_to
+
+            if real_load_to != load_to:
+                response['status'] = MoviesAPIView.STATUS_SUCCESS_BUT_RETURNED_LESS
+            else:
+                response['status'] = MoviesAPIView.STATUS_SUCCESS_RETURNED
+        else:
+            response['success'] = False
+            response['data'] = list()
+            response['status'] = MoviesAPIView.STATUS_ERROR_INVALID_QUERY
+            response['howManyLeft'] = 0
+
+        return Response(response)
 
 
 class MovieAPIView(views.APIView):
@@ -31,4 +51,3 @@ class MovieAPIView(views.APIView):
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Headers': '*'
         })
-
