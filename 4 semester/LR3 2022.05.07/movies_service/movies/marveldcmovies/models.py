@@ -11,4 +11,10 @@ class Movie(models.Model):
     poster_image_link = models.CharField(max_length=500)
     duration = models.SmallIntegerField()
     age_restriction = models.SmallIntegerField()
-    
+    visits_count = models.IntegerField(default=0)
+
+
+class MovieTheater(models.Model):
+    title = models.CharField(max_length=200)
+    address = models.CharField(max_length=300)
+    link_to_google_maps_location = models.CharField(max_length=600)

@@ -1,9 +1,9 @@
-from django.forms import model_to_dict
 from rest_framework import views
 from rest_framework.response import Response
 from rest_framework.request import Request
-from .models import Movie
-from .serializers import MovieShortenSerializer
+from .models import Movie, MovieTheater
+from .serializers import MovieShortenSerializer, MovieFullSerializer, MovieTheaterSerializer
+from django.db.models import F
 
 
 class MoviesAPIView(views.APIView):
@@ -37,18 +37,35 @@ class MoviesAPIView(views.APIView):
 
 
 class MovieAPIView(views.APIView):
-    def get(self, request: Request) -> Response:
-        query_parameter_id: str = request.query_params.get('id')
+    def get(self, request: Request, searched_id: str) -> Response:
+        response: dict = dict()
 
-        found_in_database: list = Movie.objects.filter(movie_id=query_parameter_id)
+        found_in_database = Movie.objects.filter(movie_id=searched_id)
 
         if len(found_in_database) == 0:
-            movie_to_return = None
-        else:
-            movie_to_return = model_to_dict(found_in_database[0])
+            response['success'] = False
+            response['data'] = None
+        elif len(found_in_database) == 1:
+            found_in_database.update(visits_count=F('visits_count') + 1)
+            response['success'] = True
+            response['data'] = MovieFullSerializer(found_in_database[0]).data
 
-        return Response(movie_to_return, headers={
-            'Access-Control-Allow-Methods': 'GET, POST, PUT',
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Headers': '*'
-        })
+        return Response(response)
+
+
+class PopularMoviesAPIView(views.APIView):
+    DEFAULT_POPULAR_MOVIES_COUNT: int = 4
+
+    def get(self, request: Request) -> Response:
+        all_movies = Movie.objects.all()
+
+        return_count: int = min(PopularMoviesAPIView.DEFAULT_POPULAR_MOVIES_COUNT, len(all_movies))
+
+        popular_movies = all_movies.order_by('-visits_count')[:return_count]
+
+        return Response({'data': MovieShortenSerializer(popular_movies, many=True).data})
+
+
+class MovieTheatersAPIView(views.APIView):
+    def get(self, request: Request) -> Response:
+        return Response({'data': MovieTheaterSerializer(MovieTheater.objects.all(), many=True)})
