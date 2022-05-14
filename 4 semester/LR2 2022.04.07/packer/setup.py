@@ -1,5 +1,5 @@
 from setuptools import setup, find_packages
-
+import parser
 
 setup(
     name='new_name_to_test',
