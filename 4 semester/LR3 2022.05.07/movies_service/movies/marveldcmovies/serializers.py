@@ -24,4 +24,5 @@ class MovieFullSerializer(serializers.Serializer):
 class MovieTheaterSerializer(serializers.Serializer):
     title = serializers.CharField(max_length=200)
     address = serializers.CharField(max_length=300)
-    link_to_google_maps_location = serializers.CharField(max_length=600)
+    location = serializers.CharField(max_length=600)
+    photo = serializers.CharField(max_length=600)

@@ -68,4 +68,21 @@ class PopularMoviesAPIView(views.APIView):
 
 class MovieTheatersAPIView(views.APIView):
     def get(self, request: Request) -> Response:
-        return Response({'data': MovieTheaterSerializer(MovieTheater.objects.all(), many=True)})
+        return Response({'data': MovieTheaterSerializer(MovieTheater.objects.all(), many=True).data})
+
+
+class MovieTheaterAPIView(views.APIView):
+    def get(self, request: Request, searched_title: str) -> Response:
+        response: dict = dict()
+
+        found_in_database = MovieTheater.objects.filter(title=searched_title)
+
+        if len(found_in_database) == 0:
+            response['success'] = False
+            response['data'] = None
+        elif len(found_in_database) == 1:
+            found_in_database.update(visits_count=F('visits_count') + 1)
+            response['success'] = True
+            response['data'] = MovieTheaterSerializer(found_in_database[0]).data
+
+        return Response(response)

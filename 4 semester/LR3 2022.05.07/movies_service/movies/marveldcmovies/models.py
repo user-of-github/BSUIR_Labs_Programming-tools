@@ -17,4 +17,6 @@ class Movie(models.Model):
 class MovieTheater(models.Model):
     title = models.CharField(max_length=200)
     address = models.CharField(max_length=300)
-    link_to_google_maps_location = models.CharField(max_length=600)
+    location = models.CharField(max_length=600)
+    photo = models.CharField(max_length=600, default='photo')
+    visits_count = models.IntegerField(default=0)
