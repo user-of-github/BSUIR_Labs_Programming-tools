@@ -20,3 +20,4 @@ class MovieTheater(models.Model):
     location = models.CharField(max_length=600)
     photo = models.CharField(max_length=600, default='photo')
     visits_count = models.IntegerField(default=0)
+    movies = models.ManyToManyField(Movie)

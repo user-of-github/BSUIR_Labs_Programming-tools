@@ -86,3 +86,10 @@ class MovieTheaterAPIView(views.APIView):
             response['data'] = MovieTheaterSerializer(found_in_database[0]).data
 
         return Response(response)
+
+
+class MostPopularMovieTheaterAPIView(views.APIView):
+    def get(self, request: Request) -> Response:
+        return Response({
+            'data': MovieTheaterSerializer(MovieTheater.objects.all().order_by('-visits_count')[:2], many=True).data
+        })

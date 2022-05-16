@@ -26,3 +26,4 @@ class MovieTheaterSerializer(serializers.Serializer):
     address = serializers.CharField(max_length=300)
     location = serializers.CharField(max_length=600)
     photo = serializers.CharField(max_length=600)
+
