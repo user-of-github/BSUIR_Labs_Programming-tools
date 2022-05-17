@@ -1,3 +1,6 @@
+import json
+
+from django.forms import model_to_dict
 from rest_framework import views
 from rest_framework.response import Response
 from rest_framework.request import Request
@@ -93,3 +96,17 @@ class MostPopularMovieTheaterAPIView(views.APIView):
         return Response({
             'data': MovieTheaterSerializer(MovieTheater.objects.all().order_by('-visits_count')[:2], many=True).data
         })
+
+
+class MoviesByIdsAPIView(views.APIView):
+    def get(self, request: Request) -> Response:
+        ids_list: list = list(request.query_params.get('ids').split(','))
+
+        all_movies = Movie.objects
+
+        response: list = list()
+
+        for movie_db_id in ids_list:
+            response.append(MovieShortenSerializer(all_movies.filter(id=movie_db_id)[0]).data)
+
+        return Response({'data': response})

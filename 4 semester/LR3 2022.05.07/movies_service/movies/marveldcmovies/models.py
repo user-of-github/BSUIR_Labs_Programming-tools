@@ -1,6 +1,13 @@
 from django.db import models
 
 
+class CinematicUniverse(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f'Cinematic Universe - {self.name}'
+
+
 class Movie(models.Model):
     title = models.CharField(max_length=200)
     year = models.IntegerField()
@@ -12,6 +19,10 @@ class Movie(models.Model):
     duration = models.SmallIntegerField()
     age_restriction = models.SmallIntegerField()
     visits_count = models.IntegerField(default=0)
+    category = models.ForeignKey('CinematicUniverse', on_delete=models.PROTECT, null=True)
+
+    def __str__(self):
+        return f'Movie - {self.title}'
 
 
 class MovieTheater(models.Model):
@@ -21,3 +32,6 @@ class MovieTheater(models.Model):
     photo = models.CharField(max_length=600, default='photo')
     visits_count = models.IntegerField(default=0)
     movies = models.ManyToManyField(Movie)
+
+    def __str__(self):
+        return f'Movie theater - {self.title}'

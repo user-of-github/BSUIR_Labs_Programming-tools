@@ -1,29 +1,22 @@
 from rest_framework import serializers
 
-
-class MovieShortenSerializer(serializers.Serializer):
-    title = serializers.CharField(max_length=200)
-    movie_id = serializers.CharField(max_length=50)
-    date_from = serializers.DateField()
-    date_to = serializers.DateField()
-    poster_image_link = serializers.CharField(max_length=500)
+from marveldcmovies.models import MovieTheater, Movie
 
 
-class MovieFullSerializer(serializers.Serializer):
-    title = serializers.CharField(max_length=200)
-    year = serializers.IntegerField()
-    movie_id = serializers.CharField(max_length=50)
-    date_from = serializers.DateField()
-    date_to = serializers.DateField()
-    rating = serializers.IntegerField()
-    poster_image_link = serializers.CharField(max_length=500)
-    duration = serializers.IntegerField()
-    age_restriction = serializers.IntegerField()
+class MovieShortenSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Movie
+        fields = ['title', 'movie_id', 'date_from', 'date_to', 'poster_image_link']
 
 
-class MovieTheaterSerializer(serializers.Serializer):
-    title = serializers.CharField(max_length=200)
-    address = serializers.CharField(max_length=300)
-    location = serializers.CharField(max_length=600)
-    photo = serializers.CharField(max_length=600)
+class MovieFullSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Movie
+        exclude = ['id', 'visits_count']
+
+
+class MovieTheaterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MovieTheater
+        exclude = ['visits_count', 'id']
 
