@@ -30,6 +30,7 @@ class MovieTheater(models.Model):
     address = models.CharField(max_length=300)
     location = models.CharField(max_length=600)
     photo = models.CharField(max_length=600, default='photo')
+    telephone = models.CharField(max_length=80, default='+375')
     visits_count = models.IntegerField(default=0)
     movies = models.ManyToManyField(Movie)
 

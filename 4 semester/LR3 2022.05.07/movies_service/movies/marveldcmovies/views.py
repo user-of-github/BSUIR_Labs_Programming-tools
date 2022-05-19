@@ -110,3 +110,31 @@ class MoviesByIdsAPIView(views.APIView):
             response.append(MovieShortenSerializer(all_movies.filter(id=movie_db_id)[0]).data)
 
         return Response({'data': response})
+
+
+class TheatersForMovieAPIView(views.APIView):
+    def get(self, request: Request, movie_to_search_theaters: str) -> Response:
+        found_in_database = Movie.objects.filter(movie_id=movie_to_search_theaters)
+
+        if len(found_in_database) == 0:
+            return Response({'success': False, 'status': 'No such movie exists', 'data': []})
+
+        field_id_for_movie = Movie._meta.get_field('id')
+        field_movie_id_for_movie = Movie._meta.get_field('movie_id')
+
+        real_db_id: str = field_id_for_movie.value_from_object(found_in_database.first())
+
+        according_theaters: list = list()
+
+        field_movies_in_theater = MovieTheater._meta.get_field('movies')
+
+        for theater in MovieTheater.objects.all():
+            movies_in_this_theater = field_movies_in_theater.value_from_object(theater)
+            print(movies_in_this_theater)
+
+            for movie in movies_in_this_theater:
+                if field_movie_id_for_movie.value_from_object(movie) == movie_to_search_theaters:
+                    according_theaters.append(MovieTheaterSerializer(theater).data)
+                    break
+
+        return Response({'data': according_theaters})
