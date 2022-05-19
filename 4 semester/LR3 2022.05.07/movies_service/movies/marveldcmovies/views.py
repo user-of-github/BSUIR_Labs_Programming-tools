@@ -122,15 +122,12 @@ class TheatersForMovieAPIView(views.APIView):
         field_id_for_movie = Movie._meta.get_field('id')
         field_movie_id_for_movie = Movie._meta.get_field('movie_id')
 
-        real_db_id: str = field_id_for_movie.value_from_object(found_in_database.first())
-
         according_theaters: list = list()
 
         field_movies_in_theater = MovieTheater._meta.get_field('movies')
 
         for theater in MovieTheater.objects.all():
             movies_in_this_theater = field_movies_in_theater.value_from_object(theater)
-            print(movies_in_this_theater)
 
             for movie in movies_in_this_theater:
                 if field_movie_id_for_movie.value_from_object(movie) == movie_to_search_theaters:
@@ -138,3 +135,24 @@ class TheatersForMovieAPIView(views.APIView):
                     break
 
         return Response({'data': according_theaters})
+
+
+class SearchMovieAPIView(views.APIView):
+    def get(self, request: Request, query: str) -> Response:
+        all_movies = Movie.objects.all()
+
+        field_title_for_movie = Movie._meta.get_field('title')
+        field_movieid_for_movie = Movie._meta.get_field('movie_id')
+        field_year_for_movie = Movie._meta.get_field('year')
+
+        found_data: list = list()
+
+        for movie in all_movies:
+            title: str = field_title_for_movie.value_from_object(movie).lower()
+            movie_id: str = field_movieid_for_movie.value_from_object(movie).lower()
+            year: str = str(field_year_for_movie.value_from_object(movie)).lower()
+
+            if (query in title) or (query in movie_id) or (query in year):
+                found_data.append(MovieShortenSerializer(movie).data)
+
+        return Response({'data': found_data})

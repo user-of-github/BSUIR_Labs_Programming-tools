@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 from marveldcmovies.views import MoviesAPIView, MovieAPIView, PopularMoviesAPIView, MoviesByIdsAPIView, \
-    TheatersForMovieAPIView
+    TheatersForMovieAPIView, SearchMovieAPIView
 from marveldcmovies.views import MovieTheatersAPIView, MovieTheaterAPIView, MostPopularMovieTheaterAPIView
 
 urlpatterns = [
@@ -16,4 +16,5 @@ urlpatterns = [
     path('api/movietheaters/popular/', MostPopularMovieTheaterAPIView.as_view()),
     path('api/movietheaters/<str:searched_title>/', MovieTheaterAPIView.as_view()),
     path('api/theatersformovie/<str:movie_to_search_theaters>/', TheatersForMovieAPIView.as_view()),
+    path('api/searchmovie/<str:query>/', SearchMovieAPIView.as_view()),
 ]
