@@ -156,3 +156,4 @@ class SearchMovieAPIView(views.APIView):
                 found_data.append(MovieShortenSerializer(movie).data)
 
         return Response({'data': found_data})
+    
