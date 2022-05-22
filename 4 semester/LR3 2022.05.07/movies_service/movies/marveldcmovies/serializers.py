@@ -1,6 +1,6 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User
-from rest_framework.authtoken.models import Token
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
 from marveldcmovies.models import MovieTheater, Movie
 
 
@@ -25,20 +25,13 @@ class MovieTheaterSerializer(serializers.ModelSerializer):
 # https://habr.com/ru/post/512746/
 
 
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['username', 'first_name', 'last_name', 'email', 'date_joined']
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
 
+        # Add custom claims
+        token['username'] = user.username
+        # ...
 
-class IssueTokenRequestSerializer(serializers.Serializer):
-    model = User
-
-    username = serializers.CharField(required=True)
-    password = serializers.CharField(required=True)
-
-
-class TokenSeriazliser(serializers.ModelSerializer):
-    class Meta:
-        model = Token
-        fields = ['key']
+        return token
