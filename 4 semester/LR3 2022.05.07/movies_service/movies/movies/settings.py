@@ -15,6 +15,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+AUTH_USER_MODEL = 'marveldcmovies.CustomUser'
+
 CORS_ALLOWED_ORIGINS = [
     'http://192.168.0.101:3000',
     'http://localhost:3000'
@@ -142,6 +144,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/

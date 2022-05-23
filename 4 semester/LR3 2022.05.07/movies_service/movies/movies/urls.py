@@ -1,8 +1,10 @@
 from django.contrib import admin
 from django.urls import path
-from marveldcmovies.views import MoviesAPIView, MovieAPIView, SearchMovieAPIView, MyTokenObtainPairView
+from marveldcmovies.views import MoviesAPIView, MovieAPIView, SearchMovieAPIView, MyTokenObtainPairView, RegisterView
 from marveldcmovies.views import PopularMoviesAPIView, MoviesByIdsAPIView, TheatersForMovieAPIView
 from marveldcmovies.views import MovieTheatersAPIView, MovieTheaterAPIView, MostPopularMovieTheaterAPIView
+
+
 
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -26,5 +28,6 @@ urlpatterns = [
     path('api/searchmovie/<str:query>/', SearchMovieAPIView.as_view()),
 
     path('api/token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh')
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/register/', RegisterView.as_view(), name='auth_register'),
 ]

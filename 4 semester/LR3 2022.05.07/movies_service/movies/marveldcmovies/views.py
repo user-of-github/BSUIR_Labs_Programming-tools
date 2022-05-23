@@ -1,14 +1,16 @@
-from rest_framework import views
+from .models import CustomUser as User
+from rest_framework import views, generics
 from rest_framework.response import Response
 from rest_framework.request import Request
 
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
 from django.db.models import F
 
 from .models import Movie, MovieTheater
 from .serializers import MovieShortenSerializer, MovieFullSerializer, MovieTheaterSerializer, \
-    MyTokenObtainPairSerializer
+    MyTokenObtainPairSerializer, RegisterSerializer
 
 
 class MoviesAPIView(views.APIView):
@@ -162,3 +164,16 @@ class SearchMovieAPIView(views.APIView):
 
 class MyTokenObtainPairView(TokenObtainPairView):
      serializer_class = MyTokenObtainPairSerializer
+
+
+class RegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    permission_classes = (AllowAny,)
+    serializer_class = RegisterSerializer
+
+
+# @api_view
+# @permission_classes([IsAuthenticated])
+# def getUsersFavourites(request: Request):
+#     user = request.user
+
