@@ -1,4 +1,5 @@
-from .models import CustomUser as User
+# from .models import CustomUser as User
+from django.contrib.auth.models import User
 from rest_framework import views, generics
 from rest_framework.response import Response
 from rest_framework.request import Request

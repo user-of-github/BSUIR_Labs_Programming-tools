@@ -41,49 +41,49 @@ class MovieTheater(models.Model):
         return f'Movie theater - {self.title}'
 
 
-class CustomUserManager(BaseUserManager):
-    def create_user(self, username, email, password):
-        if username is None:
-            raise TypeError('Users must have username')
-
-        if email is None:
-            raise TypeError('Users must have email')
-
-        if password is None:
-            raise TypeError('Users must have password')
-
-        user = self.model(username=username, email=self.normalize_email(email))
-        user.set_password(password)
-        user.save()
-
-        return user
-
-    def create_superuser(self, username, email, password=None):
-        if username is None:
-            raise TypeError('Users must have username')
-
-        if email is None:
-            raise TypeError('Users must have email')
-
-        user = self.create_user(username, email, password)
-        user.is_superuser = True
-        user.is_staff = True
-        user.save()
-
-        return user
-
-
-class CustomUser(AbstractBaseUser, PermissionsMixin):
-    username = models.CharField(max_length=100, unique=True, db_index=True)
-    email = models.EmailField(max_length=100, unique=True, db_index=True)
-    favourites = models.ManyToManyField(Movie)
-
-    USERNAME_FIELD = 'username'
-
-    REQUIRED_FIELDS = ['email']
-
-    objects = CustomUserManager()
-
-    def __str__(self):
-        return self.username
+# class CustomUserManager(BaseUserManager):
+#     def create_user(self, username, email, password):
+#         if username is None:
+#             raise TypeError('Users must have username')
+#
+#         if email is None:
+#             raise TypeError('Users must have email')
+#
+#         if password is None:
+#             raise TypeError('Users must have password')
+#
+#         user = self.model(username=username, email=self.normalize_email(email))
+#         user.set_password(password)
+#         user.save()
+#
+#         return user
+#
+#     def create_superuser(self, username, email, password=None):
+#         if username is None:
+#             raise TypeError('Users must have username')
+#
+#         if email is None:
+#             raise TypeError('Users must have email')
+#
+#         user = self.create_user(username, email, password)
+#         user.is_superuser = True
+#         user.is_staff = True
+#         user.save()
+#
+#         return user
+#
+#
+# class CustomUser(AbstractBaseUser, PermissionsMixin):
+#     username = models.CharField(max_length=100, unique=True, db_index=True)
+#     email = models.EmailField(max_length=100, unique=True, db_index=True)
+#     favourites = models.ManyToManyField(Movie)
+#
+#     USERNAME_FIELD = 'username'
+#
+#     REQUIRED_FIELDS = ['email']
+#
+#     objects = CustomUserManager()
+#
+#     def __str__(self):
+#         return self.username
 

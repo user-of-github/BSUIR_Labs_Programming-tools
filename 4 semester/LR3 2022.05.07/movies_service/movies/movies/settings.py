@@ -15,8 +15,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-AUTH_USER_MODEL = 'marveldcmovies.CustomUser'
-
 CORS_ALLOWED_ORIGINS = [
     'http://192.168.0.101:3000',
     'http://localhost:3000'
