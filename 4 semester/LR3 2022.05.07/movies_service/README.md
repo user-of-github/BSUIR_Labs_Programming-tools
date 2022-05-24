@@ -8,7 +8,8 @@
 * _Python_
 * _[Django](https://www.djangoproject.com/)_
 * _[Django Rest Framework](https://www.django-rest-framework.org/)_
-* _[PostgreSQL](https://www.postgresql.org/)_
+* _[PostgreSQL](https://www.postgresql.org/)_  
+* _[PyTest](https://pytest-cov.readthedocs.io/en/latest/readme.html)_
 
 ### _Developed in:_
 
