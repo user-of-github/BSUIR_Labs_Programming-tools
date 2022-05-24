@@ -10,13 +10,6 @@
 * _[Django Rest Framework](https://www.django-rest-framework.org/)_
 * _[PostgreSQL](https://www.postgresql.org/)_
 
-### _Features:_
-
-* _Object-oriented style_
-* _[Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html)_  
-* _Partial extradition of movies_  
-
-
 ### _Developed in:_
 
 * _JetBrains PyCharm_
