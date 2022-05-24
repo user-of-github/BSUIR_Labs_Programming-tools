@@ -1,4 +1,3 @@
-# from .models import CustomUser as User
 from django.contrib.auth.models import User
 from rest_framework import views, generics, permissions
 from rest_framework.response import Response
@@ -174,10 +173,10 @@ class RegisterView(generics.CreateAPIView):
 
 
 class AddFavouritesAPIView(views.APIView):
-    permission_classes = (IsAuthenticated, permissions.IsAdminUser, permissions.IsAuthenticatedOrReadOnly)
+    permission_classes = (IsAuthenticated, permissions.IsAuthenticatedOrReadOnly)
     queryset = User.objects.all()
 
-    def post(self, request: Request, what_to_add: str = '') -> Response:
+    def put(self, request: Request, what_to_add: str = '') -> Response:
         found_movies = Movie.objects.filter(movie_id=what_to_add)
 
         if len(found_movies) == 0:
@@ -204,3 +203,54 @@ class AddFavouritesAPIView(views.APIView):
             'success': False,
             'status': 'Unable to add, because (I do not know, why, but) there are several movies with such id'
         })
+
+
+class GetFavouritesAPIView(views.APIView):
+    permission_classes = (IsAuthenticated, permissions.IsAuthenticatedOrReadOnly)
+    queryset = User.objects.all()
+
+    def get(self, request: Request) -> Response:
+        this_user = User.objects.filter(username=request.user.username)[0]
+
+        if len(UsersFavourites.objects.filter(user=request.user)) == 0:
+            UsersFavourites.objects.create(user=this_user)
+
+        searched_row = UsersFavourites.objects.filter(user=request.user)[0]
+
+        return Response({'data': MovieShortenSerializer(searched_row.favourites, many=True).data})
+
+
+class CheckIfInFavourites(views.APIView):
+    permission_classes = (IsAuthenticated, permissions.IsAuthenticatedOrReadOnly)
+    queryset = User.objects.all()
+
+    def get(self, request: Request, what_to_check: str) -> Response:
+        this_user = User.objects.filter(username=request.user.username)[0]
+
+        if len(UsersFavourites.objects.filter(user=request.user)) == 0:
+            UsersFavourites.objects.create(user=this_user)
+
+        searched_row = UsersFavourites.objects.filter(user=request.user)[0]
+
+        return Response({'result': len(searched_row.favourites.filter(movie_id=what_to_check)) != 0})
+
+
+class RemoveFromFavourites(views.APIView):
+    permission_classes = (IsAuthenticated, permissions.IsAuthenticatedOrReadOnly)
+    queryset = User.objects.all()
+
+    def put(self, request: Request, what_to_remove: str) -> Response:
+        if len(UsersFavourites.objects.filter(user=request.user)) == 0:
+            return Response({'status': 'Nothing to remove'})
+
+        searched_row = UsersFavourites.objects.filter(user=request.user)[0]
+
+        found_movies = Movie.objects.filter(movie_id=what_to_remove)
+
+        current_favourites = searched_row.favourites.filter(movie_id=what_to_remove)
+
+        if len(current_favourites) != 0:
+            searched_row.favourites.remove(found_movies[0])
+            return Response({'status': 'successfully removed from favourites'})
+        else:
+            return Response({'status': 'This movie is not in favourites'})

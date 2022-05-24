@@ -62,7 +62,7 @@ REST_FRAMEWORK = {
 # https://youtu.be/xjMP0hspNLE
 # https://django-rest-framework-simplejwt.readthedocs.io/en/latest/settings.html
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=30),
     'ROTATE_REFRESH_TOKENS': True,  # if user uses during 30 days, then token will be updated automatically
     'BLACKLIST_AFTER_ROTATION': True,
