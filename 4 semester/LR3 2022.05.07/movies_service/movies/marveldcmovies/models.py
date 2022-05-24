@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import (
-    BaseUserManager, AbstractBaseUser, PermissionsMixin
+    BaseUserManager, AbstractBaseUser, PermissionsMixin, User
 )
 
 
@@ -39,6 +39,11 @@ class MovieTheater(models.Model):
 
     def __str__(self):
         return f'Movie theater - {self.title}'
+
+
+class UsersFavourites(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    favourites = models.ManyToManyField(Movie)
 
 
 # class CustomUserManager(BaseUserManager):

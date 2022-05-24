@@ -1,6 +1,6 @@
 # from .models import CustomUser as User
 from django.contrib.auth.models import User
-from rest_framework import views, generics
+from rest_framework import views, generics, permissions
 from rest_framework.response import Response
 from rest_framework.request import Request
 
@@ -164,7 +164,7 @@ class SearchMovieAPIView(views.APIView):
 
 
 class MyTokenObtainPairView(TokenObtainPairView):
-     serializer_class = MyTokenObtainPairSerializer
+    serializer_class = MyTokenObtainPairSerializer
 
 
 class RegisterView(generics.CreateAPIView):
@@ -173,8 +173,17 @@ class RegisterView(generics.CreateAPIView):
     serializer_class = RegisterSerializer
 
 
-# @api_view
-# @permission_classes([IsAuthenticated])
-# def getUsersFavourites(request: Request):
-#     user = request.user
+class AddFavouritesAPIView(views.APIView):
+    permission_classes = (IsAuthenticated, permissions.IsAdminUser, permissions.IsAuthenticatedOrReadOnly)
+    queryset = User.objects.all()
 
+    def post(self, request: Request, what_to_add: str = '') -> Response:
+        found_movies = Movie.objects.filter(movie_id=what_to_add)
+
+        if len(found_movies) == 0:
+            return Response({'success': False, 'status': 'Unable to add not existing item to favourites'})
+        elif len(found_movies) == 1:
+            # here need to add new item for user to table
+            return Response({'success': True, 'status': 'seemed to be added !'})
+        else:
+            return Response({'success': False, 'status': 'Unable to add, because (I do not know, why, but) there are several movies with such id'})
