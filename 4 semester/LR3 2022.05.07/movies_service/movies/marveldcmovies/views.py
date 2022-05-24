@@ -9,7 +9,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 
 from django.db.models import F
 
-from .models import Movie, MovieTheater
+from .models import Movie, MovieTheater, UsersFavourites
 from .serializers import MovieShortenSerializer, MovieFullSerializer, MovieTheaterSerializer, \
     MyTokenObtainPairSerializer, RegisterSerializer
 
@@ -181,9 +181,26 @@ class AddFavouritesAPIView(views.APIView):
         found_movies = Movie.objects.filter(movie_id=what_to_add)
 
         if len(found_movies) == 0:
-            return Response({'success': False, 'status': 'Unable to add not existing item to favourites'})
+            return Response({
+                'success': False,
+                'status': 'Unable to add not existing movie to favourites'
+            })
         elif len(found_movies) == 1:
-            # here need to add new item for user to table
+            this_user = User.objects.filter(username=request.user.username)[0]
+
+            if len(UsersFavourites.objects.filter(user=request.user)) == 0:
+                UsersFavourites.objects.create(user=this_user)
+
+            searched_row = UsersFavourites.objects.filter(user=request.user)[0]
+
+            if len(searched_row.favourites.filter(movie_id=what_to_add)) != 0:
+                return Response({'success': False, 'status': 'Already in your favourites !'})
+
+            searched_row.favourites.add(found_movies[0])
+
             return Response({'success': True, 'status': 'seemed to be added !'})
-        else:
-            return Response({'success': False, 'status': 'Unable to add, because (I do not know, why, but) there are several movies with such id'})
+
+        return Response({
+            'success': False,
+            'status': 'Unable to add, because (I do not know, why, but) there are several movies with such id'
+        })
