@@ -1,8 +1,8 @@
 from setuptools import setup, find_packages
-
+import parser
 
 setup(
-    name='packer',
+    name='new_name_to_test',
     version='0.1.0',
     description='Packer library',
     long_description='Task for 2d lab of Programming Tools subject',
