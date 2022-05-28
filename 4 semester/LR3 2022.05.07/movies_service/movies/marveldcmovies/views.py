@@ -8,9 +8,9 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 
 from django.db.models import F
 
-from .models import Movie, MovieTheater, UsersFavourites
+from .models import Movie, MovieTheater, UsersFavourites, Comment
 from .serializers import MovieShortenSerializer, MovieFullSerializer, MovieTheaterSerializer, \
-    MyTokenObtainPairSerializer, RegisterSerializer
+    MyTokenObtainPairSerializer, RegisterSerializer, CommentSerializer
 
 
 class MoviesAPIView(views.APIView):
@@ -254,3 +254,39 @@ class RemoveFromFavourites(views.APIView):
             return Response({'status': 'successfully removed from favourites'})
         else:
             return Response({'status': 'This movie is not in favourites'})
+
+
+class AddComment(views.APIView):
+    permission_classes = (IsAuthenticated, permissions.IsAuthenticatedOrReadOnly)
+    queryset = User.objects.all()
+
+    def post(self, request: Request, movie_to_comment: str = 'unknownnotexistingkek2022') -> Response:
+        found_movies = Movie.objects.filter(movie_id=movie_to_comment)
+
+        if len(found_movies) == 0:
+            return Response({'success': False, 'status': 'Not existing movie !'})
+        else:
+            movie = found_movies[0]
+
+            comment = Comment.objects.create(username=request.user.username, comment=request.body.decode('utf-8'))
+
+            movie.comments.add(comment)
+
+            return Response({'success': True, 'status': 'Comment added !'})
+
+
+class CommentsByIds(views.APIView):
+    def get(self, request: Request) -> Response:
+        if request.query_params.get('ids') == '':
+            return Response({'data': []})
+
+        ids_list: list = list(request.query_params.get('ids').split(','))
+
+        all_comments = Comment.objects
+
+        response: list = list()
+
+        for comment_db_id in ids_list:
+            response.append(CommentSerializer(all_comments.filter(id=comment_db_id)[0]).data)
+
+        return Response({'data': response})

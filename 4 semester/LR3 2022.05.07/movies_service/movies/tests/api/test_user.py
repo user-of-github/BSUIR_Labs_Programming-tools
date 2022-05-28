@@ -42,3 +42,15 @@ def test_login_user():
 def test_login_user_fail():
     response = client.post('/api/token/', dict(username='Harotter2022', password='lordvolanemort2022'))
     assert response.status_code == 401
+
+
+@pytest.mark.django_db
+def test_anauthorized_getfavourites():
+    response = client.get('/api/getfavourites/')
+    assert response.status_code == 401
+
+
+@pytest.mark.django_db
+def test_add_favourites():
+    response = client.get('/api/addfavourite/kekunknownshrek')
+    assert response.status_code != 200

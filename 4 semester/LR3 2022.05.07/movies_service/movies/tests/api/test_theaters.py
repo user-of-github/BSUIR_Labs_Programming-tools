@@ -14,3 +14,11 @@ def test_movie_theaters():
 def test_popular_movie_theaters():
     response = client.get('/api/movietheaters/popular/')
     assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_popular_movie_theaters():
+    MovieTheater.objects.create(title='testtheater', address='online', location='online', photo='nophoto', telephone='+375375375')
+    response = client.get('/api/movietheaters/testtheater/')
+    assert response.status_code == 200
+    assert response.data['data']['title'] == 'testtheater'

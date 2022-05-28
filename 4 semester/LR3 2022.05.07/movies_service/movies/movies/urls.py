@@ -5,6 +5,7 @@ from marveldcmovies.views import PopularMoviesAPIView, MoviesByIdsAPIView, Theat
 from marveldcmovies.views import MovieTheatersAPIView, MovieTheaterAPIView, MostPopularMovieTheaterAPIView
 from marveldcmovies.views import AddFavouritesAPIView, GetFavouritesAPIView, CheckIfInFavourites, RemoveFromFavourites
 from rest_framework_simplejwt.views import TokenRefreshView
+from marveldcmovies.views import AddComment, CommentsByIds
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -12,7 +13,7 @@ urlpatterns = [
     path('api/movies/', MoviesAPIView.as_view()),
     path('api/movies/<int:load_from>/<int:load_to>/', MoviesAPIView.as_view()),
     path('api/movies/getmovieslistbyids/', MoviesByIdsAPIView.as_view()),
-    path('api/popularmovies/', MoviesAPIView.as_view()),
+    # path('api/popularmovies/', MoviesAPIView.as_view()),
     path('api/movie/<str:searched_id>/', MovieAPIView.as_view()),
     path('api/movies/popular/', PopularMoviesAPIView.as_view()),
     path('api/movietheaters/', MovieTheatersAPIView.as_view()),
@@ -29,4 +30,7 @@ urlpatterns = [
     path('api/getfavourites/', GetFavouritesAPIView.as_view()),
     path('api/checkiffavourite/<str:what_to_check>/', CheckIfInFavourites.as_view()),
     path('api/removefromfavourite/<str:what_to_remove>/', RemoveFromFavourites.as_view()),
+
+    path('api/addcomment/<str:movie_to_comment>/', AddComment.as_view()),
+    path('api/comments/getcommentslistbyids/', CommentsByIds.as_view()),
 ]
