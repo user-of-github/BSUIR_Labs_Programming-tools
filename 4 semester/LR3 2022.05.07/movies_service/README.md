@@ -20,6 +20,9 @@
 `coverage run -m pytest`  
 `coverage html`  
 
+### To generate SVG badge:  
+`coverage-badge -o coverage.svg`
+
 &nbsp;
 
 ###### © 2022 | All Rights Reserved

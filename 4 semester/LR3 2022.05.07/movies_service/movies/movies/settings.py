@@ -1,7 +1,9 @@
+import json
 from datetime import timedelta
 from pathlib import Path
 import os
 
+CONFIGURATION = json.load(open('configuration.json'))
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -13,19 +15,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-9!wvni+-yeqb0xhf-^g7-j#0@_l@#2a%8d1v@q^e2=^fy5)w=c'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = CONFIGURATION['DEBUG']
 
 ALLOWED_HOSTS = []
 
-CORS_ALLOWED_ORIGINS = [
-    'http://192.168.0.101:3000',
-    'http://localhost:3000'
-]
+CORS_ALLOWED_ORIGINS = CONFIGURATION['ALLOWED_ORIGINS']
 
-CORS_ORIGIN_WHITELIST = [
-    'http://192.168.0.101:3000',
-    'http://localhost:3000'
-]
+CORS_ORIGIN_WHITELIST = CONFIGURATION["CORS_WHITELIST"]
 
 # Application definition
 
@@ -61,44 +57,27 @@ REST_FRAMEWORK = {
     )
 }
 
-# LOGGING = {
-#     'version': 1,
-#     'disable_existing_loggers': False,
-#     'loggers': {
-#         'django': {
-#             'handlers': ['console', 'file'],
-#             'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
-#             'propagate': False
-#         }
-#     },
-#     'handlers': {
-#         'console': {
-#             'class': 'logging.StreamHandler',
-#         },
-#         'file': {
-#             'level': 'DEBUG',
-#             'class': 'logging.FileHandler',
-#             'filename': './debug.log',
-#             'formatter': 'verbose'
-#         }
-#     },
-#     'root': {
-#         'handlers': ['console', 'file'],
-#         'level': 'INFO',
-#     },
-# }
+import os
 
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'debug.log',
+        },
         'console': {
             'class': 'logging.StreamHandler',
-        },
+        }
     },
-    'root': {
-        'handlers': ['console'],
-        'level': 'WARNING',
+    'loggers': {
+        'django': {
+            'handlers': CONFIGURATION['LOGGING_HANDLERS'],
+            'level': CONFIGURATION['LOGGING_MODE'],
+            'propagate': True,
+        },
     },
 }
 
@@ -161,9 +140,9 @@ WSGI_APPLICATION = 'movies.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'moviesservice',
-        'USER': 'postgres',
-        'PASSWORD': 'root',
+        'NAME': CONFIGURATION["DATABASE"]["NAME"],
+        'USER': CONFIGURATION["DATABASE"]["USER"],
+        'PASSWORD': CONFIGURATION["DATABASE"]["PASSWORD"],
         'HOST': 'localhost',
         'PORT': ''
     }
@@ -187,13 +166,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = CONFIGURATION['LANGUAGE_CODE']
 
-TIME_ZONE = 'Europe/Minsk'
+TIME_ZONE = CONFIGURATION['TIME_ZONE']
 
 USE_I18N = True
 
