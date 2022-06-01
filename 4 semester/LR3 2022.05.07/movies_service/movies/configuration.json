@@ -1,0 +1,25 @@
+{
+  "LOGGING_MODE": "INFO",
+  "DEBUG": true,
+  "ALLOWED_ORIGINS": [
+    "http://192.168.0.101:3000",
+    "http://localhost:3000",
+    "http://localhost"
+  ],
+  "CORS_WHITELIST": [
+    "http://192.168.0.101:3000",
+    "http://localhost:3000",
+    "http://localhost"
+  ],
+  "LOGGING_HANDLERS": [
+    "file",
+    "console"
+  ],
+  "TIME_ZONE": "Europe/Minsk",
+  "LANGUAGE_CODE": "en-us",
+  "DATABASE": {
+    "NAME": "moviesservice",
+    "USER": "postgres",
+    "PASSWORD": "root"
+  }
+}

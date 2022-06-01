@@ -1,5 +1,9 @@
+import json
 from datetime import timedelta
 from pathlib import Path
+import os
+
+CONFIGURATION = json.load(open('configuration.json'))
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -11,19 +15,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-9!wvni+-yeqb0xhf-^g7-j#0@_l@#2a%8d1v@q^e2=^fy5)w=c'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = CONFIGURATION['DEBUG']
 
 ALLOWED_HOSTS = []
 
-CORS_ALLOWED_ORIGINS = [
-    'http://192.168.0.101:3000',
-    'http://localhost:3000'
-]
+CORS_ALLOWED_ORIGINS = CONFIGURATION['ALLOWED_ORIGINS']
 
-CORS_ORIGIN_WHITELIST = [
-    'http://192.168.0.101:3000',
-    'http://localhost:3000'
-]
+CORS_ORIGIN_WHITELIST = CONFIGURATION["CORS_WHITELIST"]
 
 # Application definition
 
@@ -55,13 +53,38 @@ MIDDLEWARE = [
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication'
     )
+}
+
+import os
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'debug.log',
+        },
+        'console': {
+            'class': 'logging.StreamHandler',
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': CONFIGURATION['LOGGING_HANDLERS'],
+            'level': CONFIGURATION['LOGGING_MODE'],
+            'propagate': True,
+        },
+    },
 }
 
 # https://youtu.be/xjMP0hspNLE
 # https://django-rest-framework-simplejwt.readthedocs.io/en/latest/settings.html
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=30),
     'ROTATE_REFRESH_TOKENS': True,  # if user uses during 30 days, then token will be updated automatically
     'BLACKLIST_AFTER_ROTATION': True,
@@ -117,9 +140,9 @@ WSGI_APPLICATION = 'movies.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'moviesservice',
-        'USER': 'postgres',
-        'PASSWORD': 'root',
+        'NAME': CONFIGURATION["DATABASE"]["NAME"],
+        'USER': CONFIGURATION["DATABASE"]["USER"],
+        'PASSWORD': CONFIGURATION["DATABASE"]["PASSWORD"],
         'HOST': 'localhost',
         'PORT': ''
     }
@@ -146,9 +169,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = CONFIGURATION['LANGUAGE_CODE']
 
-TIME_ZONE = 'Europe/Minsk'
+TIME_ZONE = CONFIGURATION['TIME_ZONE']
 
 USE_I18N = True
 

@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class CinematicUniverse(models.Model):
@@ -6,6 +7,14 @@ class CinematicUniverse(models.Model):
 
     def __str__(self):
         return f'Cinematic Universe - {self.name}'
+
+
+class Comment(models.Model):
+    username = models.CharField(max_length=40)
+    comment = models.CharField(max_length=300)
+
+    def __str__(self):
+        return f'User {self.username} says: "{self.comment}"'
 
 
 class Movie(models.Model):
@@ -20,9 +29,10 @@ class Movie(models.Model):
     age_restriction = models.SmallIntegerField()
     visits_count = models.IntegerField(default=0)
     category = models.ForeignKey('CinematicUniverse', on_delete=models.PROTECT, null=True)
+    comments = models.ManyToManyField(Comment)
 
     def __str__(self):
-        return f'Movie - {self.title}'
+        return f'{self.title}'
 
 
 class MovieTheater(models.Model):
@@ -36,3 +46,11 @@ class MovieTheater(models.Model):
 
     def __str__(self):
         return f'Movie theater - {self.title}'
+
+
+class UsersFavourites(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    favourites = models.ManyToManyField(Movie)
+
+    def __str__(self):
+        return f'Favourite movies of {self.user.username}'

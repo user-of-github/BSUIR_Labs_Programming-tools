@@ -1,14 +1,16 @@
-from rest_framework import views
+from django.contrib.auth.models import User
+from rest_framework import views, generics, permissions
 from rest_framework.response import Response
 from rest_framework.request import Request
 
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
 from django.db.models import F
 
-from .models import Movie, MovieTheater
+from .models import Movie, MovieTheater, UsersFavourites, Comment
 from .serializers import MovieShortenSerializer, MovieFullSerializer, MovieTheaterSerializer, \
-    MyTokenObtainPairSerializer
+    MyTokenObtainPairSerializer, RegisterSerializer, CommentSerializer
 
 
 class MoviesAPIView(views.APIView):
@@ -161,4 +163,130 @@ class SearchMovieAPIView(views.APIView):
 
 
 class MyTokenObtainPairView(TokenObtainPairView):
-     serializer_class = MyTokenObtainPairSerializer
+    serializer_class = MyTokenObtainPairSerializer
+
+
+class RegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    permission_classes = (AllowAny,)
+    serializer_class = RegisterSerializer
+
+
+class AddFavouritesAPIView(views.APIView):
+    permission_classes = (IsAuthenticated, permissions.IsAuthenticatedOrReadOnly)
+    queryset = User.objects.all()
+
+    def put(self, request: Request, what_to_add: str = '') -> Response:
+        found_movies = Movie.objects.filter(movie_id=what_to_add)
+
+        if len(found_movies) == 0:
+            return Response({
+                'success': False,
+                'status': 'Unable to add not existing movie to favourites'
+            })
+        elif len(found_movies) == 1:
+            this_user = User.objects.filter(username=request.user.username)[0]
+
+            if len(UsersFavourites.objects.filter(user=request.user)) == 0:
+                UsersFavourites.objects.create(user=this_user)
+
+            searched_row = UsersFavourites.objects.filter(user=request.user)[0]
+
+            if len(searched_row.favourites.filter(movie_id=what_to_add)) != 0:
+                return Response({'success': False, 'status': 'Already in your favourites !'})
+
+            searched_row.favourites.add(found_movies[0])
+
+            return Response({'success': True, 'status': 'seemed to be added !'})
+
+        return Response({
+            'success': False,
+            'status': 'Unable to add, because (I do not know, why, but) there are several movies with such id'
+        })
+
+
+class GetFavouritesAPIView(views.APIView):
+    permission_classes = (IsAuthenticated, permissions.IsAuthenticatedOrReadOnly)
+    queryset = User.objects.all()
+
+    def get(self, request: Request) -> Response:
+        this_user = User.objects.filter(username=request.user.username)[0]
+
+        if len(UsersFavourites.objects.filter(user=request.user)) == 0:
+            UsersFavourites.objects.create(user=this_user)
+
+        searched_row = UsersFavourites.objects.filter(user=request.user)[0]
+
+        return Response({'data': MovieShortenSerializer(searched_row.favourites, many=True).data})
+
+
+class CheckIfInFavourites(views.APIView):
+    permission_classes = (IsAuthenticated, permissions.IsAuthenticatedOrReadOnly)
+    queryset = User.objects.all()
+
+    def get(self, request: Request, what_to_check: str) -> Response:
+        this_user = User.objects.filter(username=request.user.username)[0]
+
+        if len(UsersFavourites.objects.filter(user=request.user)) == 0:
+            UsersFavourites.objects.create(user=this_user)
+
+        searched_row = UsersFavourites.objects.filter(user=request.user)[0]
+
+        return Response({'result': len(searched_row.favourites.filter(movie_id=what_to_check)) != 0})
+
+
+class RemoveFromFavourites(views.APIView):
+    permission_classes = (IsAuthenticated, permissions.IsAuthenticatedOrReadOnly)
+    queryset = User.objects.all()
+
+    def put(self, request: Request, what_to_remove: str) -> Response:
+        if len(UsersFavourites.objects.filter(user=request.user)) == 0:
+            return Response({'status': 'Nothing to remove'})
+
+        searched_row = UsersFavourites.objects.filter(user=request.user)[0]
+
+        found_movies = Movie.objects.filter(movie_id=what_to_remove)
+
+        current_favourites = searched_row.favourites.filter(movie_id=what_to_remove)
+
+        if len(current_favourites) != 0:
+            searched_row.favourites.remove(found_movies[0])
+            return Response({'status': 'successfully removed from favourites'})
+        else:
+            return Response({'status': 'This movie is not in favourites'})
+
+
+class AddComment(views.APIView):
+    permission_classes = (IsAuthenticated, permissions.IsAuthenticatedOrReadOnly)
+    queryset = User.objects.all()
+
+    def post(self, request: Request, movie_to_comment: str = 'unknownnotexistingkek2022') -> Response:
+        found_movies = Movie.objects.filter(movie_id=movie_to_comment)
+
+        if len(found_movies) == 0:
+            return Response({'success': False, 'status': 'Not existing movie !'})
+        else:
+            movie = found_movies[0]
+
+            comment = Comment.objects.create(username=request.user.username, comment=request.body.decode('utf-8'))
+
+            movie.comments.add(comment)
+
+            return Response({'success': True, 'status': 'Comment added !'})
+
+
+class CommentsByIds(views.APIView):
+    def get(self, request: Request) -> Response:
+        if request.query_params.get('ids') == '':
+            return Response({'data': []})
+
+        ids_list: list = list(request.query_params.get('ids').split(','))
+
+        all_comments = Comment.objects
+
+        response: list = list()
+
+        for comment_db_id in ids_list:
+            response.append(CommentSerializer(all_comments.filter(id=comment_db_id)[0]).data)
+
+        return Response({'data': response})
