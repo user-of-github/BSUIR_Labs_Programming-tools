@@ -16,7 +16,7 @@ from .serializers import NotificationSerializer
 from datetime import date
 from datetime import datetime
 
-from .utitlities import send_notification_to_user
+from .utitlities import send_notification_to_user, send_notifications_to_users
 
 
 class MoviesAPIView(views.APIView):
@@ -290,6 +290,20 @@ class AddComment(views.APIView):
             send_notification_to_user(
                 request.user,
                 f'{date.today()} {datetime.now().strftime("%H:%M")}: Comment to movie {movie.title} added !'
+            )
+
+            also_commented: set = set()
+            for comment in movie.comments.all():
+                if comment.username != request.user.username:
+                    also_commented.add(comment.username)
+
+            others_list: list = list()
+            for name in also_commented:
+                others_list.append(User.objects.filter(username=name)[0])
+
+            send_notifications_to_users(
+                others_list,
+                f'{date.today()} {datetime.now().strftime("%H:%M")}:Someone has just also commented {movie.title} movie'
             )
 
             return Response({'success': True, 'status': 'Comment added !'})
