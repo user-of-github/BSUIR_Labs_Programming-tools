@@ -7,6 +7,7 @@ from rest_framework.validators import UniqueValidator
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from marveldcmovies.models import MovieTheater, Movie, Comment
+from marveldcmovies.models import UsersNotifications, Notification
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -31,6 +32,7 @@ class MovieTheaterSerializer(serializers.ModelSerializer):
     class Meta:
         model = MovieTheater
         exclude = ['visits_count', 'id']
+
 
 # Useful post about authorization
 # https://habr.com/ru/post/512746/
@@ -63,7 +65,8 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         if not re.compile(RegisterSerializer.PASSWORD_REGEX).match(attrs['password']):
-            raise serializers.ValidationError({'password': 'Wrong password (must contain 4+ symbols with letters or digits'})
+            raise serializers.ValidationError(
+                {'password': 'Wrong password (must contain 4+ symbols with letters or digits'})
 
         if not re.compile(RegisterSerializer.EMAIL_REGEX).match(attrs['email']):
             raise serializers.ValidationError({'email': 'Wrong email'})
@@ -81,3 +84,14 @@ class RegisterSerializer(serializers.ModelSerializer):
 
         return user
 
+
+class UsersNotificationsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UsersNotifications
+        fields = ('user', 'notifications')
+
+
+class NotificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Notification
+        fields = ('message',)

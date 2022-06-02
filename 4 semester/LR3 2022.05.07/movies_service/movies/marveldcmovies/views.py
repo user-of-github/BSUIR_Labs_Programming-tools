@@ -9,8 +9,14 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.db.models import F
 
 from .models import Movie, MovieTheater, UsersFavourites, Comment
-from .serializers import MovieShortenSerializer, MovieFullSerializer, MovieTheaterSerializer, \
-    MyTokenObtainPairSerializer, RegisterSerializer, CommentSerializer
+from .serializers import MovieShortenSerializer, MovieFullSerializer, MovieTheaterSerializer
+from .serializers import MyTokenObtainPairSerializer, RegisterSerializer, CommentSerializer, UsersNotifications
+from .serializers import NotificationSerializer
+
+from datetime import date
+from datetime import datetime
+
+from .utitlities import send_notification_to_user
 
 
 class MoviesAPIView(views.APIView):
@@ -197,6 +203,11 @@ class AddFavouritesAPIView(views.APIView):
 
             searched_row.favourites.add(found_movies[0])
 
+            send_notification_to_user(
+                request.user,
+                f'{date.today()} {datetime.now().strftime("%H:%M")}: {found_movies[0].title} added to favourites !'
+            )
+
             return Response({'success': True, 'status': 'seemed to be added !'})
 
         return Response({
@@ -251,6 +262,10 @@ class RemoveFromFavourites(views.APIView):
 
         if len(current_favourites) != 0:
             searched_row.favourites.remove(found_movies[0])
+            send_notification_to_user(
+                request.user,
+                f'{date.today()} {datetime.now().strftime("%H:%M")}: {found_movies[0].title} removed from favourites !'
+            )
             return Response({'status': 'successfully removed from favourites'})
         else:
             return Response({'status': 'This movie is not in favourites'})
@@ -272,6 +287,11 @@ class AddComment(views.APIView):
 
             movie.comments.add(comment)
 
+            send_notification_to_user(
+                request.user,
+                f'{date.today()} {datetime.now().strftime("%H:%M")}: Comment to movie {movie.title} added !'
+            )
+
             return Response({'success': True, 'status': 'Comment added !'})
 
 
@@ -290,3 +310,16 @@ class CommentsByIds(views.APIView):
             response.append(CommentSerializer(all_comments.filter(id=comment_db_id)[0]).data)
 
         return Response({'data': response})
+
+
+class GetUsersNotifications(views.APIView):
+    permission_classes = (IsAuthenticated, permissions.IsAuthenticatedOrReadOnly)
+    queryset = User.objects.all()
+
+    def get(self, request: Request) -> Response:
+        if len(UsersNotifications.objects.filter(user=request.user)) == 0:
+            UsersNotifications.objects.create(user=request.user)
+
+        searched_row = UsersNotifications.objects.filter(user=request.user)[0]
+
+        return Response({'data': NotificationSerializer(searched_row.notifications.order_by('-id'), many=True).data})
