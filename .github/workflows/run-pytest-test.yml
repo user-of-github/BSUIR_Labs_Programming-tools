@@ -47,4 +47,5 @@ jobs:
         cd LR3\ 2022.05.07/
         cd movies_service/
         cd movies/ 
-        python -m pytest
+        python -m coverage run -m pytest
+        python -m coverage report
