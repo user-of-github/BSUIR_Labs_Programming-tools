@@ -35,6 +35,16 @@ jobs:
         pip install -r requirements.txt
         pip install pytest-django
     - name: Run migrations
-      run: python manage.py migrate
+      run: |
+        cd 4\ semester/
+        cd LR3\ 2022.05.07/
+        cd movies_service/
+        cd movies/ 
+        python manage.py migrate
     - name: Run tests
-      run: python -m pytest
+      run: |
+        cd 4\ semester/
+        cd LR3\ 2022.05.07/
+        cd movies_service/
+        cd movies/ 
+        python -m pytest
