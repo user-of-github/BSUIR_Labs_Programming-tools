@@ -2,9 +2,7 @@ name: Django PyTest Run CI
 
 on:
   push:
-    branches: [ 4_semester_lab4 ]
   pull_request:
-    branches: [ master ]
 
 jobs:
   build:
