@@ -3,7 +3,7 @@ from datetime import timedelta
 from pathlib import Path
 import os
 
-CONFIGURATION = json.load(open('configuration.json'))
+#CONFIGURATION = json.load(open('configuration.json'))
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -15,13 +15,21 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-9!wvni+-yeqb0xhf-^g7-j#0@_l@#2a%8d1v@q^e2=^fy5)w=c'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = CONFIGURATION['DEBUG']
+DEBUG = True #CONFIGURATION['DEBUG']
 
 ALLOWED_HOSTS = []
 
-CORS_ALLOWED_ORIGINS = CONFIGURATION['ALLOWED_ORIGINS']
+CORS_ALLOWED_ORIGINS = [
+    "http://192.168.0.101:3000",
+    "http://localhost:3000",
+    "http://localhost"
+  ] #CONFIGURATION['ALLOWED_ORIGINS']
 
-CORS_ORIGIN_WHITELIST = CONFIGURATION["CORS_WHITELIST"]
+CORS_ORIGIN_WHITELIST = [
+    "http://192.168.0.101:3000",
+    "http://localhost:3000",
+    "http://localhost"
+  ] # CONFIGURATION["CORS_WHITELIST"]
 
 # Application definition
 
@@ -74,8 +82,8 @@ LOGGING = {
     },
     'loggers': {
         'django': {
-            'handlers': CONFIGURATION['LOGGING_HANDLERS'],
-            'level': CONFIGURATION['LOGGING_MODE'],
+            'handlers': ["file", "console"], # CONFIGURATION['LOGGING_HANDLERS'],
+            'level': "INFO", #CONFIGURATION['LOGGING_MODE'],
             'propagate': True,
         },
     },
@@ -140,11 +148,11 @@ WSGI_APPLICATION = 'movies.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('POSTGRES_NAME'),
-        'USER': os.environ.get('POSTGRES_USER'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-        'HOST': 'db',
-        'PORT': 5432,
+        'NAME': "moviesservice", #os.environ.get('POSTGRES_NAME'),
+        'USER': "postgres", # os.environ.get('POSTGRES_USER'),
+        'PASSWORD': "root", #os.environ.get('POSTGRES_PASSWORD'),
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
@@ -169,9 +177,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = CONFIGURATION['LANGUAGE_CODE']
+LANGUAGE_CODE = "en-us" #CONFIGURATION['LANGUAGE_CODE']
 
-TIME_ZONE = CONFIGURATION['TIME_ZONE']
+TIME_ZONE = "Europe/Minsk" # CONFIGURATION['TIME_ZONE']
 
 USE_I18N = True
 

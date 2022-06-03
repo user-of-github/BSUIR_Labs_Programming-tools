@@ -11,10 +11,7 @@
     "http://localhost:3000",
     "http://localhost"
   ],
-  "LOGGING_HANDLERS": [
-    "file",
-    "console"
-  ],
+  "LOGGING_HANDLERS": ["file", "console"],
   "TIME_ZONE": "Europe/Minsk",
   "LANGUAGE_CODE": "en-us",
   "DATABASE": {
