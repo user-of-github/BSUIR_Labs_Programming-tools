@@ -4,6 +4,6 @@
   * [ ] Deploy
 * [ ] Docker
 * [ ] Docker-compose
-* [ ] Deploy  
+* [x] Deploy  
 * [x] Async code
 * [x] Config JSON file

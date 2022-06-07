@@ -15,7 +15,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-9!wvni+-yeqb0xhf-^g7-j#0@_l@#2a%8d1v@q^e2=^fy5)w=c'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = CONFIGURATION['DEBUG']
+DEBUG = CONFIGURATION['PRODUCTION'] == False
 
 ALLOWED_HOSTS = CONFIGURATION['ALLOWED_HOSTS']
 
@@ -142,11 +142,11 @@ WSGI_APPLICATION = 'movies.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': CONFIGURATION['DATABASE']['NAME'],
-        'USER': CONFIGURATION['DATABASE']['USER'],
-        'PASSWORD': CONFIGURATION['DATABASE']['PASSWORD'],
-        'HOST': 'localhost',
-        'PORT': '',
+        'NAME': CONFIGURATION['SERVER_DB']['NAME'] if CONFIGURATION['PRODUCTION'] else CONFIGURATION['LOCAL_DB']['NAME'],
+        'USER': CONFIGURATION['SERVER_DB']['USER'] if CONFIGURATION['PRODUCTION'] else CONFIGURATION['LOCAL_DB']['USER'],
+        'PASSWORD': CONFIGURATION['SERVER_DB']['PASSWORD'] if CONFIGURATION['PRODUCTION'] else CONFIGURATION['LOCAL_DB']['PASSWORD'],
+        'HOST': CONFIGURATION['SERVER_DB']['HOST'] if CONFIGURATION['PRODUCTION'] else CONFIGURATION['LOCAL_DB']['HOST'],
+        'PORT': CONFIGURATION['SERVER_DB']['PORT'] if CONFIGURATION['PRODUCTION'] else CONFIGURATION['LOCAL_DB']['PORT'],
     }
 }
 

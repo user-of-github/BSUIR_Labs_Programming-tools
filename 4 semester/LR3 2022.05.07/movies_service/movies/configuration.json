@@ -1,6 +1,6 @@
 {
+  "PRODUCTION": false,
   "LOGGING_MODE": "INFO",
-  "DEBUG": true,
   "ALLOWED_ORIGINS": [
     "http://movies-service-project.surge.sh",
     "http://192.168.0.101:3000",
@@ -13,7 +13,8 @@
     "http://localhost:3000",
     "http://localhost",
     "localhost",
-    "127.0.0.1"
+    "127.0.0.1",
+    "marvel-dc-movies-service.herokuapp.com"
   ],
   "CORS_WHITELIST": [
     "http://movies-service-project.surge.sh",
@@ -27,9 +28,18 @@
   ],
   "TIME_ZONE": "Europe/Minsk",
   "LANGUAGE_CODE": "en-us",
-  "DATABASE": {
+  "LOCAL_DB": {
     "NAME": "moviesservice",
     "USER": "postgres",
-    "PASSWORD": "root"
+    "PASSWORD": "root",
+    "HOST": "localhost",
+    "PORT": ""
+  },
+  "SERVER_DB": {
+    "NAME": "deo6aoaa4pmiq5",
+    "USER": "bbbqkopnujatit",
+    "PASSWORD": "0b1e48fea2c1977c43c85e0a3cbcd05f17df07c5b6062a1cb8dda6a917ce9407",
+    "HOST": "ec2-34-247-172-149.eu-west-1.compute.amazonaws.com",
+    "PORT": "5432"
   }
 }

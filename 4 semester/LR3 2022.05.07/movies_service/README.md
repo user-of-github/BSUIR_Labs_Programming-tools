@@ -13,7 +13,8 @@
 * _[Django Rest Framework](https://www.django-rest-framework.org/)_
 * _[PostgreSQL](https://www.postgresql.org/)_
 * _[PyTest](https://pytest-cov.readthedocs.io/en/latest/readme.html)_
-
+* _[Docker](https://www.docker.com/)_  
+* _[GitHub Actions](https://github.com/features/actions)_
 ### _Developed in:_
 
 * _JetBrains PyCharm_
@@ -34,6 +35,17 @@
 
 `coverage-badge -o coverage.svg`
 
+### To deploy client (from its repo):  
+`yarn`  
+`yarn build`  
+`cd build`  
+`surge`  (url: `movies-service-project.surge.sh`)  
+
+### To deploy server (strange approach, but I found only it):  
+1. _Copy `movies` folder to folder for deploy_  
+2. _Change in `configuration.json` file `PRODUCTION` to `true`_ 
+3. _Push it to special separate repo for deploy_ 
+4. _Run Deploy from Heroku DashBoard_  
 &nbsp;
 
 ###### © 2022 | All Rights Reserved
