@@ -260,6 +260,8 @@ class RemoveFromFavourites(views.APIView):
 
         current_favourites = searched_row.favourites.filter(movie_id=what_to_remove)
 
+        print('REMOVING')
+
         if len(current_favourites) != 0:
             searched_row.favourites.remove(found_movies[0])
             send_notification_to_user(

@@ -39,6 +39,10 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    # for deploy https://www.youtube.com/watch?v=5QfylAzoqSI&t=1192s
+    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -56,8 +60,6 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication'
     )
 }
-
-import os
 
 LOGGING = {
     'version': 1,
@@ -181,6 +183,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+# for deploy https://www.youtube.com/watch?v=5QfylAzoqSI&t=1192s
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
