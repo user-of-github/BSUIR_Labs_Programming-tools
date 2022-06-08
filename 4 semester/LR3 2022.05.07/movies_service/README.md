@@ -35,7 +35,8 @@
 
 `coverage-badge -o coverage.svg`
 
-### To deploy client (from its repo):  
+### To deploy client (from its repo): 
+Set `PRODUCTION` variable to `true` in `configuration.ts`  
 `yarn`  
 `yarn build`  
 `cd build`  
@@ -43,9 +44,17 @@
 
 ### To deploy server (strange approach, but I found only it):  
 1. _Copy `movies` folder to folder for deploy_  
-2. _Change in `configuration.json` file `PRODUCTION` to `true`_ 
+2. _Change in `configuration.json`  `PRODUCTION` to `true`_ 
 3. _Push it to special separate repo for deploy_ 
 4. _Run Deploy from Heroku DashBoard_  
-&nbsp;
+&nbsp;  
+
+
+### To work with docker:  
+1. From `movies` folder  
+2. `docker-compose up -d --build`  
+3. `docker-compose exec web python manage.py migrate --noinput`  
+4. `docker-compose exec db psql --username=django_user --dbname=django_db`  
+5. Here you can open browser and check api  
 
 ###### © 2022 | All Rights Reserved
