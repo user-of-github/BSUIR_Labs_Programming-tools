@@ -10,7 +10,7 @@
 
 ### _Technologies stack:_
 
-* _Python_
+* _[Python](https://www.python.org/)_
 * _[Django](https://www.djangoproject.com/)_
 * _[Django Rest Framework](https://www.django-rest-framework.org/)_
 * _[PostgreSQL](https://www.postgresql.org/)_
@@ -54,9 +54,16 @@ Set `PRODUCTION` variable to `true` in `configuration.ts`
 
 ### To work with docker (run server locally):  
 1. From `movies` folder  
-2. `docker-compose up -d --build`  
-3. `docker-compose exec web python manage.py migrate --noinput`  
-4. `docker-compose exec db psql --username=django_user --dbname=django_db`  
+2. ` docker-compose build` 
+3. `docker-compose up -d`  
+4. `docker-compose exec web python manage.py migrate --noinput`
+
+__`<to check>`__
+4. `docker-compose exec db psql --username=django_user --dbname=django_db` 
+   1. `\l`
+   2. `\dt`  
+
+__`</to check>`__
 5. Here you can open browser and check api    
 
 

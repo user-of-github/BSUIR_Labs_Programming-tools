@@ -1,4 +1,4 @@
-name: Python application
+name: Test Django-Rest-Framework application via PyTest
 
 on: [push]
 
