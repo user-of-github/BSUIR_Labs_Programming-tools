@@ -24,4 +24,6 @@ jobs:
         cd LR3\ 2022.05.07/
         cd movies_service/
         cd movies/
-        docker build . 
+        docker build . -t moviesservice
+        docker tag moviesservice 684684684/movies-service-server
+        docker push 684684684/movies-service-server 
