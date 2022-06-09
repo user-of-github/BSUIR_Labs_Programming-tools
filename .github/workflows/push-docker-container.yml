@@ -24,7 +24,4 @@ jobs:
         cd LR3\ 2022.05.07/
         cd movies_service/
         cd movies/
-      uses: docker/build-push-action@v3
-      with:
-        push: true
-        tags: 684684684/movies-service-server:${{ github.run_number }}
+        docker build . 
