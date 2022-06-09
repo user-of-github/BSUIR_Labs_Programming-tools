@@ -5,7 +5,7 @@ on: [push]
 jobs:
 
   build-and-push:
-
+    name: Authorize, build and push
     runs-on: ubuntu-latest
 
     steps:
@@ -23,9 +23,3 @@ jobs:
         context: .
         push: true
         tags: 684684684/movies-service-server:latest, 684684684/movies-service-server:${{ github.run_number }}
-      run: |
-        cd 4\ semester/
-        cd LR3\ 2022.05.07/
-        cd movies_service/
-        cd movies/  
-        docker build . --file Dockerfile --tag my-image-name:$(date +%s)
