@@ -19,6 +19,11 @@ jobs:
         password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
     - name: Build and push
+      run: |
+        cd 4\ semester/
+        cd LR3\ 2022.05.07/
+        cd movies_service/
+        cd movies/
       uses: docker/build-push-action@v3
       with:
         push: true
