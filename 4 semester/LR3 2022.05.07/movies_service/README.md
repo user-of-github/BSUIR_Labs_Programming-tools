@@ -1,6 +1,6 @@
 # _Movie Service [server]_  
 
-## FULL-APP: [movies-service-project.surge.sh](http://movies-service-project.surge.sh/)
+### Deployed: [movies-service-project.surge.sh](http://movies-service-project.surge.sh/)
 
 ![coverage](./movies/coverage.svg)
 
@@ -52,9 +52,10 @@ Set `PRODUCTION` variable to `true` in `configuration.ts`
 &nbsp;  
 
 
-### To work with docker (run server locally):  
+### To work with docker (run server locally, DEBUG):  
+0. __DON'T FORGET TO MAKE SETTINGS !! ))__
 1. From `movies` folder  
-2. ` docker-compose build` 
+2. `docker-compose build` 
 3. `docker-compose up -d`  
 4. `docker-compose exec web python manage.py migrate --noinput`
 
@@ -64,7 +65,12 @@ __`<to check>`__
    2. `\dt`  
 
 __`</to check>`__
-5. Here you can open browser and check api    
+5. Here you can open browser and check api 
+6. `docker-compose run django python manage.py createsuperuser`
+
+
+#### Some demos:  
+![Where to see tests passes in Actions](github-actions-demo.PNG)  
 
 
 &nbsp;  

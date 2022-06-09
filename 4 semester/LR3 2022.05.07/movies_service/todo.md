@@ -2,8 +2,9 @@
   * [x] Running tests
   * [ ] Pushing docker image
   * [ ] Deploy
-* [ ] Docker
-* [ ] Docker-compose
+* [x] Docker
+* [x] Docker-compose
+* [x] The same for client
 * [x] Deploy  
 * [x] Async code
-* [x] Config JSON file
+* [x] Config JSON file (or ENV file ?)

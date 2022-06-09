@@ -32,7 +32,7 @@
     "NAME": "moviesservice",
     "USER": "postgres",
     "PASSWORD": "root",
-    "HOST": "db",
+    "HOST": "localhost",
     "PORT": 5432
   },
   "SERVER_DB": {
