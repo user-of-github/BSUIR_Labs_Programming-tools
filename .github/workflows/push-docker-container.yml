@@ -10,16 +10,16 @@ jobs:
 
     steps:
     - name: Checkout code
-    - uses: actions/checkout@v3
+      uses: actions/checkout@v3
 
     - name: Authorize
-    - uses: docker/login-action@v1
+      uses: docker/login-action@v1
       with:
         username: ${{ secrets.DOCKER_HUB_USERNAME }}
         password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-    - name: Build and push to Docker Hub   
+    - name: Build and push
+      uses: docker/build-push-action@v3
       with:
-        context: .
         push: true
-        tags: 684684684/movies-service-server:latest, 684684684/movies-service-server:${{ github.run_number }}
+        tags: 684684684/movies-service-server:${{ github.run_number }}
