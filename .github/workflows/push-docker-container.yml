@@ -25,5 +25,5 @@ jobs:
         cd movies_service/
         cd movies/
         docker build . -t moviesservice
-        docker tag moviesservice 684684684/movies-service-server
-        docker push 684684684/movies-service-server 
+        docker tag moviesservice ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_MOVIES_SERVICE_SERVER_REPOSITORY }}
+        docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_MOVIES_SERVICE_SERVER_REPOSITORY }} 

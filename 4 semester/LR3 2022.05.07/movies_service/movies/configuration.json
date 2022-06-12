@@ -1,6 +1,8 @@
 {
   "PRODUCTION": false,
+  "USING_LOCAL_DOCKER": false,
   "LOGGING_MODE": "INFO",
+  "SECRET_KEY": "django-insecure-9!wvni+-yeqb0xhf-^g7-j#0@_l@#2a%8d1v@q^e2=^fy5)w=c",
   "ALLOWED_ORIGINS": [
     "http://movies-service-project.surge.sh",
     "http://192.168.0.101:3000",
@@ -28,12 +30,20 @@
   ],
   "TIME_ZONE": "Europe/Minsk",
   "LANGUAGE_CODE": "en-us",
-  "LOCAL_DB": {
+  "LOCAL_DB_NO_DOCKER": {
     "NAME": "moviesservice",
     "USER": "postgres",
     "PASSWORD": "root",
     "HOST": "localhost",
     "PORT": 5432
+  },
+  "LOCAL_DB_DOCKER": {
+    "ENGINE_ENV": "POSTGRES_ENGINE",
+    "NAME_ENV": "POSTGRES_DB",
+    "USER_ENV": "POSTGRES_USER",
+    "PASSWORD_ENV": "POSTGRES_PASSWORD",
+    "HOST_ENV": "POSTGRES_HOST",
+    "PORT_ENV": "POSTGRES_PORT"
   },
   "SERVER_DB": {
     "NAME": "deo6aoaa4pmiq5",

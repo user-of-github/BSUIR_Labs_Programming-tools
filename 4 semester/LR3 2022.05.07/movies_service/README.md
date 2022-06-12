@@ -24,7 +24,8 @@
 * _JetBrains PyCharm_
 * _PostMan_  
 * _Heroku Dashboard_  
-* _Docker Desktop_
+* _Docker Desktop_  
+* _GitHub Actions CI_  
 
 
 ### _To run tests:_
@@ -71,8 +72,9 @@ __`</to check>`__
 
 #### Some demos:  
 ![Where to see tests passes in Actions](github-actions-demo.PNG)  
+![Success](github-actions-demo-2.PNG)  
 
-
+__1 поток__
 &nbsp;  
 
 ###### © 2022 | All Rights Reserved

@@ -1,7 +1,7 @@
-* [ ] GitHub Actions
+* [x] GitHub Actions
   * [x] Running tests
-  * [ ] Pushing docker image
-  * [ ] Deploy
+  * [x] Pushing docker image
+  * [ ] Deploy 
 * [x] Docker
 * [x] Docker-compose
 * [x] The same for client
