@@ -1,23 +1,22 @@
 import json
 from datetime import timedelta
-from pathlib import Path
 import os
+from pathlib import Path
 
-CONFIGURATION = json.load(open('configuration.json'))
+from movies.configuration_utils import get_databases_object
+
+CONFIGURATION = json.load(open((Path(__file__).parent / '../configuration.json').resolve()))
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-9!wvni+-yeqb0xhf-^g7-j#0@_l@#2a%8d1v@q^e2=^fy5)w=c'
+SECRET_KEY = CONFIGURATION["SECRET_KEY"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = CONFIGURATION['DEBUG']
+DEBUG = CONFIGURATION['PRODUCTION'] == False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = CONFIGURATION['ALLOWED_HOSTS']
 
 CORS_ALLOWED_ORIGINS = CONFIGURATION['ALLOWED_ORIGINS']
 
@@ -39,6 +38,10 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    # for deploy https://www.youtube.com/watch?v=5QfylAzoqSI&t=1192s
+    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -56,8 +59,6 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication'
     )
 }
-
-import os
 
 LOGGING = {
     'version': 1,
@@ -137,16 +138,7 @@ WSGI_APPLICATION = 'movies.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': CONFIGURATION["DATABASE"]["NAME"],
-        'USER': CONFIGURATION["DATABASE"]["USER"],
-        'PASSWORD': CONFIGURATION["DATABASE"]["PASSWORD"],
-        'HOST': 'localhost',
-        'PORT': ''
-    }
-}
+DATABASES = get_databases_object(CONFIGURATION, BASE_DIR)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -181,6 +173,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+# for deploy https://www.youtube.com/watch?v=5QfylAzoqSI&t=1192s
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

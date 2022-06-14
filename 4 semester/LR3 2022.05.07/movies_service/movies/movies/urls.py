@@ -4,6 +4,7 @@ from marveldcmovies.views import MoviesAPIView, MovieAPIView, SearchMovieAPIView
 from marveldcmovies.views import PopularMoviesAPIView, MoviesByIdsAPIView, TheatersForMovieAPIView
 from marveldcmovies.views import MovieTheatersAPIView, MovieTheaterAPIView, MostPopularMovieTheaterAPIView
 from marveldcmovies.views import AddFavouritesAPIView, GetFavouritesAPIView, CheckIfInFavourites, RemoveFromFavourites
+from marveldcmovies.views import GetUsersNotifications
 from rest_framework_simplejwt.views import TokenRefreshView
 from marveldcmovies.views import AddComment, CommentsByIds
 
@@ -33,4 +34,6 @@ urlpatterns = [
 
     path('api/addcomment/<str:movie_to_comment>/', AddComment.as_view()),
     path('api/comments/getcommentslistbyids/', CommentsByIds.as_view()),
+
+    path('api/getusersnotifications/', GetUsersNotifications.as_view())
 ]

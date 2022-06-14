@@ -49,8 +49,23 @@ class MovieTheater(models.Model):
 
 
 class UsersFavourites(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, unique=True)
     favourites = models.ManyToManyField(Movie)
 
     def __str__(self):
         return f'Favourite movies of {self.user.username}'
+
+
+class Notification(models.Model):
+    message = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.message
+
+
+class UsersNotifications(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, unique=True)
+    notifications = models.ManyToManyField(Notification)
+
+    def __str__(self):
+        return f'Notifications list to user @{self.user.username}'
