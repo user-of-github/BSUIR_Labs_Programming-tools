@@ -8,7 +8,7 @@
 * CI/CD, Github actions 
 * Deploy (Heroku)
 * Linux    
-* Interesting tasks and lots of others
+* Difficult, but interesting & useful tasks and lots of others
 
 
 
