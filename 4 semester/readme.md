@@ -1,8 +1,13 @@
 ## Folder for 4th semester Programming-Tools labs  
 
 * Python  
-* Linux  
-* Docker  
+* Django, Django Rest Framework  
+* REST API  
+* PostgreSQL, Django ORM  
+* Docker, Docker Compose   
+* CI/CD, Github actions 
+* Deploy (Heroku)
+* Linux    
 * Interesting tasks and lots of others
 
 
